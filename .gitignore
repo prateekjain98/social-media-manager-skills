@@ -1,0 +1,43 @@
+# Credentials - NEVER commit these
+.credentials.md
+credentials.md
+*credentials*.md
+!.credentials.example.md
+
+# Auth state files
+*.auth.json
+auth-*.json
+*-auth.json
+
+# Session data
+.sessions/
+sessions/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Browser profiles
+chrome-*/
+browser-profiles/
+
+# Logs
+*.log
+logs/
+
+# Temp files
+*.tmp
+.tmp/
+temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

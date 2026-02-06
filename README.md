@@ -30,6 +30,21 @@ All content generated must be:
 
 ---
 
+## Setup: Credentials
+
+For browser automation, store your account credentials securely:
+
+1. Copy `.credentials.example.md` to `.credentials.md`
+2. Fill in your account details
+3. **NEVER commit `.credentials.md` to git** (already in .gitignore)
+
+```bash
+cp .credentials.example.md .credentials.md
+# Edit .credentials.md with your accounts
+```
+
+---
+
 ## Content Creation Skills (6)
 
 | Skill | Command | Description |
