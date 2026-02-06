@@ -378,8 +378,10 @@ agent-browser uncheck @e1          # Uncheck checkbox
 
 # Mouse Actions
 agent-browser hover @e1            # Hover over element
+agent-browser focus @e1            # Focus element
 agent-browser drag @src @tgt       # Drag and drop
 agent-browser upload @e1 file.pdf  # Upload file
+agent-browser scrollintoview @e1   # Scroll element into view
 ```
 
 ### Semantic Locators (AI-Friendly)
