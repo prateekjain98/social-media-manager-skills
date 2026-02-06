@@ -129,15 +129,25 @@ cp .credentials.example.md .credentials.md
 
 ---
 
-## Automation Skills (1)
+## Automation Skills (2)
 
 | Skill | Command | Description |
 |-------|---------|-------------|
 | Agent Browser | `/agent-browser` | Connect browser for automated social interactions via CDP |
+| Growth Agent | `/growth-agent` | Autonomous agent for growing followers via strategic engagement |
 
 ---
 
-## Total: 29 Skills
+## Framework Documents
+
+| Document | Description |
+|----------|-------------|
+| `_core-principles.md` | Human-authenticity and identity protocols |
+| `_agents-framework.md` | Goal-based agent architecture for autonomous tasks |
+
+---
+
+## Total: 30 Skills
 
 ---
 
@@ -194,7 +204,8 @@ Each skill will:
 
 ### Automation
 - `/agent-browser` - Browser automation for lead gen and engagement
+- `/growth-agent` - Autonomous follower growth via strategic engagement
 
 ---
 
-*29 skills for world-class social media management*
+*30 skills for world-class social media management*
