@@ -1,7 +1,9 @@
 # v2 — Multi-Domain Personality Strategy
 
-**Active from:** Feb 9, 2026
-**Supersedes:** v1 files in parent `skills/` folder (marked as archived)
+**ARCHIVED** — Superseded by v3 in `strategy/active/`
+**Active:** Feb 9, 2026 (brief)
+**Superseded by:** v3 (Feb 9, 2026)
+**Originally superseded:** v1 in `strategy/archive/v1/`
 
 ## What Changed and Why
 
@@ -35,11 +37,11 @@ Key finding: **NONE of them post only about their expertise.** Personality + hum
 | `_persona.md` | Identity, content pillars, voice, humor guidelines, news strategy |
 | `_growth-algorithm.md` | Daily execution algorithm, target accounts, reply decision tree |
 
-## Still Active from v1 (no changes needed)
+## Shared files (unchanged across versions)
 
-| File | Location | Why unchanged |
-|------|----------|---------------|
-| `_core-principles.md` | `skills/_core-principles.md` | Anti-AI detection and human writing guidelines are universal |
-| `_metrics.md` | `skills/_metrics.md` | Tracking format is fine |
-| `agent-browser.md` | `skills/agent-browser.md` | Technical commands unchanged |
-| `linkedin.md` | `skills/linkedin.md` | Platform automation unchanged |
+| File | Location |
+|------|----------|
+| `_core-principles.md` | `strategy/_core-principles.md` |
+| `_metrics.md` | `strategy/_metrics.md` |
+| Agent Browser | `skills/automation/agent-browser.md` |
+| LinkedIn | `skills/platforms/linkedin.md` |

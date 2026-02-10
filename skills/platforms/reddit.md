@@ -71,48 +71,61 @@ Master Reddit's unique community-driven platform to build authentic brand presen
 
 ---
 
-## Reddit Strategy (Non-Promotional)
+## Reddit Growth Strategy
 
-### The ONLY Way to Succeed on Reddit
+### Account: u/prateek63 (4yr account, building karma)
 
-**Step 1: Understand the Community**
-- Lurk for weeks/months before participating
-- Read subreddit rules thoroughly
-- Understand inside jokes and culture
-- Identify what gets upvoted vs. downvoted
-- Learn the community's pain points
+### Algorithm & Ranking Intelligence
+- **Wilson Score Confidence Interval**: Reddit's "Best" sort favors HIGH UPVOTE RATIO over raw count. A 5/0 comment ranks higher than 100/50. Early accuracy matters more than volume.
+- **CQS (Contributor Quality Score)**: Hidden per-subreddit reputation. Built by: consistent posting, high upvote ratios, low report rate, following rules. Affects visibility of ALL your content in that sub.
+- **Hot Algorithm**: `score = log10(max(|ups - downs|, 1)) + sign * (date - epoch) / 45000`. First-hour upvotes are 10x more valuable than day-old upvotes.
 
-**Step 2: Provide Value (No Strings Attached)**
-- Answer questions with genuine expertise
-- Share knowledge freely
-- Help people solve problems
-- Be a contributing member, not a marketer
-- Build karma and reputation organically
+### Timing & Targeting
+- **Best posting time**: 6-9 AM EST weekdays (posts gain traction as US wakes up)
+- **Sweet spot subreddits**: 50K-500K members (enough eyeballs, less competition vs. 10M+ subs)
+- **Sort by Rising/New**: Be early on posts gaining momentum = top comment placement
+- **Target posts 30-60 min old** with early upvote momentum
 
-**Step 3: Be Human**
-- Use a personal account (with real history)
-- Share opinions and have conversations
-- Admit when you don't know something
-- Accept criticism gracefully
-- Be consistent in your participation
+### Anti-Shadowban Rules (CRITICAL)
+- **9:1 ratio**: For every self-promotional link, have 9+ genuine comments/posts
+- **Never post same link to 3+ subreddits** within 24hrs
+- **Don't delete and repost** the same content
+- **Vary your language** — don't copy-paste comments across subs
+- **Max 15-20 comments/day** for a growing account (avoid spam detection)
+- **Check shadowban status**: Visit reddit.com/user/prateek63 in incognito
 
-### What Brands Can Do on Reddit
+### Growth Phases
+| Phase | Target | Focus | Timeline |
+|-------|--------|-------|----------|
+| Foundation | 500 karma | Helpful comments only, build CQS in 5-7 subs | Weeks 1-4 |
+| Niche Authority | 2K karma | Start posting OC, reply to ALL comments on your posts | Months 2-3 |
+| Content Creation | 10K karma | Weekly posts, cross-sub reputation, start threads | Months 4-6 |
+| Platform Leverage | 25K+ karma | AMAs, profile optimization, cross-platform links | Month 6+ |
 
-**Acceptable:**
-- Host official AMAs (Ask Me Anything)
-- Respond to mentions authentically
-- Answer questions about your industry
-- Share genuinely useful resources
-- Participate as a human, not a logo
-- Run Reddit ads (clearly labeled)
+### Comment Strategy (Current Phase: Foundation)
+- **Two-Step Reply Pattern**: Reply to a top comment (not just top-level) to ride its visibility
+- **Be first with substance**: Sort by New, find rising posts, add genuinely useful comment
+- **Reply to replies**: When someone responds to you, ALWAYS reply back — threads build karma faster
+- **Experience-based comments win**: "I built X and learned Y" > "I think X because Y"
+- **Contrarian + evidence**: Disagreeing respectfully with data = high engagement
 
-**Unacceptable:**
-- Fake organic posts
-- Shilling products in comments
-- Vote manipulation
-- Paying for upvotes
-- Creating fake accounts to praise yourself
-- Ignoring community criticism
+### Profile Optimization
+- Bio: Clear, specific, no marketing language
+- Pinned post: Best performing OC post (once you have one)
+- Consistent username across platforms for cross-discovery
+- Comment history should show genuine expertise in 3-5 areas
+
+### Target Subreddits (Priority Order)
+| Subreddit | Members | Why | Prateek's Angle |
+|-----------|---------|-----|-----------------|
+| r/artificial | 500K+ | AI discussion hub | AI engineering experience |
+| r/startups | 1.2M | Startup community | Founding engineer stories |
+| r/SaaS | 100K+ | SaaS builders | Building SalesMonk |
+| r/ExperiencedDevs | 200K+ | Senior dev discussions | Engineering war stories |
+| r/Entrepreneur | 2M+ | Business builders | Startup journey |
+| r/IndianStartups | 50K+ | Indian startup scene | Indian founder perspective |
+| r/MachineLearning | 3M+ | ML/AI technical | Technical AI depth |
+| r/LocalLLaMA | 200K+ | Open source AI | Hands-on AI builder |
 
 ---
 
