@@ -11,7 +11,14 @@ cp -r personas/_template personas/yourname
 # 2. Fill in your details
 # Edit each file in personas/yourname/strategy/
 
-# 3. Start engaging
+# 3. Set up your browser profile (one-time)
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --remote-debugging-port=9222 \
+  --user-data-dir=$HOME/chrome-yourname \
+  --no-first-run --disable-infobars
+# Log into your X, LinkedIn, Reddit accounts manually — sessions persist
+
+# 4. Start engaging
 # The growth agent will use your persona files automatically
 ```
 

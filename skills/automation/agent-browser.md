@@ -121,11 +121,13 @@ Instagram uses sophisticated detection:
 
 ### Step 1: Launch Chrome with Stealth Flags
 
+**Each persona needs its own Chrome profile** so login sessions stay separate. Replace `PERSONA_NAME` with your persona folder name (e.g., `prateek`, `jane`).
+
 ```bash
 # macOS - Full anti-detection launch
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
   --remote-debugging-port=9222 \
-  --user-data-dir=/tmp/chrome-agent-profile \
+  --user-data-dir=$HOME/chrome-PERSONA_NAME \
   --disable-blink-features=AutomationControlled \
   --disable-features=IsolateOrigins,site-per-process \
   --disable-site-isolation-trials \
@@ -139,7 +141,7 @@ Instagram uses sophisticated detection:
 # Linux
 google-chrome \
   --remote-debugging-port=9222 \
-  --user-data-dir=/tmp/chrome-agent-profile \
+  --user-data-dir=$HOME/chrome-PERSONA_NAME \
   --disable-blink-features=AutomationControlled \
   --disable-features=IsolateOrigins,site-per-process \
   --no-first-run \
@@ -148,12 +150,14 @@ google-chrome \
 # Windows
 "C:\Program Files\Google\Chrome\Application\chrome.exe" ^
   --remote-debugging-port=9222 ^
-  --user-data-dir=C:\Temp\chrome-agent-profile ^
+  --user-data-dir=%USERPROFILE%\chrome-PERSONA_NAME ^
   --disable-blink-features=AutomationControlled ^
   --disable-features=IsolateOrigins,site-per-process ^
   --no-first-run ^
   --window-size=1920,1080
 ```
+
+**Important:** The `--user-data-dir` stores cookies and login sessions. Each persona must use a different directory (e.g., `~/chrome-prateek`, `~/chrome-jane`). After first launch, log into your social accounts manually — sessions persist across restarts.
 
 ### Key Anti-Detection Flags Explained
 
