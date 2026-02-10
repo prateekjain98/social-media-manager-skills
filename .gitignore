@@ -3,6 +3,7 @@
 credentials.md
 *credentials*.md
 !.credentials.example.md
+personas/*/credentials.md
 
 # Auth state files
 *.auth.json

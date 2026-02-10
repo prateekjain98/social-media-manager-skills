@@ -1,6 +1,6 @@
 # Skills — Reusable Tools & Templates
 
-Generic skill templates invoked during sessions. For Prateek's active strategy, see `../strategy/`.
+Generic skill templates invoked during sessions. For persona-specific strategy, see `../personas/[name]/strategy/`.
 
 **All skills reference `../strategy/_core-principles.md` for human-authenticity rules.**
 
