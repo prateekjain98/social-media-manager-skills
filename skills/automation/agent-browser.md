@@ -1,6 +1,6 @@
 # Agent Browser Connection
 
-Connect to a browser instance for automated social media interactions using Chrome DevTools Protocol (CDP) while evading bot detection.
+Connect to a browser instance for automated social media interactions using Chrome DevTools Protocol (CDP) or Safari via AppleScript while evading bot detection. Supports both Chrome and Safari on macOS.
 
 ## Skill: `/agent-browser`
 
@@ -17,7 +17,24 @@ Manual social media tasks are time-consuming. Agent browser allows you to:
 - **Monitor conversations** in real-time
 - **Execute outreach** at scale
 
-The key: **Native Chrome with proper anti-detection flags** minimizes automation fingerprints.
+The key: **Native Chrome with proper anti-detection flags** or **Real Safari via AppleScript** minimizes automation fingerprints.
+
+### Browser Choice: Chrome vs Safari
+
+| Factor | Chrome (CDP) | Safari (AppleScript) |
+|--------|-------------|---------------------|
+| Stealth ecosystem | Mature (many stealth tools) | Not needed (real browser, zero automation markers) |
+| Bot detection focus | Heavily targeted (~95% of bots use Chrome) | Rarely targeted (low bot traffic) |
+| CDP detection risk | High (Runtime.enable leaks) | None (no CDP — uses native macOS AppleScript) |
+| `navigator.webdriver` | `true` (must bypass with flags) | `false` by default (real Safari, no bypass needed) |
+| Headless mode | Yes | No (requires display) |
+| Concurrent sessions | Multiple | Single window (multiple tabs) |
+| Fingerprint authenticity | Spoofed Chrome profile | Genuine WebKit/macOS fingerprint |
+| Session persistence | Via `--user-data-dir` | Real Safari profile (cookies, history — already there) |
+| Platform | macOS, Linux, Windows | macOS only |
+| Best for | High-volume, multi-platform | Maximum stealth on macOS |
+
+**Recommendation**: Use Chrome for high-volume automation or cross-platform. Use Safari when you need maximum stealth — it uses your real browser with real cookies, `navigator.webdriver=false`, no CDP artifacts, and a genuine WebKit fingerprint that bot detectors rarely target.
 
 ---
 
@@ -119,7 +136,16 @@ Instagram uses sophisticated detection:
 
 ## Anti-Detection Setup
 
-### Step 1: Launch Chrome with Stealth Flags
+### Choose Your Browser
+
+- **Chrome** (default): Best for most automation tasks. Full agent-browser CLI support with CDP. Cross-platform.
+- **Safari** (macOS): Maximum stealth. Real Safari.app controlled via AppleScript — your actual browser, real cookies, `navigator.webdriver=false`, zero automation markers.
+
+---
+
+### Option A: Chrome Setup
+
+#### Step 1: Launch Chrome with Stealth Flags
 
 **Each persona needs its own Chrome profile** so login sessions stay separate. Replace `PERSONA_NAME` with your persona folder name (e.g., `prateek`, `jane`).
 
@@ -169,7 +195,7 @@ google-chrome \
 | `--disable-infobars` | Removes "Chrome is being controlled" bar |
 | `--window-size=1920,1080` | Normal screen resolution |
 
-### Step 2: Verify Stealth
+#### Step 2: Verify Chrome Stealth
 
 After launching, check your fingerprint:
 
@@ -187,14 +213,14 @@ Look for:
 - Plugins list should show PDF viewer, etc.
 - WebGL should show real GPU info
 
-### Step 3: Authenticate Manually
+#### Step 3: Authenticate Manually (Chrome)
 
 1. Navigate to your target platform in the Chrome window
 2. Log in with real credentials
 3. Complete 2FA if prompted
 4. Your authenticated session is now usable
 
-### Step 4: Connect Agent Browser
+#### Step 4: Connect Agent Browser (Chrome)
 
 ```bash
 # Verify connection
@@ -202,6 +228,104 @@ agent-browser --cdp 9222 snapshot
 
 # If successful, you'll see the page DOM structure
 ```
+
+---
+
+### Option B: Safari Setup (macOS Only)
+
+Safari automation uses **AppleScript + JavaScript injection** to control the real Safari.app. This is the stealthiest approach — it uses your actual browser with real cookies, real profile, and zero automation markers.
+
+**Why AppleScript over safaridriver/Playwright WebKit?**
+- **safaridriver** creates isolated automation windows (orange bar, no cookies, `navigator.webdriver=true`)
+- **Playwright WebKit** runs a sandboxed test browser, not real Safari
+- **AppleScript** controls the actual Safari.app — real profile, real cookies, `navigator.webdriver=false`
+
+#### Step 1: One-Time Setup (GUI)
+
+Enable two settings in Safari (only needed once):
+
+1. **Safari > Settings > Advanced** → check **"Show features for web developers"**
+2. **Safari > Settings > Developer** → check **"Allow JavaScript from Apple Events"**
+
+No CLI flags, no safaridriver, no npm packages needed.
+
+#### Step 2: Open Safari
+
+```bash
+# Open Safari and navigate to a URL
+osascript -e 'tell application "Safari" to activate' \
+  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
+```
+
+Your real Safari opens with your real profile — if you're already logged into X, you're already authenticated.
+
+#### Step 3: Verify Connection
+
+```bash
+# Get current URL
+osascript -e 'tell application "Safari" to get URL of current tab of window 1'
+
+# Get page title
+osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
+
+# Verify no automation markers
+osascript -e 'tell application "Safari" to do JavaScript "navigator.webdriver" in current tab of window 1'
+# → Returns "false" (real Safari, not automated)
+```
+
+#### Step 4: Authenticate (if needed)
+
+If not already logged in, log in manually in the Safari window. Since this is your real Safari profile, cookies persist naturally — no special profile directories needed.
+
+#### Safari AppleScript Command Reference
+
+```bash
+# Navigation
+osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com"'
+osascript -e 'tell application "Safari" to do JavaScript "history.back()" in current tab of window 1'
+
+# Get page info
+osascript -e 'tell application "Safari" to get URL of current tab of window 1'
+osascript -e 'tell application "Safari" to get name of current tab of window 1'
+osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
+
+# Execute JavaScript (click, fill, scroll, extract)
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=loginButton]\").click()" in current tab of window 1'
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"input[name=text]\").value = \"search query\"" in current tab of window 1'
+osascript -e 'tell application "Safari" to do JavaScript "window.scrollBy(0, 500)" in current tab of window 1'
+
+# Extract text content
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"article\").textContent" in current tab of window 1'
+
+# Tab management
+osascript -e 'tell application "Safari" to make new tab in window 1 with properties {URL:"https://x.com"}'
+osascript -e 'tell application "Safari" to get number of tabs of window 1'
+osascript -e 'tell application "Safari" to set current tab of window 1 to tab 2 of window 1'
+osascript -e 'tell application "Safari" to close tab 2 of window 1'
+```
+
+#### Safari Detection Characteristics
+
+| Attribute | Real Safari (AppleScript) | Stealth Impact |
+|-----------|--------------------------|----------------|
+| `navigator.webdriver` | `false` (not automated from browser's perspective) | Best possible — identical to manual browsing |
+| Automation markers | None — AppleScript is external to the browser | Invisible to websites |
+| CDP artifacts | None — no CDP protocol involved | Invisible to CDP detection |
+| Browser fingerprint | Genuine WebKit/macOS canvas, WebGL, fonts | Perfect — real browser on real hardware |
+| Cookies & sessions | Real Safari profile (persistent) | Perfect — uses existing login sessions |
+| Orange address bar | No — only safaridriver shows this | No visual indicators |
+
+#### Safari Anti-Detection Tips
+
+1. **Already logged in?** You're done — AppleScript uses your real Safari with existing cookies. No need to re-authenticate.
+
+2. **No `navigator.webdriver` bypass needed** — real Safari controlled via AppleScript reports `false` by default. Websites cannot detect AppleScript control.
+
+3. **Fingerprint is genuine** — Safari on macOS produces a naturally consistent fingerprint (OS fonts, Metal GPU rendering, screen metrics). No spoofing needed.
+
+4. **Add human delays between actions** — even though Safari can't detect you're automated, the platform's server-side analysis still watches for inhuman speed. Use the same timing guidelines as Chrome.
+
+5. **Multiple tabs instead of multiple windows** — Safari supports multiple tabs in one window. Use tabs for multi-page workflows.
 
 ---
 
@@ -310,6 +434,8 @@ REALISTIC SESSION PATTERN:
 
 ## Installation
 
+### Chrome + agent-browser (Default)
+
 ```bash
 # NPM (Recommended)
 npm install -g agent-browser
@@ -317,6 +443,21 @@ agent-browser install  # Download Chromium
 
 # Linux dependencies
 agent-browser install --with-deps
+```
+
+### Safari (macOS Only — No Install Needed)
+
+Safari is already installed on macOS. Just enable two settings once:
+
+1. **Safari > Settings > Advanced** → check **"Show features for web developers"**
+2. **Safari > Settings > Developer** → check **"Allow JavaScript from Apple Events"**
+
+```bash
+# Verify it works
+osascript -e 'tell application "Safari" to activate' \
+  -e 'tell application "Safari" to make new document with properties {URL:"https://example.com"}'
+sleep 2
+osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
 ```
 
 ---
@@ -579,7 +720,9 @@ agent-browser -p ios swipe up      # Swipe gesture
 
 ## Core Workflow Pattern
 
-The fundamental workflow for AI agents:
+### Chrome Workflow (CDP)
+
+The fundamental workflow for AI agents using Chrome:
 
 ```bash
 # 1. Navigate
@@ -599,6 +742,49 @@ agent-browser --cdp 9222 snapshot -i
 ```
 
 **Important**: Refs (`@e1`, `@e2`) are invalidated when the page changes. Always re-snapshot after navigation or clicks that load new content.
+
+### Safari Workflow (AppleScript)
+
+The workflow for Safari uses AppleScript to control the real Safari.app:
+
+```bash
+# 1. Open Safari to target URL
+osascript -e 'tell application "Safari" to activate' \
+  -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com"'
+
+# 2. Wait for page load (human reading time)
+sleep 4
+
+# 3. Get page title (verify loaded)
+osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
+
+# 4. Interact using JavaScript injection
+# Click search
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=SearchBox_Search_Input]\").focus()" in current tab of window 1'
+
+# Type search query
+osascript -e 'tell application "Safari" to do JavaScript "
+  var input = document.querySelector(\"[data-testid=SearchBox_Search_Input]\");
+  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, \"value\").set;
+  nativeInputValueSetter.call(input, \"search query\");
+  input.dispatchEvent(new Event(\"input\", { bubbles: true }));
+" in current tab of window 1'
+
+# Press Enter
+osascript -e 'tell application "Safari" to do JavaScript "
+  document.querySelector(\"[data-testid=SearchBox_Search_Input]\").dispatchEvent(new KeyboardEvent(\"keydown\", {key: \"Enter\", code: \"Enter\", bubbles: true}))
+" in current tab of window 1'
+
+# 5. Wait for results
+sleep 3
+
+# 6. Extract content
+osascript -e 'tell application "Safari" to do JavaScript "
+  JSON.stringify(Array.from(document.querySelectorAll(\"[data-testid=tweet]\")).slice(0,5).map(el => el.querySelector(\"[data-testid=tweetText]\")?.textContent))
+" in current tab of window 1'
+```
+
+**Key difference from Chrome**: No refs (`@e1`) system — use CSS selectors and `data-testid` attributes via JavaScript injection. Use browser DevTools (Develop > Show Web Inspector) to inspect elements and find selectors.
 
 ---
 
@@ -769,7 +955,9 @@ Best practice:
 
 ## Workflow: Full Lead Generation Cycle
 
-### Step 1: Setup Stealth Session
+### Chrome Workflow
+
+#### Step 1: Setup Stealth Session
 ```bash
 # Launch Chrome with anti-detection flags
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
@@ -780,18 +968,18 @@ Best practice:
   --window-size=1920,1080
 ```
 
-### Step 2: Verify Fingerprint
+#### Step 2: Verify Fingerprint
 ```bash
 # Check you're not detected
 agent-browser --cdp 9222 open "https://bot.sannysoft.com"
 ```
 
-### Step 3: Authenticate (Manual)
+#### Step 3: Authenticate (Manual)
 - Log into X, LinkedIn, etc. in the Chrome window
 - Complete any verification
 - Browse naturally for 1-2 minutes
 
-### Step 4: Search for Leads
+#### Step 4: Search for Leads
 ```bash
 # Find people requesting services
 agent-browser --cdp 9222 open "https://x.com/search?q=%22need%20a%20website%22&f=live"
@@ -800,14 +988,14 @@ agent-browser --cdp 9222 open "https://x.com/search?q=%22need%20a%20website%22&f
 agent-browser --cdp 9222 snapshot
 ```
 
-### Step 5: Analyze & Qualify
+#### Step 5: Analyze & Qualify
 Review snapshot output for:
 - Post content (what they need)
 - Engagement (replies, likes, views)
 - Recency (when posted)
 - Profile info (legit potential client?)
 
-### Step 6: Engage (With Delays)
+#### Step 6: Engage (With Delays)
 ```bash
 # Follow promising leads (30-90 sec between follows)
 agent-browser --cdp 9222 open "https://x.com/leadusername"
@@ -821,12 +1009,77 @@ agent-browser --cdp 9222 open "https://x.com/leadusername"
 # Wait 2-5 minutes between replies
 ```
 
-### Step 7: Track Results
+#### Step 7: Track Results
 Keep a spreadsheet of:
 - Leads found
 - Actions taken
 - Responses received
 - Conversions
+
+### Safari Workflow (AppleScript)
+
+#### Step 1: Open Safari
+```bash
+# Open Safari to X (uses your real profile — already logged in if you've logged in before)
+osascript -e 'tell application "Safari" to activate' \
+  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
+```
+
+#### Step 2: Verify Fingerprint
+```bash
+# Navigate to fingerprint test
+osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://bot.sannysoft.com"'
+
+# Check navigator.webdriver (should be "false")
+sleep 3 && osascript -e 'tell application "Safari" to do JavaScript "navigator.webdriver" in current tab of window 1'
+```
+
+#### Step 3: Search for Leads
+```bash
+# Navigate to X search
+osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com/search?q=%22need%20a%20website%22&f=live"'
+
+# Wait 3-5 seconds (human reading time)
+sleep 4
+
+# Extract top tweet texts
+osascript -e 'tell application "Safari" to do JavaScript "
+  JSON.stringify(Array.from(document.querySelectorAll(\"[data-testid=tweet]\")).slice(0,10).map(el => ({
+    text: el.querySelector(\"[data-testid=tweetText]\")?.textContent,
+    user: el.querySelector(\"a[role=link][href^=/]\")?.getAttribute(\"href\")
+  })))
+" in current tab of window 1'
+```
+
+#### Step 4: Analyze & Qualify
+Review extracted content for:
+- Post content (what they need)
+- User profiles (legit potential client?)
+- Recency (when posted)
+
+#### Step 5: Engage (With Delays)
+```bash
+# Navigate to a lead's profile (30-90 sec between follows)
+osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com/leadusername"'
+sleep 3
+
+# Click follow button
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=followButton]\")?.click()" in current tab of window 1'
+
+# Wait 30-90 seconds before next follow
+sleep 45
+
+# Like a post (scroll into view first, then click)
+osascript -e 'tell application "Safari" to do JavaScript "window.scrollBy(0, 300)" in current tab of window 1'
+sleep 2
+osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=like]\")?.click()" in current tab of window 1'
+
+# Wait 10-30 seconds before next like
+sleep 15
+```
+
+#### Step 6: Track Results
+Same as Chrome — keep a spreadsheet of leads, actions, responses, conversions.
 
 ---
 
@@ -838,10 +1091,11 @@ When invoked, provide browser automation guidance:
 AGENT BROWSER SETUP
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
+BROWSER: [Chrome (CDP) | Safari (AppleScript)]
 TASK: [What you want to accomplish]
 
 SETUP COMMANDS:
-[Chrome launch command with anti-detection flags]
+[Chrome launch command OR Safari AppleScript open]
 
 FINGERPRINT CHECK:
 [Verify stealth at bot.sannysoft.com]
@@ -891,19 +1145,53 @@ rm -rf /tmp/chrome-agent-profile
 - Use different user-data-dir for fresh fingerprint
 - Check your IP isn't flagged
 
-### Detected as Bot
+### Detected as Bot (Chrome)
 - Verify fingerprint at bot.sannysoft.com
 - Ensure `--disable-blink-features=AutomationControlled` is set
 - Check `navigator.webdriver` returns `undefined`
 - Slow down significantly
 - Add more human-like timing variance
+- **Consider switching to Safari** — different browser fingerprint may bypass Chrome-specific detection
+
+### Safari: "Allow JavaScript from Apple Events" Error
+```bash
+# Error: "You must enable 'Allow JavaScript from Apple Events'"
+# Fix: Enable via Safari GUI (cannot be set via command line on modern macOS)
+#   1. Safari > Settings > Advanced > check "Show features for web developers"
+#   2. Safari > Settings > Developer > check "Allow JavaScript from Apple Events"
+#   3. Restart Safari after enabling
+
+# Verify it works
+osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
+```
+
+### Safari: JavaScript Returns Empty/Undefined
+- Page may not be fully loaded — add `sleep 3-5` before running JavaScript
+- Element may not exist — check the CSS selector in Safari's Web Inspector (Develop > Show Web Inspector)
+- Special characters in selectors need escaping: use `\"` inside AppleScript strings
+
+### Safari: Navigation Not Working
+```bash
+# Make sure Safari is open with at least one window
+osascript -e 'tell application "Safari" to activate' \
+  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
+
+# If window exists but tab is wrong, target specific tab
+osascript -e 'tell application "Safari" to set URL of tab 1 of window 1 to "https://x.com"'
+```
+
+### Safari: AppleScript Permission Denied
+- Go to **System Settings > Privacy & Security > Automation**
+- Ensure your terminal app (Terminal.app, iTerm2, etc.) has permission to control Safari
+- You may need to re-grant permission after macOS updates
 
 ---
 
 ## Security Notes
 
-- **Never share your user-data-dir** - contains session cookies
-- **Use separate profiles** for automation vs. personal browsing
+- **Never share your user-data-dir** (Chrome) — contains session cookies
+- **Safari uses your real profile** — be aware that automation runs in the same context as your personal browsing
+- **Use separate macOS user accounts** if you need isolated Safari profiles for different personas
 - **Monitor for unusual activity** on your accounts
 - **Have backup accounts** in case of suspension
 - **Don't automate policy-violating actions**
@@ -918,6 +1206,12 @@ rm -rf /tmp/chrome-agent-profile
 - [agent-browser GitHub](https://github.com/vercel-labs/agent-browser) - Official repository
 - [agent-browser.dev](https://agent-browser.dev/) - Official website
 - [SKILL.md](https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md) - Official skill documentation
+
+### Safari & AppleScript
+- [Safari AppleScript Dictionary](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/) - Apple's AppleScript language guide
+- [Automating Safari with AppleScript](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/) - Mac Automation Scripting Guide
+- [About WebDriver for Safari](https://developer.apple.com/documentation/webkit/about-webdriver-for-safari) - Apple developer docs (safaridriver reference)
+- [Enabling Remote Automation in Safari 14+](https://blog.bytesguy.com/enabling-remote-automation-in-safari-14) - CLI removal workarounds
 
 ### Anti-Detection Research
 - [Bot Detection Methods](https://fingerprint.com/blog/bot-detection/)
