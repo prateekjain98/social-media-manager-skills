@@ -1,6 +1,15 @@
 # Social Media Metrics Tracker
 
-Track all engagement activity for @Prateek9jain8.
+Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), u/prateek63 (Reddit).
+
+**Current Stats (Feb 11, 2026):**
+| Platform | Followers | Following | Notes |
+|----------|-----------|-----------|-------|
+| X | ~30 | ~117 | **Premium activated Feb 11** |
+| LinkedIn | ~8,500 | 500+ | Strong existing audience |
+| Reddit | u/prateek63 | — | 5 karma, 4yr account |
+
+**X Premium:** Activated Feb 11, 2026
 
 ---
 
@@ -169,6 +178,9 @@ Track all engagement activity for @Prateek9jain8.
 |------|---------|----------------|---------|-------|-------|
 | 2026-02-06 | 49 | 3 (+1 QT) | 20 | ~55 | Morning: 13 replies (AI Expert positioning). Afternoon: 8 viral replies. Evening: 16 viral replies. Late night: 12 more (notifications + viral hunting). TOTAL: 49 replies |
 | 2026-02-07 | 7 | 0 | 0 | 0 | Diversified engagement: security, OSS, dev humor, platform accessibility, Linux. Content Review Gate applied. Sustainable pace. |
+| 2026-02-09 | ~15 | 0 | 0 | ~20 | Strategy v3 finalized. Multi-domain persona defined. Deep research completed. |
+| 2026-02-10 | ~20 | 0 | 0 | ~15 | Multi-platform: X replies + LinkedIn comments + Reddit comments. Cross-domain focus. |
+| 2026-02-11 | 22 | 0 | 0 | ~20 | 22 X replies (humor/culture/sports/tech), 2 LinkedIn comments, 3 Reddit comments. **Premium activated.** |
 
 ---
 
@@ -177,6 +189,7 @@ Track all engagement activity for @Prateek9jain8.
 | Week | Replies | Posts | Follows | Likes | Follower Growth |
 |------|---------|-------|---------|-------|-----------------|
 | 2026-W06 | 56 | 3 (+1 QT) | 20 | ~55 | +6 followers (19→25) |
+| 2026-W07 | ~57 | 0 | 0 | ~55 | +~5 followers (25→~30). Multi-platform expansion (LinkedIn, Reddit). Premium activated. |
 
 ---
 
@@ -188,6 +201,8 @@ Track all engagement activity for @Prateek9jain8.
 | 2026-02-06 (After Session 1) | 115 | 19 | 63 |
 | 2026-02-06 (After Session 2) | 115 | 21 | 102 |
 | 2026-02-07 (Morning) | 115 | 25 | 114 |
+| 2026-02-09 | ~117 | ~26 | ~130 |
+| 2026-02-11 (Premium activated) | ~117 | ~30 | ~175 |
 
 ---
 
@@ -339,3 +354,37 @@ Track all engagement activity for @Prateek9jain8.
 - Slowed pace significantly: 7 replies today vs 49 yesterday — much more sustainable
 - Strong content diversification: only 1/7 replies was AI-specific
 - Being EARLY on @emollick post (25 min old) = higher chance of top reply placement
+
+### Sessions: 2026-02-09 to 2026-02-11 — Multi-Platform Expansion + Premium
+
+**Platforms:** X + LinkedIn + Reddit
+**Milestone:** X Premium activated Feb 11, 2026
+
+**Feb 11 X Engagement (22 replies):**
+- Targeted posts ranging from 7.8K to 160.9K likes
+- Topics: luge prodigy, Starbucks CEO, coffee straws, email humor, Japanese American, transit, tech future, VHS footage, Vegas gold ATM, PhD humanities, Bad Bunny, UK rain, Norwegian biathlete, rap, Discord age verification, French grammar, Inter Milan AI video, Guy Fieri
+- Full cross-domain spread: humor, sports, culture, language, food, current events
+
+**LinkedIn (2 comments):**
+- Chip Huyen: AI repo tracker (3,863 reactions)
+- Gabor Cselle: Back at Google (218 reactions)
+
+**Reddit (3 comments):**
+- r/ClaudeAI: API key theft (204 comments)
+- r/singularity: Ghidra AI agents (25 comments)
+- r/LocalLLaMA: HuggingFace Anthropic teaser (200 comments)
+
+---
+
+## Key Learnings (Cumulative)
+
+| Learning | Evidence | Action |
+|----------|----------|--------|
+| Humor >> Insight | Super Bowl humor = 65+ likes vs tech replies = 0-3 likes | Lead with humor, especially on non-AI posts |
+| Cross-domain >> Niche | Non-AI replies outperform by 20x | 60%+ of replies should be non-AI |
+| Bigger parent = bigger payoff | 155K-view parent → 65 likes vs 70K → 0-1 likes | Target posts with 5K+ likes |
+| Original posts need Premium | 0 likes on all 6 original posts pre-Premium | ✅ Premium now active — start posting originals |
+| Short replies win on X | 1-2 sentences get more engagement | Keep replies punchy |
+| LinkedIn comments: short too | Long comments flagged as AI-generated | 2-3 sentences max |
+| High likes:replies ratio = gold | Posts with 30K+ likes and <100 replies = best real estate | Prioritize this metric when choosing posts |
+| Reply-backs build loyalty | @saen_dev, @jontec8, @derrickcchoi conversations | Always reply to people who engage with you |

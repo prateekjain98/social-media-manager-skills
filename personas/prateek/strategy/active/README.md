@@ -2,6 +2,7 @@
 
 **Active from:** Feb 9, 2026
 **Supersedes:** v2 in `strategy/archive/v2-multi-domain/`
+**X Premium:** Active (Feb 11, 2026)
 
 ## What Changed and Why
 
@@ -24,7 +25,7 @@
 - **Controversy Sweet Spot:** "Interestingly wrong to 30% of audience"
 - **News & Tools Stack:** 4-tier monitoring, trend decision framework, analytics cadence
 - **Growth Benchmarks:** Stage-based targets with realistic timelines
-- **X Premium ROI:** Quantified boost (2-4x reply visibility)
+- **X Premium:** Activated Feb 11 — 2-4x reply visibility, original posts now distributed
 
 ### Research Basis
 Deep research across 4 domains:
@@ -38,7 +39,7 @@ Deep research across 4 domains:
 | File | Purpose | Size |
 |------|---------|------|
 | `_growth-algorithm.md` | Daily execution algorithm, X algorithm intelligence, timing, reply patterns, content formats, thread strategy, profile optimization, growth benchmarks | 38K |
-| `_persona.md` | Identity, content pillars, voice, humor, emotional triggers, cognitive biases, story structures, parasocial connection science | 22K |
+| `_persona.md` | Identity (v3), content pillars, voice, humor, emotional triggers, cognitive biases, story structures, parasocial connection science | 22K |
 | `_news-and-tools.md` | 4-tier news sources, key accounts, trend decision framework, analytics tools, automation matrix | 7K |
 
 ## Shared Files (version-independent)

@@ -1,18 +1,19 @@
-# Persona: Prateek Jain — v2 (Multi-Domain)
+# Persona: Prateek Jain — v3 (Research-Backed Multi-Domain)
 
-> **Active from:** Feb 9, 2026
+> **Active from:** Feb 9, 2026 (v3 update)
 > **Core shift:** From "AI Expert" → "Interesting builder who happens to do AI"
 > **Based on:** Analysis of Elon Musk, Naval Ravikant, Sahil Bloom, Alex Hormozi, Pieter Levels, Guillermo Rauch, Dan Koe growth patterns
+> **X Premium:** Active (Feb 11, 2026)
 
 ---
 
 ## Core Identity
 
 **Name:** Prateek Jain
-**Handle:** @Prateek9jain8 (X) | prateekjain98 (LinkedIn)
+**Handle:** @Prateek9jain8 (X) | prateekjain98 (LinkedIn) | u/prateek63 (Reddit)
 **Location:** Gurugram, India
 
-**X Bio:** Founding AI Engineer @ SalesMonk.ai | built stuff at Swiggy, EvolvFit | BITS Pilani | building in public from Gurugram
+**X Bio:** Building AI agents that sell @ SalesMonk | ex-CTO EvolvFit | BITS Pilani | I tweet about shipping AI, career zigzags, and what breaks in production
 
 **Positioning Goal:** An interesting, opinionated builder people want to follow — not just respect from a distance
 
@@ -448,8 +449,9 @@ AVOID ZONE: Contentment (lower-right)
 
 | Platform | Followers | Following | Notes |
 |----------|-----------|-----------|-------|
-| LinkedIn | 8,517 | 500+ | Strong existing audience |
-| X | ~19 | ~115 | Growing — focus platform |
+| LinkedIn | ~8,500 | 500+ | Strong existing audience |
+| X | ~30 | ~117 | Growing — focus platform. **Premium active** (Feb 11) |
+| Reddit | u/prateek63 | — | 5 karma, 4yr account. AI/tech subreddits |
 
 ---
 
