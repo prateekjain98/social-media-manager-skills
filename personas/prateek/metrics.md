@@ -2,12 +2,12 @@
 
 Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), u/prateek63 (Reddit).
 
-**Current Stats (Feb 11, 2026):**
+**Current Stats (Feb 11, 2026 — updated PM):**
 | Platform | Followers | Following | Notes |
 |----------|-----------|-----------|-------|
-| X | ~30 | ~117 | **Premium activated Feb 11** |
-| LinkedIn | ~8,500 | 500+ | Strong existing audience |
-| Reddit | u/prateek63 | — | 5 karma, 4yr account |
+| X | 33 | 119 | **Premium activated Feb 11** |
+| LinkedIn | ~8,500 | 500+ | 43 profile views, 1,272 SalesMonk searches/week |
+| Reddit | u/prateek63 | — | **32 karma** (up from 5), 4yr account |
 
 **X Premium:** Activated Feb 11, 2026
 
@@ -117,11 +117,16 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 
 ## Original Posts
 
-| Time | Content | Engagement |
-|------|---------|------------|
-| 09:45 | "hot take: the model doesn't matter anymore for most agent tasks\n\ngpt-5.3-codex vs opus 4.6 vs whatever\n\nwhat matters: prompt design, tool orchestration, and actually shipping\n\nshipping beats benchmarking every time" | Pending |
-| 10:38 | "unpopular opinion: the hardest part of building AI agents isn't the AI\n\nit's error recovery\n\nyour agent will fail. the question is whether it fails gracefully or burns the whole workflow\n\nwe learned this after our sales agent booked the same meeting 4 times" | Pending |
-| 18:40 | "opus 4.6 and gpt-5.3-codex dropped on the same day\n\nanthropic: here's 16 agents building a C compiler\nopenai: here's a model that hacks its own test app\n\nmeanwhile i'm using both to build sales agents that book meetings\n\nwe are not the same (we are all just building agents)" | Pending |
+| Date | Time | Platform | Content | Image | Engagement |
+|------|------|----------|---------|-------|------------|
+| Feb 6 | 09:45 | X | "hot take: the model doesn't matter anymore for most agent tasks..." | None | Pending |
+| Feb 6 | 10:38 | X | "unpopular opinion: the hardest part of building AI agents isn't the AI..." | None | Pending |
+| Feb 6 | 18:40 | X | "opus 4.6 and gpt-5.3-codex dropped on the same day..." | None | Pending |
+| Feb 11 | PM | X | AI Agent Breakdown — "Built AI agents for 2 years. The model? Maybe 10% of the work..." | Horizontal bar chart (ai_agent_breakdown.png) | 9 views (fresh) |
+| Feb 11 | PM | X | AA Crisis — "28,000 American Airlines flight attendants voted no confidence..." + CBS source | Bold typographic poster (aa_automation_crisis.png) | 8 views (fresh) |
+| Feb 11 | PM | LinkedIn | AI Agent Breakdown — "Spent 2 years building AI sales agents..." | Horizontal bar chart | 3 reactions (fresh) |
+| Feb 11 | PM | LinkedIn | AA Crisis — scheduled 6:30 PM | Bold typographic poster | Scheduled |
+| Feb 11 | PM | Reddit | Comment on r/americanairlines AA thread — AI operations angle | None | Posted |
 
 ## Quote Tweets
 
@@ -180,7 +185,7 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 | 2026-02-07 | 7 | 0 | 0 | 0 | Diversified engagement: security, OSS, dev humor, platform accessibility, Linux. Content Review Gate applied. Sustainable pace. |
 | 2026-02-09 | ~15 | 0 | 0 | ~20 | Strategy v3 finalized. Multi-domain persona defined. Deep research completed. |
 | 2026-02-10 | ~20 | 0 | 0 | ~15 | Multi-platform: X replies + LinkedIn comments + Reddit comments. Cross-domain focus. |
-| 2026-02-11 | 22 | 0 | 0 | ~20 | 22 X replies (humor/culture/sports/tech), 2 LinkedIn comments, 3 Reddit comments. **Premium activated.** |
+| 2026-02-11 | 22 | 5 (2 X + 2 LI + 1 Reddit) | 0 | ~20 | 22 X replies, 2 LI comments, 3 Reddit comments. **Premium activated.** 2 original X posts (w/ images), 1 LI post, 1 LI scheduled, 1 Reddit comment. |
 
 ---
 
@@ -189,7 +194,7 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 | Week | Replies | Posts | Follows | Likes | Follower Growth |
 |------|---------|-------|---------|-------|-----------------|
 | 2026-W06 | 56 | 3 (+1 QT) | 20 | ~55 | +6 followers (19→25) |
-| 2026-W07 | ~57 | 0 | 0 | ~55 | +~5 followers (25→~30). Multi-platform expansion (LinkedIn, Reddit). Premium activated. |
+| 2026-W07 | ~57 | 5 (2 X + 2 LI + 1 Reddit) | 0 | ~55 | +8 followers (25→33). Multi-platform expansion (LinkedIn, Reddit). Premium activated. First original posts with custom images. |
 
 ---
 
@@ -203,6 +208,7 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 | 2026-02-07 (Morning) | 115 | 25 | 114 |
 | 2026-02-09 | ~117 | ~26 | ~130 |
 | 2026-02-11 (Premium activated) | ~117 | ~30 | ~175 |
+| 2026-02-11 (PM, after posts) | 119 | 33 | ~180 |
 
 ---
 
@@ -234,6 +240,7 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 |------|---------------|---------------|-------------|---------------|------------------|
 | 2026-02-06 | - | +2 (19→21) | 4 liked | 5 replied | ~56 views on original posts |
 | 2026-02-07 | - | +4 (21→25) | @martin_casado (a16z!) liked + others | @saen_dev conversation | - |
+| 2026-02-11 | 43 (LinkedIn) | +3 (30→33) | **48** (top reply!), 27, 20, 18, 12, 8, 6, 5, 4, 2, 1 = **151 total reply likes** + 1 repost | Multiple engagements | X posts: 8+9 views (fresh). LI: 3 reactions (fresh). LI older: 21 reactions + 8 comments (LeetCode), 14 (vibe coding), 7 (CTO→engineer) |
 
 ---
 
@@ -373,6 +380,64 @@ Track all engagement activity for @Prateek9jain8 (X), prateekjain98 (LinkedIn), 
 - r/ClaudeAI: API key theft (204 comments)
 - r/singularity: Ghidra AI agents (25 comments)
 - r/LocalLLaMA: HuggingFace Anthropic teaser (200 comments)
+
+### Session: 2026-02-11 (PM) — First Original Posts with Images
+
+**Duration:** ~90 min
+**Platforms:** X + LinkedIn + Reddit
+**Focus:** Original content creation with custom Pillow-generated images
+
+**Content Published:**
+1. **AI Agent Time Breakdown** (X + LinkedIn) — Horizontal bar chart showing where time goes building AI agents (Error handling 25%, API integrations 22%, Edge cases 18%, Monitoring 15%, Prompt engineering 10%). Posted with custom image.
+2. **American Airlines Crisis** (X + LinkedIn scheduled + Reddit) — 28,000 flight attendants voted no confidence, framed as automation problems solvable by AI agents. Bold typographic poster image (navy-to-crimson gradient, giant "28,000" hero number). CBS News source cited.
+3. **Reddit comment** on r/americanairlines AA thread — AI operations angle
+
+**Image Styles Created:**
+- Dark horizontal bar chart (GitHub Dark palette) for AI agent breakdown
+- Bold typographic poster with gradient background for AA crisis — creative departure from standard infographics
+
+**X Reply Engagement (notifications checked):**
+- TOP REPLY: 48 likes ("that man has been waiting years for someone to ask that question")
+- 27 likes ("man accidentally proved the thesis of his own tweet")
+- 20 likes ("AI hasn't taken your job yet but it has taken your username prefix")
+- 18 likes ("doom ran a 3D engine in 40k lines. AI-generated PR: 4k lines for a settings page")
+- 12 likes ("absorbed the culture so completely")
+- 8 likes ("software engineers mass automate themselves out of a job")
+- 6 likes ("corporate theater requires an ensemble cast")
+- 5 likes ("relating through shared experience")
+- 4 likes ("talent pipeline for luge is literally just vibes")
+- 1 repost ("Discord face scan")
+- **Total: ~151 reply likes + 1 repost from earlier Feb 11 replies**
+
+**LinkedIn Notifications:**
+- AI Agent Breakdown: 3 reactions (fresh, 39 min)
+- CTO to founding engineer: 7 reactions
+- AI outcoding LeetCode: 21 reactions, 8 comments (best performing)
+- Vibe coding: 14 reactions
+- 43 profile viewers
+- SalesMonk.ai: 1,272 searches this week
+- Shashank Agarwal liked comment (Dec Sync format)
+
+**Reddit Engagement:**
+- Karma: 5 → **32** (+27, 540% increase!)
+- 10 upvotes on r/LocalLLaMA comment (HuggingFace Anthropic teaser)
+- u/DistributionRight222 replied in r/ClaudeAI ("How does that work for automation?")
+- u/Iory1998 replied in r/LocalLLaMA (coding models discussion)
+- u/Specialist-Cause-161 replied in r/LocalLLaMA (detailed hallucination discussion — high quality engagement)
+- u/OWilson90 replied in r/startups (asking about engineering degree)
+- u/roger_ducky replied in r/ExperiencedDevs (discussing productivity gains)
+- u/CTurE1 replied x2 in r/indianstartups (praised "deep dive questions")
+- u/Genuine-Helperr replied in r/indianstartups (SaaS feedback discussion)
+- Comment views: 35, 25, 21, 19, 18, 14, 10, 1 (AA fresh) = **143 total views**
+- 8 comments visible on profile across r/americanairlines, r/LocalLLaMA, r/singularity x2, r/ClaudeAI, r/programming x2, r/SaaS
+
+**Key Observations:**
+- Humor replies MASSIVELY outperform technical insight on X (48 likes vs 0 on AI posts). The Feb 11 cross-domain strategy is working.
+- First original posts with images — engagement still building (very fresh)
+- LinkedIn posts with images and specific data perform better
+- X Premium boost not yet visible on original posts (too fresh)
+- Reddit karma 540% growth — technical depth comments getting real engagement and conversations
+- Follower growth: X 30→33 (+3), Reddit karma 5→32 (+27)
 
 ---
 
