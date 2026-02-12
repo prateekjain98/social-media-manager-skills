@@ -374,3 +374,45 @@ NEXT MONTH:
 - LinkedIn: ~8,500 followers, 43 profile views
 - Reddit: 32 karma (prateek63)
 - Target: 100 X followers by end of February, 500 by end of April
+
+### Feb 11, 2026 — Money Window Session (Post-Premium, 9-10 PM IST)
+
+**Account stats:** 33 followers, 119 following, Premium active
+
+**X engagement session (8 new replies):**
+| Target | Parent Likes | Parent Replies | Topic |
+|--------|-------------|----------------|-------|
+| @sama | 1.1K | 615 | Codex vs Claude competition |
+| @gregisenberg | 1.9K | 87 | AI taking over the world |
+| @levelsio | 1.1K | 99 | Seedance 2.0 video AI |
+| @xmayeth | 522 | 73 | OpenClaw autonomous trading |
+| @swyx | 620 | 15 | Qwen Image 2 parameter efficiency |
+| @SirWrender | 5.1K | 106 | 4D gaussian splatting |
+| @Adityapandeydev | 34K | 139 | Engineering salary meme |
+| @the_Lawrenz | 11K | 132 | Internal applicant humor |
+
+**Reply-backs (engagement on my replies):**
+- @kaisa_player replied to startup danger reply → replied with 4-minute mile agreement
+
+**Reddit engagement (3 replies completed):**
+- roger_ducky on r/ExperiencedDevs (5x productivity clarification)
+- Iory1998 on r/LocalLLaMA (coder model pragmatism)
+- Specialist-Cause-161 on r/LocalLLaMA (verification layers for hallucinations)
+
+**Existing reply performance (from notifications):**
+- 100+ likes (one reply)
+- 77+ likes (lau reply)
+- 47+ likes (Tl reply)
+- 42+ likes (sick day reply)
+- 35+ likes (designers reply)
+- 31+ likes (AI username reply)
+- 27+ likes (automation reply)
+
+**Reddit stats:** karma 81+ (from 32, +153%)
+
+**Confirmed patterns (updated):**
+1. **Premium boost is real:** Replies immediately visible in "Relevant" sort.
+2. **34K like post with 139 replies = absolute gold.** Target likes:replies ratio > 100:1.
+3. **pbcopy + Cmd+V is the reliable X posting method** (JS clipboard APIs blocked by Safari).
+4. **Old Reddit > New Reddit for reply automation** (simple textarea vs Lexical editor).
+5. **Follower conversion lagging engagement.** 100+ likes on replies but still 33 followers — need more original content and a pinned tweet to convert profile visitors.
