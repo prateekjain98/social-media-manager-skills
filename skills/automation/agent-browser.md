@@ -788,6 +788,86 @@ osascript -e 'tell application "Safari" to do JavaScript "
 
 ---
 
+## Critical Safari Rules
+
+1. **NEVER use `System Events` keystroke/key code** — it sends input to whatever app is focused, steals screen focus, and interferes with the user's laptop. This includes Cmd+V paste.
+2. **NEVER use `tell application "Safari" to activate`** — this also steals focus.
+3. **ONLY use JavaScript injection** (`do JavaScript` in Safari) for ALL browser interaction. No exceptions.
+4. Use `tell application "Safari" to set URL of ...` for navigation (doesn't steal focus).
+5. Use heredoc `osascript <<'APPLESCRIPT' ... APPLESCRIPT` pattern for multi-line scripts.
+
+---
+
+## Platform-Specific Text Input (Safari)
+
+Different platforms use different editor implementations. Here's what works for each:
+
+### X (Twitter) — Draft.js Editor
+
+X uses a Draft.js contentEditable editor. Standard `element.value` or `innerHTML` won't work.
+
+**Working method:**
+```bash
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+    editor.focus();
+    document.execCommand('insertText', false, 'Your tweet text here');
+  " in current tab of window 1
+end tell
+APPLESCRIPT
+```
+
+**To clear and replace text:**
+```bash
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+    editor.focus();
+    document.execCommand('selectAll', false, null);
+    document.execCommand('delete', false, null);
+    document.execCommand('insertText', false, 'New tweet text');
+  " in current tab of window 1
+end tell
+APPLESCRIPT
+```
+
+**Key X selectors:**
+| Element | Selector |
+|---------|----------|
+| Tweet editor | `[data-testid="tweetTextarea_0"]` |
+| Post button (compose) | `[data-testid="tweetButton"]` |
+| Reply button (inline) | `[data-testid="tweetButtonInline"]` |
+| Add thread tweet | `[data-testid="addButton"]` |
+| Caret menu (tweet options) | `[data-testid="caret"]` |
+| Like button | `[data-testid="like"]` |
+| Follow button | `[data-testid="followButton"]` |
+
+### Old Reddit — Simple Textarea
+
+```javascript
+var textarea = document.querySelector('textarea');
+textarea.value = 'Your comment text';
+textarea.dispatchEvent(new Event('change', {bubbles: true}));
+// Click save button
+document.querySelector('button[type="submit"]').click();
+```
+
+### Other Sites — Standard Inputs
+
+```javascript
+var input = document.querySelector('input[name="text"]');
+var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype, 'value'
+).set;
+nativeInputValueSetter.call(input, 'your text');
+input.dispatchEvent(new Event('input', { bubbles: true }));
+```
+
+---
+
 ## Social Media Use Cases
 
 ### 1. Lead Generation on X (Twitter)
