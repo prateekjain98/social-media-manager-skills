@@ -24,7 +24,8 @@ Generic skill templates invoked during sessions. For persona-specific strategy, 
 |-------|---------|-------------|
 | Hook Generator | `/hooks` | Scroll-stopping hooks |
 | Thread Writer | `/thread` | Viral threads for X/LinkedIn |
-| Caption Generator | `/caption` | Platform-optimized captions |
+| **Create Post** | **`/create-post`** | **Full workflow: topic → write post → image → publish** |
+| Caption Generator | `/caption` | Platform-optimized captions (generic, non-persona) |
 | Carousel Creator | `/carousel` | Educational carousel posts |
 | Video Script | `/video-script` | Short-form video scripts |
 | Ad Copy | `/ad-copy` | Paid social ad copy |

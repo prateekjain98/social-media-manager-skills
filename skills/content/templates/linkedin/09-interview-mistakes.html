@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #1a050f 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 72px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #fb7185, #f43f5e, #fb7185);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fb7185;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 44px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+}
+
+.mistakes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mistake {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.mistake-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mistake-num {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fb7185;
+  background: rgba(244,63,94,0.15);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mistake-phrase {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.mistake-why {
+  font-size: 17px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.3;
+  padding-left: 38px;
+}
+
+.pro-tip {
+  font-size: 22px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.pro-tip strong {
+  color: #34d399;
+}
+
+.handle {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">Interview Prep</div>
+    <div class="title">10 Things You Should Never<br>Say in a Job Interview</div>
+    <div class="subtitle">One wrong sentence can create the wrong impression</div>
+  </div>
+
+  <div class="mistakes-grid">
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">1</div>
+        <div class="mistake-phrase">"I hated my previous boss"</div>
+      </div>
+      <div class="mistake-why">Sounds negative and unprofessional</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">2</div>
+        <div class="mistake-phrase">"I just need any job"</div>
+      </div>
+      <div class="mistake-why">Shows lack of direction</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">3</div>
+        <div class="mistake-phrase">"What does your company do?"</div>
+      </div>
+      <div class="mistake-why">Signals poor preparation</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">4</div>
+        <div class="mistake-phrase">"I'm not sure I can do this"</div>
+      </div>
+      <div class="mistake-why">Undermines your confidence</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">5</div>
+        <div class="mistake-phrase">"It's on my resume"</div>
+      </div>
+      <div class="mistake-why">Comes across as dismissive</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">6</div>
+        <div class="mistake-phrase">"I'm here only for the salary"</div>
+      </div>
+      <div class="mistake-why">Value and growth come first</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">7</div>
+        <div class="mistake-phrase">"I don't have any weaknesses"</div>
+      </div>
+      <div class="mistake-why">Sounds unrealistic</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">8</div>
+        <div class="mistake-phrase">"Sorry, I'm late"</div>
+      </div>
+      <div class="mistake-why">Punctuality = professionalism</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">9</div>
+        <div class="mistake-phrase">"How soon can I take leave?"</div>
+      </div>
+      <div class="mistake-why">Signals lack of commitment</div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-header">
+        <div class="mistake-num">10</div>
+        <div class="mistake-phrase">"I don't have any questions"</div>
+      </div>
+      <div class="mistake-why">Shows low engagement</div>
+    </div>
+  </div>
+
+  <div class="pro-tip">
+    <strong>Replace these with confident, positive responses.</strong> Always ask something thoughtful.
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

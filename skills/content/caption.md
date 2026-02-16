@@ -8,6 +8,18 @@ Generate engaging social media captions optimized for any platform.
 
 ---
 
+## Persona-Specific Content
+
+**If generating content for a specific persona (e.g., Prateek Jain), use `/create-post` instead.**
+This skill (`/caption`) is for generic, non-persona content only.
+
+For Prateek's LinkedIn/X content:
+- Full workflow: `skills/content/create-post.md`
+- Voice guide: `personas/prateek/content/linkedin-persona.md`
+- Examples: `personas/prateek/content/weekly-posts.md`
+
+---
+
 ## Human-Authenticity Rules for Captions
 
 ### Write Like a Real Person

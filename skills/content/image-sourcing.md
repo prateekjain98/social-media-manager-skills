@@ -132,7 +132,132 @@ curl -L "$OG_IMAGE" -o /tmp/article_image.jpg
 
 ---
 
-## Method 3: Create Images with Python + Pillow
+## Method 3: HTML + Playwright Screenshots (RECOMMENDED for LinkedIn)
+
+> **For LinkedIn/X posts: ALWAYS use the proven templates in `skills/content/templates/linkedin/`.**
+> See `skills/content/create-post.md` Phase 4 for the template picker and filling instructions.
+> Do NOT generate HTML from scratch — adapt an existing template.
+
+Browser-quality rendering with anti-aliasing, kerning, and subpixel text. Uses HTML templates + Playwright to generate PNG screenshots.
+
+### Setup
+
+Save this as `.context/screenshot.js`:
+
+```javascript
+const { chromium } = require('/Users/prateekjain/.nvm/versions/node/v22.14.0/lib/node_modules/playwright');
+const path = require('path');
+const fs = require('fs');
+
+const templates = [
+  // LinkedIn (10)
+  { file: 'templates/linkedin-01-stat-card.html', width: 1080, height: 1350 },
+  { file: 'templates/linkedin-02-comparison.html', width: 1080, height: 1080 },
+  { file: 'templates/linkedin-03-framework.html', width: 1080, height: 1080 },
+  { file: 'templates/linkedin-04-myth-reality.html', width: 1080, height: 1350 },
+  { file: 'templates/linkedin-05-quote.html', width: 1080, height: 1350 },
+  { file: 'templates/linkedin-06-dashboard.html', width: 1080, height: 1080 },
+  { file: 'templates/linkedin-07-listicle.html', width: 1080, height: 1350 },
+  { file: 'templates/linkedin-08-before-after.html', width: 1080, height: 1350 },
+  { file: 'templates/linkedin-09-checklist.html', width: 1080, height: 1080 },
+  { file: 'templates/linkedin-10-bold-statement.html', width: 1080, height: 1080 },
+  // Twitter (10)
+  { file: 'templates/twitter-01-hot-take.html', width: 1600, height: 900 },
+  { file: 'templates/twitter-02-data-chart.html', width: 1080, height: 1080 },
+  { file: 'templates/twitter-03-terminal.html', width: 1600, height: 900 },
+  { file: 'templates/twitter-04-thread-starter.html', width: 1600, height: 900 },
+  { file: 'templates/twitter-05-single-stat.html', width: 1080, height: 1080 },
+  { file: 'templates/twitter-06-quote.html', width: 1600, height: 900 },
+  { file: 'templates/twitter-07-comparison.html', width: 1600, height: 900 },
+  { file: 'templates/twitter-08-fake-tweet.html', width: 1200, height: 675 },
+  { file: 'templates/twitter-09-tip-card.html', width: 1080, height: 1080 },
+  { file: 'templates/twitter-10-kpi-dashboard.html', width: 1600, height: 900 },
+  // Reddit (10)
+  { file: 'templates/reddit-01-data-viz.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-02-cool-guide.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-03-comparison-table.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-04-terminal.html', width: 1200, height: 900 },
+  { file: 'templates/reddit-05-tldr.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-06-flowchart.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-07-myth-busting.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-08-annotated-chart.html', width: 1200, height: 900 },
+  { file: 'templates/reddit-09-research-summary.html', width: 1080, height: 1080 },
+  { file: 'templates/reddit-10-scorecard.html', width: 1080, height: 1080 },
+];
+
+const singleFile = process.argv[2];
+
+(async () => {
+  const browser = await chromium.launch({
+    args: ['--force-device-scale-factor=1']
+  });
+  const toProcess = singleFile
+    ? [{ file: singleFile, width: 1080, height: 1080 }]
+    : templates;
+
+  for (const tmpl of toProcess) {
+    const htmlPath = path.resolve(__dirname, tmpl.file);
+    if (!fs.existsSync(htmlPath)) {
+      console.log(`Skipping ${tmpl.file} (not found)`);
+      continue;
+    }
+
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const wMatch = html.match(/body\s*\{[^}]*width:\s*(\d+)px/s);
+    const hMatch = html.match(/body\s*\{[^}]*height:\s*(\d+)px/s);
+    const MAX_DIM = 2000; // Claude API rejects images > 2000px in multi-image requests
+    const w = Math.min(wMatch ? parseInt(wMatch[1]) : tmpl.width, MAX_DIM);
+    const h = Math.min(hMatch ? parseInt(hMatch[1]) : tmpl.height, MAX_DIM);
+
+    const page = await browser.newPage({
+      viewport: { width: w, height: h },
+      deviceScaleFactor: 1
+    });
+
+    await page.goto('file://' + htmlPath);
+    await page.waitForTimeout(800);
+
+    const outName = singleFile
+      ? 'linkedin_post_image.png'
+      : tmpl.file.replace('templates/', '').replace('.html', '.png');
+    const outPath = path.resolve(__dirname, singleFile ? outName : 'templates/' + outName);
+
+    await page.screenshot({
+      path: outPath,
+      type: 'png',
+      clip: { x: 0, y: 0, width: w, height: h }
+    });
+
+    await page.close();
+    console.log(`  ${outName} (${w}x${h}px)`);
+  }
+
+  await browser.close();
+  console.log('Done!');
+})();
+```
+
+### CRITICAL: The MAX_DIM = 2000 Clamp
+
+The `Math.min(..., MAX_DIM)` on lines for `w` and `h` is **mandatory**. Without it, HTML templates with body dimensions > 2000px will produce oversized PNGs that cause Claude API 400 errors:
+
+```
+INVALID_REQUEST_ERROR: AT LEAST ONE OF THE IMAGE DIMENSIONS EXCEED MAX ALLOWED SIZE FOR MANY-IMAGE REQUESTS: 2000 PIXELS
+```
+
+**Never remove this clamp. Never set body width or height > 2000px in HTML templates.**
+
+### HTML Template Rules
+
+When writing HTML templates for screenshots:
+- Body `width` and `height` must be ≤ 2000px
+- Safe sizes: `1080x1080`, `1080x1350`, `1600x900`, `1200x675`
+- Use `deviceScaleFactor: 1` (not 2) to avoid doubling dimensions
+- **MANDATORY: Every image MUST include the persona handle** — add a `.handle` div with `position: absolute; bottom: 24px; right: 40px; font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.3);`. Use `prateekjain98` for LinkedIn, `@Prateek9jain8` for X.
+
+---
+
+## Method 4: Create Images with Python + Pillow
 
 ### Install Pillow
 
@@ -161,6 +286,7 @@ def font(size):
 ### Image Standards
 - **Size:** 1200x675 (16:9 ratio, optimal for X/Twitter)
 - **Format:** PNG at quality=95
+- **CRITICAL: Max dimension 2000px** — Both width and height must be ≤ 2000 pixels. Claude API returns 400 error for images exceeding 2000px in multi-image requests. This applies to ALL image generation methods (Pillow, HTML/Playwright screenshots, etc.)
 - **Rule: Images must ADD information** — never just restate the tweet text
 - **Rule: Visual variety** — never use the same template/colors for consecutive posts
 
@@ -393,7 +519,7 @@ agent-browser --cdp 9222 press Meta+v
 
 ---
 
-## Method 4: macOS Native Image Processing (sips)
+## Method 5: macOS Native Image Processing (sips)
 
 **sips** is built into macOS - no installation needed.
 
@@ -558,10 +684,12 @@ echo "Image saved to /tmp/post_image.{jpg,png}"
 
 ## Best Practices
 
-1. **Image Dimensions for X:**
-   - Optimal: 1200x675 (16:9 ratio)
+1. **Image Dimensions:**
+   - **HARD LIMIT: 2000px max per side** — Claude API rejects images > 2000px in multi-image requests (400 error). Never generate images exceeding this.
+   - Optimal for X: 1200x675 (16:9 ratio)
+   - Optimal for LinkedIn: 1080x1080 or 1080x1350
    - Minimum: 600x335
-   - Maximum: 4096x4096
+   - Safe sizes: 1080x1080, 1080x1350, 1600x900, 1200x675
 
 2. **File Size:**
    - Keep under 5MB for fast uploads

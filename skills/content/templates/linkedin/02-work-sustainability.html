@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #1a1500 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #facc15, #eab308, #facc15);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #facc15;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 24px 32px;
+}
+
+.stat-row.highlight {
+  background: rgba(234,179,8,0.06);
+  border: 1px solid rgba(234,179,8,0.12);
+}
+
+.stat-number {
+  font-size: 52px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  min-width: 160px;
+}
+
+.stat-row.highlight .stat-number {
+  color: #facc15;
+}
+
+.stat-number .unit {
+  font-size: 28px;
+  color: rgba(255,255,255,0.4);
+}
+
+.stat-row.highlight .stat-number .unit {
+  color: rgba(234,179,8,0.5);
+}
+
+.stat-label {
+  font-size: 22px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.takeaway {
+  font-size: 24px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.takeaway strong {
+  color: #ffffff;
+}
+
+.handle {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">Future of Work</div>
+    <div class="title">Rigid Work Designs Are<br>Failing High-Skill Employees</div>
+    <div class="subtitle">Productivity follows individual rhythms — not a universal 9-to-5 curve</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-row">
+      <div class="stat-number">76<span class="unit">%</span></div>
+      <div class="stat-label">Higher output with flexible schedules</div>
+    </div>
+    <div class="stat-row highlight">
+      <div class="stat-number">3.2<span class="unit">x</span></div>
+      <div class="stat-label">Higher burnout in rigid 9-to-5 models</div>
+    </div>
+    <div class="stat-row highlight">
+      <div class="stat-number">41<span class="unit">%</span></div>
+      <div class="stat-label">Neurodivergent employees leave rigid roles in 2 years</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-number">23<span class="unit">%</span></div>
+      <div class="stat-label">Higher retention with work sustainability programs</div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <strong>The real objective isn't "work-life harmony."</strong> It's work sustainability.
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

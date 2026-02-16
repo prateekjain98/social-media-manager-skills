@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #001a33 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #60a5fa, #3b82f6, #60a5fa);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.4;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 24px 32px;
+}
+
+.stat-row.highlight {
+  background: rgba(96,165,250,0.06);
+  border: 1px solid rgba(96,165,250,0.12);
+}
+
+.stat-number {
+  font-size: 52px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  min-width: 160px;
+}
+
+.stat-row.highlight .stat-number {
+  color: #60a5fa;
+}
+
+.stat-number .unit {
+  font-size: 28px;
+  color: rgba(255,255,255,0.4);
+}
+
+.stat-row.highlight .stat-number .unit {
+  color: rgba(96,165,250,0.5);
+}
+
+.stat-label {
+  font-size: 19px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.takeaway {
+  font-size: 22px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.5;
+}
+
+.takeaway strong {
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">AI Engineering</div>
+    <div class="title">The Model Was Never<br>The Bottleneck</div>
+    <div class="subtitle">15 LLMs improved in one afternoon — by changing only the edit format</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-row highlight">
+      <div class="stat-number">10<span class="unit">x</span></div>
+      <div class="stat-label">Grok Code Fast: 6.7% → 68.3% success rate</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-number">50<span class="unit">%</span></div>
+      <div class="stat-label">Failure rate with current patch-based edit formats</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-number">61<span class="unit">%</span></div>
+      <div class="stat-label">Drop in output tokens when models stop reproducing code</div>
+    </div>
+    <div class="stat-row highlight">
+      <div class="stat-number">2<span class="unit">x</span></div>
+      <div class="stat-label">MiniMax success rate doubled with new format</div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <strong>The fix wasn't a better model.</strong> It was a better interface between model and code.
+  </div>
+</body>
+</html>
