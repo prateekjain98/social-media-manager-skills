@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #0a0520 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 72px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #818cf8, #6366f1, #818cf8);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 44px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.category {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-icon {
+  font-size: 24px;
+}
+
+.cat-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cat-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tool-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+
+.tool-use {
+  font-size: 18px;
+  color: rgba(255,255,255,0.5);
+  text-align: right;
+}
+
+.cta {
+  font-size: 22px;
+  color: rgba(255,255,255,0.55);
+}
+
+.cta strong {
+  color: #ffffff;
+}
+
+.handle {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">Cheat Sheet</div>
+    <div class="title">The Ultimate AI Tool Cheat Sheet</div>
+    <div class="subtitle">Stop using ChatGPT for everything — use the right tool for the job</div>
+  </div>
+
+  <div class="categories">
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">✍️</div>
+        <div class="cat-name">Writing</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Claude.ai</span><span class="tool-use">Long-form writing</span></div>
+        <div class="tool"><span class="tool-name">Jasper</span><span class="tool-use">Marketing copy</span></div>
+        <div class="tool"><span class="tool-name">Copy.ai</span><span class="tool-use">Ad copy & emails</span></div>
+      </div>
+    </div>
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">🎨</div>
+        <div class="cat-name">Design</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Midjourney</span><span class="tool-use">Art generation</span></div>
+        <div class="tool"><span class="tool-name">Ideogram</span><span class="tool-use">Text in images</span></div>
+        <div class="tool"><span class="tool-name">Canva AI</span><span class="tool-use">Quick design</span></div>
+      </div>
+    </div>
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">🎬</div>
+        <div class="cat-name">Video</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Runway</span><span class="tool-use">Video generation</span></div>
+        <div class="tool"><span class="tool-name">Descript</span><span class="tool-use">Video editing</span></div>
+        <div class="tool"><span class="tool-name">HeyGen</span><span class="tool-use">AI avatars</span></div>
+      </div>
+    </div>
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">🤖</div>
+        <div class="cat-name">Automation</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Make.com</span><span class="tool-use">Workflow builder</span></div>
+        <div class="tool"><span class="tool-name">Relevance AI</span><span class="tool-use">AI agents</span></div>
+        <div class="tool"><span class="tool-name">Zapier AI</span><span class="tool-use">Integrations</span></div>
+      </div>
+    </div>
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">🔬</div>
+        <div class="cat-name">Research</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Perplexity</span><span class="tool-use">AI search</span></div>
+        <div class="tool"><span class="tool-name">Elicit</span><span class="tool-use">Paper analysis</span></div>
+        <div class="tool"><span class="tool-name">Consensus</span><span class="tool-use">Academic search</span></div>
+      </div>
+    </div>
+    <div class="category">
+      <div class="cat-header">
+        <div class="cat-icon">📑</div>
+        <div class="cat-name">Presentations</div>
+      </div>
+      <div class="cat-tools">
+        <div class="tool"><span class="tool-name">Gamma</span><span class="tool-use">AI slide decks</span></div>
+        <div class="tool"><span class="tool-name">Tome</span><span class="tool-use">Storytelling</span></div>
+        <div class="tool"><span class="tool-name">Beautiful.ai</span><span class="tool-use">Design slides</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <strong>The right tools can 10x your output.</strong> Stop using ChatGPT for everything.
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

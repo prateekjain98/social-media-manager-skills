@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #1a0505 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 72px 80px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #f87171, #ef4444, #f87171);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #f87171;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 46px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+.flags {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flag {
+  display: flex;
+  gap: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 20px 28px;
+  align-items: center;
+}
+
+.flag-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: #f87171;
+  min-width: 36px;
+}
+
+.flag-content {
+  flex: 1;
+}
+
+.flag-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.flag-desc {
+  font-size: 20px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.takeaway {
+  font-size: 24px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.takeaway strong {
+  color: #ffffff;
+}
+
+.handle {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">Workplace Culture</div>
+    <div class="title">When Employees Resign Without<br>Another Offer — Listen.</div>
+    <div class="subtitle">It's not a personal move. It's a loud message about the company.</div>
+  </div>
+
+  <div class="flags">
+    <div class="flag">
+      <div class="flag-num">1</div>
+      <div class="flag-content">
+        <div class="flag-title">Deep Dissatisfaction</div>
+        <div class="flag-desc">They prefer uncertainty over staying</div>
+      </div>
+    </div>
+    <div class="flag">
+      <div class="flag-num">2</div>
+      <div class="flag-content">
+        <div class="flag-title">Emotional Burnout</div>
+        <div class="flag-desc">Choosing health over a paycheck</div>
+      </div>
+    </div>
+    <div class="flag">
+      <div class="flag-num">3</div>
+      <div class="flag-content">
+        <div class="flag-title">Poor Communication</div>
+        <div class="flag-desc">They don't feel heard, seen, or appreciated</div>
+      </div>
+    </div>
+    <div class="flag">
+      <div class="flag-num">4</div>
+      <div class="flag-content">
+        <div class="flag-title">Leadership Gaps</div>
+        <div class="flag-desc">Leadership failed to notice until too late</div>
+      </div>
+    </div>
+    <div class="flag">
+      <div class="flag-num">5</div>
+      <div class="flag-content">
+        <div class="flag-title">Employer Brand Damage</div>
+        <div class="flag-desc">Stories spread fast — outsiders notice</div>
+      </div>
+    </div>
+    <div class="flag">
+      <div class="flag-num">6</div>
+      <div class="flag-content">
+        <div class="flag-title">Loss of Purpose</div>
+        <div class="flag-desc">They stopped seeing a future here</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <strong>Don't judge — reflect.</strong> Create a workplace people don't want to escape.
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

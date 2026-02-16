@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: linear-gradient(160deg, #001520 0%, #0a0a0a 40%, #0a0a0a 100%);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 72px 80px;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9, #38bdf8);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.title {
+  font-size: 46px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+}
+
+.emails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.email-card {
+  display: flex;
+  gap: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 22px 28px;
+  align-items: center;
+}
+
+.email-icon {
+  font-size: 28px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.email-content {
+  flex: 1;
+}
+
+.email-type {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.email-subject {
+  font-size: 18px;
+  color: rgba(56,189,248,0.7);
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.pro-tip {
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pro-tip-badge {
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #38bdf8;
+  white-space: nowrap;
+}
+
+.pro-tip-text {
+  font-size: 20px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+
+.pro-tip-text strong {
+  color: #ffffff;
+}
+
+.handle {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tag">Career Tips</div>
+    <div class="title">5 Email Templates That Get<br>Your Resume Noticed</div>
+    <div class="subtitle">How you email your resume matters more than you think</div>
+  </div>
+
+  <div class="emails">
+    <div class="email-card">
+      <div class="email-icon">📩</div>
+      <div class="email-content">
+        <div class="email-type">Cold Email to Recruiter</div>
+        <div class="email-subject">Subject: [Role] Application — [Your Name]</div>
+      </div>
+    </div>
+    <div class="email-card">
+      <div class="email-icon">📄</div>
+      <div class="email-content">
+        <div class="email-type">Direct Job Application</div>
+        <div class="email-subject">Subject: Application for [Position] — Ref: [Job ID]</div>
+      </div>
+    </div>
+    <div class="email-card">
+      <div class="email-icon">✉️</div>
+      <div class="email-content">
+        <div class="email-type">Cover Letter + Resume</div>
+        <div class="email-subject">Subject: [Your Name] — [Role] | Resume Attached</div>
+      </div>
+    </div>
+    <div class="email-card">
+      <div class="email-icon">🙏</div>
+      <div class="email-content">
+        <div class="email-type">Thank You After Applying</div>
+        <div class="email-subject">Subject: Thank You — [Role] Application</div>
+      </div>
+    </div>
+    <div class="email-card">
+      <div class="email-icon">🎉</div>
+      <div class="email-content">
+        <div class="email-type">Thank You After Job Offer</div>
+        <div class="email-subject">Subject: Offer Acceptance — [Your Name]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pro-tip">
+    <div class="pro-tip-badge">Pro Tip</div>
+    <div class="pro-tip-text">Recruiters notice <strong>clarity and professionalism</strong> before they even open your resume.</div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>
