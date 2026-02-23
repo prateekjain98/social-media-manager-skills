@@ -13,16 +13,9 @@ Real strategies for growing your social media following. No BS, no generic advic
 
 ## Your Positioning Advantage
 
-You're not starting from zero. Read `_persona.md` for your full background, but the key points:
+Read `_persona.md` for your full background and positioning. Key principle: you're not starting from zero — you have real experience building products. Your strategy is to transfer that credibility to new platforms.
 
-- **5 years experience** - Founding Engineer, ex-CTO, shipped real products
-- **Current work is hot** - AI agents, sales automation (everyone's talking about this)
-- **8.5K LinkedIn followers** - You have credibility, just not on X yet
-- **Real stories** - EvolvFit (0-1 product), crypto integrations, ML in production
-
-**Your X strategy isn't "grow from nothing" - it's "transfer credibility to a new platform."**
-
-When engaging, you're not asking for advice. You're sharing what you've learned from building.
+When engaging, you're sharing what you've learned from building, not asking for advice.
 
 ---
 
@@ -343,6 +336,10 @@ This means: create content people want to share with their friends.
 
 ## The Agent-Browser Execution
 
+> **Browser mode:** On macOS, use Safari/AppleScript patterns from `agent-browser.md`.
+> CDP commands below require Chrome running with `--remote-debugging-port=9222`.
+> For full executable sessions, use `/grow-followers` — it's the purpose-built runbook.
+
 Now let's talk about automating the non-creative parts. The key: automate research and navigation, but keep engagement authentic.
 
 ### What to Automate
@@ -415,15 +412,10 @@ fi
 
 ## The Real Daily Limits
 
-These are conservative because getting restricted kills your growth for weeks:
+> **Canonical source:** See `strategy/_growth-algorithm.md` > Safety Limits for all rate limits by growth phase (Phase 1/2/3).
+> Do not define local limits here — they will drift and conflict.
 
-| Platform | Follows | Likes | Comments | DMs |
-|----------|---------|-------|----------|-----|
-| X | 20-30 | 50-80 | 30-40 | 10-15 |
-| LinkedIn | 20-30 | 50 | 20-30 | 15-20 |
-| Instagram | 20-30 | 50-80 | 30-40 | 15-20 |
-
-**For new accounts, cut these in half for the first month.**
+**Key principle:** These are conservative because getting restricted kills your growth for weeks. For new accounts, use Phase 1 limits.
 
 ---
 

@@ -47,7 +47,7 @@ Deep research across 4 domains:
 | File | Location | Purpose |
 |------|----------|---------|
 | `_core-principles.md` | `strategy/_core-principles.md` | Anti-AI detection rules |
-| `_metrics.md` | `strategy/_metrics.md` | Engagement tracking |
+| `metrics.md` | `personas/prateek/metrics.md` | Engagement tracking |
 | Agent Browser | `skills/automation/agent-browser.md` | CDP browser commands |
 | LinkedIn | `skills/platforms/linkedin.md` | LinkedIn automation |
 | Reddit | `skills/platforms/reddit.md` | Reddit automation |

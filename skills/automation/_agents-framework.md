@@ -151,7 +151,8 @@ tracking:
 
 **Related Files:**
 - `growth-agent.md` - Strategy and execution guide
-- `_growth-algorithm.md` - Step-by-step executable algorithm
+- `strategy/_growth-algorithm.md` - Global platform knowledge, safety limits, content review gate
+- `personas/[name]/strategy/active/_growth-algorithm.md` - Persona-specific execution algorithm
 - `_persona.md` - Your identity and positioning
 
 ### 2. Lead Generation Agent (Planned)

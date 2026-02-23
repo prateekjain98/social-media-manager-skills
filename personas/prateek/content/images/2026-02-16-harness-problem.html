@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: #08090a;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.container {
+  padding: 52px 60px 44px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+/* Header */
+.header { }
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 12px;
+}
+
+.title em {
+  font-style: normal;
+  color: #3b82f6;
+}
+
+.subtitle {
+  font-size: 19px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.5;
+  max-width: 680px;
+}
+
+/* Comparison sections */
+.comparisons {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.comp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 14px;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 48px;
+  padding-right: 80px;
+}
+
+.bar-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 72px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  background: rgba(255,255,255,0.025);
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 14px;
+}
+
+.bar-fill.old {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.08));
+  min-width: 72px;
+}
+
+.bar-fill.new {
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+  box-shadow: 0 0 30px rgba(59,130,246,0.25);
+}
+
+/* Widths for Grok Code Fast */
+.bar-fill.old.grok { width: 7.2%; }
+.bar-fill.new.grok { width: 73%; }
+
+/* Widths for GPT-4 Turbo (Aider) */
+.bar-fill.old.gpt { width: 28%; }
+.bar-fill.new.gpt { width: 63%; }
+
+.bar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+
+.bar-fill.new .bar-val {
+  color: #ffffff;
+}
+
+.change {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 800;
+  color: #22c55e;
+  white-space: nowrap;
+}
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+
+.stat-card.accent {
+  border-color: rgba(59,130,246,0.12);
+  background: rgba(59,130,246,0.035);
+}
+
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-card.accent .stat-num {
+  color: #60a5fa;
+}
+
+.stat-txt {
+  font-size: 14px;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.takeaway {
+  font-size: 20px;
+  color: rgba(255,255,255,0.25);
+  line-height: 1.5;
+  max-width: 580px;
+}
+
+.takeaway strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.credits {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(255,255,255,0.15);
+  text-align: right;
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="tag">AI Engineering</div>
+      <div class="title">Changed the Format.<br><em>Not the Model.</em></div>
+      <div class="subtitle">15 LLMs tested. Zero fine-tuning. The only thing that changed was how the model talks to the code.</div>
+    </div>
+
+    <div class="comparisons">
+      <div class="comparison">
+        <div class="comp-label">Grok Code Fast 1</div>
+        <div class="bar-group">
+          <div class="bar-row">
+            <div class="bar-tag">Before</div>
+            <div class="bar-track">
+              <div class="bar-fill old grok">
+                <span class="bar-val">6.7%</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-tag">After</div>
+            <div class="bar-track">
+              <div class="bar-fill new grok">
+                <span class="bar-val">68.3%</span>
+              </div>
+              <span class="change">10x</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison">
+        <div class="comp-label">GPT-4 Turbo (Aider benchmark)</div>
+        <div class="bar-group">
+          <div class="bar-row">
+            <div class="bar-tag">Before</div>
+            <div class="bar-track">
+              <div class="bar-fill old gpt">
+                <span class="bar-val">26%</span>
+              </div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-tag">After</div>
+            <div class="bar-track">
+              <div class="bar-fill new gpt">
+                <span class="bar-val">59%</span>
+              </div>
+              <span class="change">+127%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">50%</div>
+        <div class="stat-txt">Edit failure rate with current patch formats</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-num">-61%</div>
+        <div class="stat-txt">Output tokens when models stop reproducing code</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">78.3%</div>
+        <div class="stat-txt">Gemini 3 Flash with new format</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="takeaway"><strong>The fix: tag each line with a 2-char hash.</strong><br>Stop forcing models to reproduce code perfectly.</div>
+      <div class="credits">prateekjain98<br>Source: blog.can.ac</div>
+    </div>
+  </div>
+</body>
+</html>

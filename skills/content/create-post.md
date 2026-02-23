@@ -263,12 +263,14 @@ After generating the PNG, READ the image file to verify:
 
 ## Phase 5: Publish
 
-### LinkedIn Posting (via Chrome CDP)
+### LinkedIn Posting
 
-1. Navigate to LinkedIn feed: `agent-browser --cdp 9222 open "https://www.linkedin.com/feed/"`
-2. Click "Start a post": `agent-browser --cdp 9222 click @e<ref>`
-3. Find the `.ql-editor` inside shadow DOM and set innerHTML with `<p>` tags and `<p><br></p>` for blank lines
-4. Click "Add media" and use `agent-browser upload` to attach the image
+> **On macOS, use Safari/AppleScript.** See `platforms/linkedin.md` > "How to Post on LinkedIn" for both Safari and CDP patterns.
+
+1. Navigate to LinkedIn feed
+2. Click "Start a post"
+3. Find the `.ql-editor` and set innerHTML with `<p>` tags and `<p><br></p>` for blank lines
+4. Upload image via DataTransfer on `input[type=file]`
 5. Click "Post"
 
 ### X Posting (via Safari AppleScript)

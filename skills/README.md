@@ -60,8 +60,9 @@ Generic skill templates invoked during sessions. For persona-specific strategy, 
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| Agent Browser | `/agent-browser` | CDP browser automation |
+| Agent Browser | `/agent-browser` | Safari/AppleScript (macOS) or Chrome CDP browser automation |
 | Growth Agent | `/growth-agent` | Autonomous follower growth |
+| **Grow Followers** | **`/grow-followers`** | **Executable growth session: research → engage → track** |
 | Agents Framework | — | Goal-based agent architecture |
 
 ---

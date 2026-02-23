@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: #0a0a0b;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(212,132,94,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.container {
+  padding: 52px 56px 44px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 30px;
+  justify-content: space-evenly;
+}
+
+/* Header */
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #d4845e;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+}
+
+.title em {
+  font-style: normal;
+  color: #d4845e;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 8px;
+}
+
+/* Analogy strip */
+.analogy {
+  background: rgba(212,132,94,0.06);
+  border: 1px solid rgba(212,132,94,0.12);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.analogy-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4845e;
+  flex-shrink: 0;
+}
+
+.analogy-text {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+
+.analogy-text strong {
+  color: #d4845e;
+  font-weight: 700;
+}
+
+/* Comparison */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.col {
+  border-radius: 16px;
+  padding: 22px 24px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.col.bad {
+  background: rgba(239,68,68,0.04);
+  border: 1px solid rgba(239,68,68,0.1);
+}
+
+.col.good {
+  background: rgba(34,197,94,0.05);
+  border: 1px solid rgba(34,197,94,0.12);
+}
+
+.col-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+}
+
+.col.bad .col-header {
+  color: rgba(239,68,68,0.85);
+  border-bottom: 1px solid rgba(239,68,68,0.15);
+}
+
+.col.good .col-header {
+  color: rgba(34,197,94,0.9);
+  border-bottom: 1px solid rgba(34,197,94,0.18);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.col.bad .num {
+  color: rgba(239,68,68,0.9);
+}
+
+.col.good .num {
+  color: #22c55e;
+}
+
+.desc {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  padding-top: 6px;
+}
+
+.col.bad .desc {
+  color: rgba(255,255,255,0.5);
+}
+
+.col.good .desc {
+  color: rgba(255,255,255,0.6);
+}
+
+/* Improvement row */
+.improvements {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  margin-top: -4px;
+}
+
+.imp {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+}
+
+.imp:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.imp-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px;
+  font-weight: 800;
+  color: #22c55e;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.imp-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.takeaway {
+  font-size: 20px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+.takeaway strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.credits {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  text-align: right;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div>
+      <div class="tag">From Anthropic's Guide</div>
+      <div class="title">Your AI Agent Has a Kitchen.<br><em>No Recipes.</em></div>
+      <div class="subtitle">Why adding more tools doesn't fix bad agent decisions.</div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-dot"></div>
+      <div class="analogy-text"><strong>MCP</strong> = the kitchen (tools, APIs, integrations).&nbsp;&nbsp;&nbsp;<strong>Skills</strong> = the recipes (workflow instructions).</div>
+    </div>
+
+    <div class="comparison">
+      <div class="col bad">
+        <div class="col-header">Without Recipes</div>
+        <div class="rows">
+          <div class="row-item">
+            <div class="num">15</div>
+            <div class="desc">back-and-forth messages</div>
+          </div>
+          <div class="row-item">
+            <div class="num">3</div>
+            <div class="desc">failed API calls requiring retry</div>
+          </div>
+          <div class="row-item">
+            <div class="num">12k</div>
+            <div class="desc">tokens consumed</div>
+          </div>
+        </div>
+      </div>
+      <div class="col good">
+        <div class="col-header">With Recipes</div>
+        <div class="rows">
+          <div class="row-item">
+            <div class="num">2</div>
+            <div class="desc">clarifying questions</div>
+          </div>
+          <div class="row-item">
+            <div class="num">0</div>
+            <div class="desc">failed API calls</div>
+          </div>
+          <div class="row-item">
+            <div class="num">6k</div>
+            <div class="desc">tokens consumed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="improvements">
+      <div class="imp">
+        <div class="imp-val">-87%</div>
+        <div class="imp-label">Messages</div>
+      </div>
+      <div class="imp">
+        <div class="imp-val">-100%</div>
+        <div class="imp-label">Failures</div>
+      </div>
+      <div class="imp">
+        <div class="imp-val">-50%</div>
+        <div class="imp-label">Tokens</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="takeaway"><strong>Same tools. Same model.</strong><br>The only difference was the instructions.</div>
+      <div class="credits">prateekjain98<br>Source: Anthropic — Building Skills for Claude</div>
+    </div>
+  </div>
+</body>
+</html>

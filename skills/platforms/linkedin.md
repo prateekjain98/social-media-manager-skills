@@ -197,46 +197,105 @@ HASHTAGS: #tag1 #tag2 #tag3
 
 ---
 
-## LinkedIn Browser Automation (agent-browser)
+## LinkedIn Browser Automation
+
+### CRITICAL SAFETY RULES
+
+1. **NEVER comment from the feed or search results.** The feed DOM shifts as it loads — clicking "Comment" on one post can open the editor for a completely different post. This has caused comments to land on the WRONG POST.
+2. **ALWAYS navigate to the individual post URL first:** `https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/`
+3. **VERIFY post content before commenting** — extract post text, confirm it matches the topic.
+4. **VERIFY comment landed correctly after submitting.**
+
+For Safari-based automation patterns, see `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor (Safari)" section.
 
 ### Important: LinkedIn uses contenteditable divs, NOT standard textboxes
 LinkedIn's comment and post editors are rich-text `contenteditable` divs. The standard `fill` and `type` commands will FAIL on them. You MUST use JavaScript injection via `eval` to set content.
 
 ### How to Comment on a LinkedIn Post
 
+**Safari (macOS) — preferred method. See `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor (Safari)" for full patterns.**
+
 ```bash
-# 1. Navigate to search results or feed
-agent-browser --cdp 9222 open "https://www.linkedin.com/search/results/content/?keywords=AI%20agents&sortBy=%22relevance%22"
+# 1. MANDATORY: Navigate to the INDIVIDUAL POST URL (never comment from feed/search)
+osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"'
 
-# 2. Wait for page load, then snapshot to find posts
+# 2. Wait 4s, then VERIFY post content matches your intent
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var main = document.querySelector('main');
+    main ? main.innerText.substring(0, 500) : 'PAGE_NOT_LOADED';
+  " in front document
+end tell
+APPLESCRIPT
+# CHECK: Does the post text match the topic? If NOT, STOP.
+
+# 3. Click the Comment button to open the editor
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50) {
+        btns[i].click(); break;
+      }
+    }
+  " in front document
+end tell
+APPLESCRIPT
+
+# 4. Wait 2s, find TipTap/ProseMirror editor, scroll to it, inject text
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+    if (editor) {
+      editor.scrollIntoView({behavior: 'instant', block: 'center'});
+      setTimeout(function() {
+        editor.focus();
+        editor.innerHTML = '<p>Your comment text here</p>';
+        editor.dispatchEvent(new Event('input', {bubbles: true}));
+        window._commentLen = editor.innerText.length;
+      }, 500);
+    }
+  " in front document
+end tell
+APPLESCRIPT
+
+# 5. Wait 1s, click submit button (the "Comment" button BELOW the editor)
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+    var editorBottom = editor.getBoundingClientRect().bottom;
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      var r = btns[i].getBoundingClientRect();
+      if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
+        btns[i].click(); break;
+      }
+    }
+  " in front document
+end tell
+APPLESCRIPT
+
+# 6. VERIFY comment landed correctly
+# Wait 2s, check your comment appears on the post
+```
+
+**Chrome CDP — requires Chrome running with `--remote-debugging-port=9222`:**
+
+```bash
+# Same mandatory workflow: navigate to post URL → verify content → comment → verify
+agent-browser --cdp 9222 open "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"
 sleep 3 && agent-browser --cdp 9222 snapshot
-
-# 3. Find the "Comment" BUTTON (not link) near the post you want
-#    Look for: button "Comment" [ref=eXX]
-#    Note: There are also link "Comment" elements — those are comment COUNT links, not the action button
-
-# 4. Click the Comment button to open the comment editor
-agent-browser --cdp 9222 click @eXX
-
-# 5. Wait for editor to appear, then re-snapshot
+# CHECK: Does the post text match? If NOT, STOP.
+agent-browser --cdp 9222 click @[COMMENT_BUTTON]
 sleep 2 && agent-browser --cdp 9222 snapshot
-
-# 6. Verify a textbox appeared with "Add a comment..." placeholder
-#    Look for: textbox [ref=eYY]: paragraph: Add a comment...
-
-# 7. USE JAVASCRIPT to fill the contenteditable div (fill/type WILL NOT WORK)
-agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your comment text here</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
-
-# 8. Re-snapshot to find the submit button
-#    Look for: button "Comment" [ref=eZZ] that appears AFTER the textbox
-#    This is the SUBMIT button (different from the one you clicked in step 4)
-agent-browser --cdp 9222 snapshot
-
-# 9. Click the submit Comment button
-agent-browser --cdp 9222 click @eZZ
-
-# 10. Verify comment posted — look for "Prateek Jain • You" in snapshot
+agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your comment</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
+agent-browser --cdp 9222 click @[SUBMIT_BUTTON]
 sleep 3 && agent-browser --cdp 9222 snapshot
+# VERIFY: Comment appears under the correct post
 ```
 
 ### Key Gotchas
@@ -252,23 +311,59 @@ sleep 3 && agent-browser --cdp 9222 snapshot
 
 ### How to Post on LinkedIn
 
+**Safari (macOS) — preferred method:**
+
 ```bash
 # 1. Navigate to feed
+osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/"'
+
+# 2. Wait 3s, click "Start a post" button
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var btn = document.querySelector('button.share-box-feed-entry__trigger');
+    if (!btn) {
+      var btns = document.querySelectorAll('button');
+      for (var i = 0; i < btns.length; i++) {
+        if (btns[i].textContent.indexOf('Start a post') !== -1) { btn = btns[i]; break; }
+      }
+    }
+    if (btn) btn.click();
+  " in front document
+end tell
+APPLESCRIPT
+
+# 3. Wait 2s for compose modal, inject text into .ql-editor
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.ql-editor[contenteditable=true]');
+    if (editor) {
+      editor.focus();
+      editor.innerHTML = '<p>Your post content here</p>';
+      editor.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+  " in front document
+end tell
+APPLESCRIPT
+
+# 4. Click the Post button
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var btn = document.querySelector('button.share-actions__primary-action');
+    if (btn) btn.click();
+  " in front document
+end tell
+APPLESCRIPT
+```
+
+**Chrome CDP:**
+
+```bash
 agent-browser --cdp 9222 open "https://www.linkedin.com/feed/"
-
-# 2. Click "Start a post" button
-agent-browser --cdp 9222 snapshot -i
-# Find: button "Start a post" [ref=eXX]
-agent-browser --cdp 9222 click @eXX
-
-# 3. Wait for compose modal, then use eval to fill
-sleep 2
-agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your post content here</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
-
-# 4. Find and click the Post button
-agent-browser --cdp 9222 snapshot -i
-# Find: button "Post" [ref=eYY]
-agent-browser --cdp 9222 click @eYY
+# Click "Start a post", wait for modal, use eval to fill .ql-editor, click Post
+agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your post</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
 ```
 
 ### Distinguishing Elements on LinkedIn Search Results
@@ -282,14 +377,8 @@ When viewing search results, you'll see multiple similar elements per post:
 
 ### LinkedIn Daily Safety Limits
 
-| Action | Safe Daily Limit | Spacing |
-|--------|-----------------|---------|
-| Comments | 15-25 | 2-5 min each |
-| Connections | 30-50 | 1-2 min each |
-| Messages | 15-25 | 3-5 min each |
-| Post likes | 50-100 | 10-30 sec each |
-| Profile views | 50-80 | 30-60 sec each |
-| Posts | 1-2 | 6+ hours apart |
+> **Canonical source:** See `strategy/_growth-algorithm.md` > Safety Limits for all rate limits by growth phase.
+> Do not define local limits here — they will drift and conflict.
 
 ---
 

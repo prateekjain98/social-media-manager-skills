@@ -398,6 +398,18 @@ POSTING ORIGINAL CONTENT:
 - LinkedIn: professional but human, hook in first 2 lines
 - Reddit: lowercase ok, use subreddit lingo, never promotional
 
+**4d. Tagging & Citations**
+- **Tag people/companies you reference** — e.g., mention Anthropic → tag `@AnthropicAI`. Discussing Sam Altman → tag `@sama`.
+- **Tag in original posts and quote tweets** — tags send notifications → engagement → visibility
+- **Tag in replies ONLY when adding to the conversation** — don't tag random people for attention
+- **Max 2-3 tags per post** — more than that looks spammy
+- **NEVER put links in the main tweet body** — X algorithm suppresses posts with links (~50% less distribution)
+- **PUT LINKS IN A SELF-REPLY** — Post the tweet, then immediately reply to yourself with the link
+- **Always cite sources** — "according to [Source]" or "Source: [Publication]" in the tweet text
+- **For news reactions**: Name the article/source in the tweet, put the URL in the self-reply
+- **For data drops**: Name the study/report and year in the tweet text
+- **Self-reply pattern**: After posting, reply to yourself with: source link + additional context + a question to bootstrap engagement
+
 ---
 
 ## Media Handling — Images, Videos, and Attribution
@@ -491,16 +503,70 @@ NEVER:
 
 ## Safety Limits
 
-### Daily Maximums (Premium + Communities)
+> **This is the CANONICAL source for all rate limits.** Other files (agent-browser.md, grow-followers.md, etc.) should reference this section, not define their own limits.
 
-| Action | Max/Day | Notes |
-|--------|---------|-------|
-| Follows | 15-20 | Conservative to avoid shadowban |
-| Likes | 30-50 | Focus on strategic likes (replies to your content) |
-| Replies | 20-30 | Quality > quantity, during money window |
-| Posts (to Communities) | 3-5 | Spread across different communities |
-| Posts (main feed) | 1-2 | Until 3K+ followers, communities are primary |
-| Total daily actions | 80-120 | Stay under ~120 to avoid rate limits |
+### CRITICAL: LinkedIn Commenting Safety
+
+**NEVER comment from the LinkedIn feed or search results.** The feed DOM shifts as new content loads. Clicking "Comment" on one post can open the editor for a completely different post. This has caused comments to land on the WRONG POST, causing reputation damage.
+
+**Mandatory workflow:**
+1. Navigate to the individual post URL: `https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/`
+2. Wait 4 seconds for full page load
+3. VERIFY post content matches what you intend to comment on
+4. Only then open the comment editor and write your comment
+5. After submitting, VERIFY your comment appears under the correct post
+
+### Daily Maximums by Growth Phase
+
+**Phase 1: Under 500 Followers (Conservative)**
+
+| Platform | Action | Max/Day | Spacing |
+|----------|--------|---------|---------|
+| X | Replies | 20 | 45-120 sec (random) |
+| X | Follows | 15 | 60-180 sec (random) |
+| X | Likes | 40 | 15-45 sec (random) |
+| X | Posts (to Communities) | 3-5 | Spread across communities |
+| X | Posts (main feed) | 1-2 | Until 3K+, communities are primary |
+| LinkedIn | Comments | 12 | 2-5 min |
+| LinkedIn | Connections | 30 | 1-2 min |
+| LinkedIn | Posts | 1-2 | 6+ hours apart |
+| **Total** | **All actions** | **80-120** | **Stay under ~120** |
+
+**Phase 2: 500-2K Followers (Moderate)**
+
+| Platform | Action | Max/Day |
+|----------|--------|---------|
+| X | Replies | 25 |
+| X | Follows | 20 |
+| X | Likes | 50 |
+| LinkedIn | Comments | 15 |
+
+**Phase 3: 2K+ Followers (Established)**
+
+| Platform | Action | Max/Day |
+|----------|--------|---------|
+| X | Replies | 30 |
+| X | Follows | 20 |
+| X | Likes | 50 |
+| LinkedIn | Comments | 20 |
+
+### Timing Rules
+
+```
+BETWEEN ACTIONS:
+  X replies:          45-120 seconds (random)
+  X follows:          60-180 seconds (random)
+  X likes:            15-45 seconds (random)
+  LinkedIn comments:  2-5 minutes (random)
+  Long break:         Every 3-4 actions, pause 2-5 min
+
+NEVER:
+  ✗ Same reply text to multiple posts
+  ✗ Reply to same account 3+ times per session
+  ✗ Follow then unfollow
+  ✗ Act at perfectly regular intervals
+  ✗ Skip the long breaks
+```
 
 ### Red Flags to Avoid
 - Same reply text to multiple posts

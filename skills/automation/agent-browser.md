@@ -417,18 +417,10 @@ REALISTIC SESSION PATTERN:
 10. Repeat or end session
 ```
 
-### Daily Limits (Conservative)
+### Daily Limits
 
-| Platform | Action | Safe Daily Limit | Spacing |
-|----------|--------|------------------|---------|
-| X | Follows | 30-50 | 30-90 sec each |
-| X | Likes | 50-100 | 10-30 sec each |
-| X | DMs | 10-20 | 2-5 min each |
-| X | Replies | 20-30 | 1-3 min each |
-| LinkedIn | Connections | 30-50 | 1-2 min each |
-| LinkedIn | Messages | 15-25 | 3-5 min each |
-| Instagram | Follows | 30-50 | 30-90 sec each |
-| Instagram | Likes | 50-100 | 10-30 sec each |
+> **Canonical source:** See `strategy/_growth-algorithm.md` > Safety Limits for all rate limits by growth phase.
+> Do not define local limits here — they will drift and conflict.
 
 ---
 
@@ -792,9 +784,12 @@ osascript -e 'tell application "Safari" to do JavaScript "
 
 1. **NEVER use `System Events` keystroke/key code** — it sends input to whatever app is focused, steals screen focus, and interferes with the user's laptop. This includes Cmd+V paste.
 2. **NEVER use `tell application "Safari" to activate`** — this also steals focus.
-3. **ONLY use JavaScript injection** (`do JavaScript` in Safari) for ALL browser interaction. No exceptions.
-4. Use `tell application "Safari" to set URL of ...` for navigation (doesn't steal focus).
-5. Use heredoc `osascript <<'APPLESCRIPT' ... APPLESCRIPT` pattern for multi-line scripts.
+3. **NEVER use `cliclick`** — it moves the physical mouse cursor and interferes with the user's active laptop usage.
+4. **NEVER use any screen automation tool** (cliclick, xdotool, Accessibility APIs, `System Events` click/keystroke) — the user is actively using the laptop.
+5. **ONLY use JavaScript injection** (`do JavaScript` in Safari) for ALL browser interaction. No exceptions.
+6. Use `tell application "Safari" to set URL of ...` for navigation (doesn't steal focus).
+7. Use heredoc `osascript <<'APPLESCRIPT' ... APPLESCRIPT` pattern for multi-line scripts.
+8. For LinkedIn dropdown menus that require trusted events, use the **Voyager API** directly instead of trying to click UI elements.
 
 ---
 
@@ -806,18 +801,33 @@ Different platforms use different editor implementations. Here's what works for 
 
 X uses a Draft.js contentEditable editor. Standard `element.value` or `innerHTML` won't work.
 
+**CRITICAL:** Draft.js requires `click()` + `focus()` + a `setTimeout` delay before `execCommand("insertText")` works. Without the click+delay, Draft.js silently ignores the text because it only enters its editing state after a real click activates its internal handlers.
+
 **Working method:**
 ```bash
 osascript <<'APPLESCRIPT'
 tell application "Safari"
   do JavaScript "
     var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
-    editor.focus();
-    document.execCommand('insertText', false, 'Your tweet text here');
-  " in current tab of window 1
+    if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"]'); editor = editors[editors.length - 1]; }
+    if (editor) {
+      editor.click();
+      editor.focus();
+      setTimeout(function() {
+        document.execCommand('insertText', false, 'Your tweet text here');
+        window._replyLen = editor.innerText.length;
+      }, 300);
+    }
+  " in front document
 end tell
 APPLESCRIPT
 ```
+
+**Verify text injected (wait 1s):**
+```bash
+osascript -e 'tell application "Safari" to do JavaScript "window._replyLen" in front document'
+```
+If result is `1` (empty), the text didn't inject — retry or reload the page.
 
 **To clear and replace text:**
 ```bash
@@ -825,11 +835,16 @@ osascript <<'APPLESCRIPT'
 tell application "Safari"
   do JavaScript "
     var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
-    editor.focus();
-    document.execCommand('selectAll', false, null);
-    document.execCommand('delete', false, null);
-    document.execCommand('insertText', false, 'New tweet text');
-  " in current tab of window 1
+    if (editor) {
+      editor.click();
+      editor.focus();
+      setTimeout(function() {
+        document.execCommand('selectAll', false, null);
+        document.execCommand('delete', false, null);
+        document.execCommand('insertText', false, 'New tweet text');
+      }, 300);
+    }
+  " in front document
 end tell
 APPLESCRIPT
 ```
@@ -844,6 +859,84 @@ APPLESCRIPT
 | Caret menu (tweet options) | `[data-testid="caret"]` |
 | Like button | `[data-testid="like"]` |
 | Follow button | `[data-testid="followButton"]` |
+
+### LinkedIn — TipTap/ProseMirror Editor (Safari)
+
+LinkedIn uses TipTap (ProseMirror) for comment editors: `.tiptap.ProseMirror[contenteditable=true]`.
+
+**CRITICAL SAFETY RULES:**
+1. **NEVER comment from the feed.** The feed DOM shifts as it loads — clicking "Comment" on one post can open the editor for a completely different post. This has caused comments to land on the WRONG POST.
+2. **ALWAYS navigate to the individual post URL first:** `https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/`
+3. **VERIFY post content before commenting** — extract post text, confirm it matches the topic you're commenting on. If it doesn't match, STOP.
+4. **VERIFY comment landed correctly after submitting** — check that your comment appears under the correct post.
+
+**Working method (comment on individual post page):**
+```bash
+# 1. Navigate to individual post (MANDATORY)
+osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"'
+# 2. Wait 4s, verify post content
+# 3. Click Comment button
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50 && btns[i].getBoundingClientRect().y > 0) {
+        btns[i].click(); break;
+      }
+    }
+  " in front document
+end tell
+APPLESCRIPT
+# 4. Wait 2s, inject text into TipTap editor
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+    if (editor) {
+      editor.scrollIntoView({behavior: 'instant', block: 'center'});
+      setTimeout(function() {
+        editor.focus();
+        editor.innerHTML = '<p>Your comment text here</p>';
+        editor.dispatchEvent(new Event('input', {bubbles: true}));
+      }, 500);
+    }
+  " in front document
+end tell
+APPLESCRIPT
+# 5. Submit — find the Comment button BELOW the editor by proximity
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+    var editorBottom = editor.getBoundingClientRect().bottom;
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      var r = btns[i].getBoundingClientRect();
+      if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
+        btns[i].click(); break;
+      }
+    }
+  " in front document
+end tell
+APPLESCRIPT
+```
+
+**LinkedIn post compose (Safari):**
+```bash
+osascript <<'APPLESCRIPT'
+tell application "Safari"
+  do JavaScript "
+    var editor = document.querySelector('.ql-editor[contenteditable=true]');
+    if (editor) {
+      editor.focus();
+      editor.innerHTML = '<p>Your post text here</p>';
+      editor.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+  " in front document
+end tell
+APPLESCRIPT
+```
 
 ### Old Reddit — Simple Textarea
 
