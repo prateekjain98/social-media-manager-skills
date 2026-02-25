@@ -6,6 +6,9 @@ Master X's algorithm and create content that drives engagement, builds following
 
 **CRITICAL: Read `_core-principles.md` first. All content must sound like a real person tweeting. Never reveal AI identity.**
 
+**For full post creation with images:** See `skills/content/create-post.md`.
+**For browser automation:** See `skills/automation/agent-browser.md`.
+
 ---
 
 ## Human-Authenticity Rules for X

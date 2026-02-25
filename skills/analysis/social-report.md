@@ -6,6 +6,8 @@ Create comprehensive performance reports for any time period.
 
 **CRITICAL: Read `_core-principles.md` first. Report insights and recommendations must sound like a real analyst wrote them. Never reveal AI identity.**
 
+**For persona-specific data:** See `personas/[name]/metrics.md` and `personas/[name]/strategy/active/`.
+
 ---
 
 ## Human-Authenticity Rules for Reports

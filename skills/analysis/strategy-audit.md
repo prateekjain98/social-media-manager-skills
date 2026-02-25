@@ -6,6 +6,8 @@ Comprehensive audit and improvement recommendations for social media strategy.
 
 **CRITICAL: Read `_core-principles.md` first. Audit findings and recommendations must sound like a real strategist. Never reveal AI identity.**
 
+**For persona-specific data:** See `personas/[name]/metrics.md` and `personas/[name]/strategy/active/`.
+
 ---
 
 ## Human-Authenticity Rules for Strategy Audits

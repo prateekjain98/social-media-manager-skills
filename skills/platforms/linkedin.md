@@ -6,6 +6,9 @@ Master LinkedIn's algorithm and create content that drives professional engageme
 
 **CRITICAL: Read `_core-principles.md` first. All content must sound like a genuine professional sharing insights. Never reveal AI identity.**
 
+**For full post creation with images:** See `skills/content/create-post.md`.
+**For browser automation:** See `skills/automation/agent-browser.md`.
+
 ---
 
 ## Human-Authenticity Rules for LinkedIn

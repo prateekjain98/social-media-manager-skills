@@ -52,6 +52,9 @@ Deep research across 4 domains:
 | LinkedIn | `skills/platforms/linkedin.md` | LinkedIn automation |
 | Reddit | `skills/platforms/reddit.md` | Reddit automation |
 | Image Sourcing | `skills/content/image-sourcing.md` | Image generation |
+| Create Post | `skills/content/create-post.md` | Full post pipeline (content + images) |
+| Design System | `skills/content/design-system.md` | Image template specs |
+| LinkedIn Templates | `skills/content/templates/linkedin/index.md` | 10 viral templates |
 
 ## Version History
 

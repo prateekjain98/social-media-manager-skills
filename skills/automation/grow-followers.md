@@ -4,7 +4,11 @@
 
 An executable growth session runbook. When invoked, the agent runs all phases sequentially: research → engage → grow → track. No manual steps — everything is automated via Safari JavaScript injection.
 
-**Prerequisites**: Read `_core-principles.md`, persona `_persona.md`, `_growth-algorithm.md`, and `agent-browser.md` Critical Safari Rules before executing.
+**Prerequisites**: Read these before executing:
+- `strategy/_core-principles.md` — anti-AI detection rules
+- `personas/[name]/strategy/active/_persona.md` — persona identity and voice
+- `strategy/_growth-algorithm.md` — canonical safety limits, content review gate
+- `skills/automation/agent-browser.md` — Critical Safari Rules section
 
 ---
 
@@ -463,6 +467,8 @@ If NOT_FOUND, check if the comment ended up somewhere else and delete it.
 ## PHASE 2B — ORIGINAL CONTENT (15-20 min)
 
 Post 2-3 original posts per session. This is the **#1 lever for follower conversion** — replies get visibility but original content gives people a reason to follow.
+
+> **For posts with images/infographics:** Use `skills/content/create-post.md` (Phase 4) for template selection, filling, and screenshot generation. Templates are in `skills/content/templates/linkedin/`, design specs in `skills/content/design-system.md`.
 
 ### Research Before Writing
 

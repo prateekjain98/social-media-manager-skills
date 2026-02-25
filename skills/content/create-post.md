@@ -211,7 +211,12 @@ Titles are just words. The actual question is: are you doing work that makes you
 
 ### Template Picker
 
-Match your post content to a proven template from `skills/content/templates/linkedin/`:
+Match your post content to a proven template from `skills/content/templates/linkedin/`.
+
+**References:**
+- **Template index & viral data:** `skills/content/templates/linkedin/index.md`
+- **Design system (colors, typography, spacing):** `skills/content/design-system.md`
+- **Image generation tool:** `.context/screenshot.js`
 
 | Post has... | Template | Source file |
 |---|---|---|

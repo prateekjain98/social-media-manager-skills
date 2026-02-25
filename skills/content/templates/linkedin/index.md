@@ -2,6 +2,11 @@
 
 10 templates based on actual viral LinkedIn posts, researched via Safari browser in Feb 2026.
 
+**Related files:**
+- **Design system:** `skills/content/design-system.md` (colors, typography, spacing rules)
+- **Template picker & workflow:** `skills/content/create-post.md` (Phase 4)
+- **Screenshot tool:** `.context/screenshot.js` — run `cd .context && node screenshot.js path/to/template.html`
+
 ## Templates
 
 ### 01 — Leadership Quote

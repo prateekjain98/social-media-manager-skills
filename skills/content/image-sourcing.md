@@ -136,53 +136,40 @@ curl -L "$OG_IMAGE" -o /tmp/article_image.jpg
 
 > **For LinkedIn/X posts: ALWAYS use the proven templates in `skills/content/templates/linkedin/`.**
 > See `skills/content/create-post.md` Phase 4 for the template picker and filling instructions.
+> See `skills/content/design-system.md` for color palette, typography, and spacing rules.
+> See `skills/content/templates/linkedin/index.md` for template descriptions and viral engagement data.
 > Do NOT generate HTML from scratch — adapt an existing template.
 
 Browser-quality rendering with anti-aliasing, kerning, and subpixel text. Uses HTML templates + Playwright to generate PNG screenshots.
 
 ### Setup
 
-Save this as `.context/screenshot.js`:
+The screenshot tool lives at `.context/screenshot.js`. It supports two modes:
+
+1. **Single-file mode (primary):** `node screenshot.js path/to/filled-template.html` — auto-detects dimensions from the HTML body style
+2. **Batch mode:** `node screenshot.js` with no args — screenshots all templates in the array
 
 ```javascript
 const { chromium } = require('/Users/prateekjain/.nvm/versions/node/v22.14.0/lib/node_modules/playwright');
 const path = require('path');
 const fs = require('fs');
 
+// Canonical templates: skills/content/templates/linkedin/
+// Paths relative to .context/ (where this script lives)
+const TEMPLATE_DIR = '../skills/content/templates/linkedin';
+
 const templates = [
-  // LinkedIn (10)
-  { file: 'templates/linkedin-01-stat-card.html', width: 1080, height: 1350 },
-  { file: 'templates/linkedin-02-comparison.html', width: 1080, height: 1080 },
-  { file: 'templates/linkedin-03-framework.html', width: 1080, height: 1080 },
-  { file: 'templates/linkedin-04-myth-reality.html', width: 1080, height: 1350 },
-  { file: 'templates/linkedin-05-quote.html', width: 1080, height: 1350 },
-  { file: 'templates/linkedin-06-dashboard.html', width: 1080, height: 1080 },
-  { file: 'templates/linkedin-07-listicle.html', width: 1080, height: 1350 },
-  { file: 'templates/linkedin-08-before-after.html', width: 1080, height: 1350 },
-  { file: 'templates/linkedin-09-checklist.html', width: 1080, height: 1080 },
-  { file: 'templates/linkedin-10-bold-statement.html', width: 1080, height: 1080 },
-  // Twitter (10)
-  { file: 'templates/twitter-01-hot-take.html', width: 1600, height: 900 },
-  { file: 'templates/twitter-02-data-chart.html', width: 1080, height: 1080 },
-  { file: 'templates/twitter-03-terminal.html', width: 1600, height: 900 },
-  { file: 'templates/twitter-04-thread-starter.html', width: 1600, height: 900 },
-  { file: 'templates/twitter-05-single-stat.html', width: 1080, height: 1080 },
-  { file: 'templates/twitter-06-quote.html', width: 1600, height: 900 },
-  { file: 'templates/twitter-07-comparison.html', width: 1600, height: 900 },
-  { file: 'templates/twitter-08-fake-tweet.html', width: 1200, height: 675 },
-  { file: 'templates/twitter-09-tip-card.html', width: 1080, height: 1080 },
-  { file: 'templates/twitter-10-kpi-dashboard.html', width: 1600, height: 900 },
-  // Reddit (10)
-  { file: 'templates/reddit-01-data-viz.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-02-cool-guide.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-03-comparison-table.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-04-terminal.html', width: 1200, height: 900 },
-  { file: 'templates/reddit-05-tldr.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-06-flowchart.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-07-myth-busting.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-08-annotated-chart.html', width: 1200, height: 900 },
-  { file: 'templates/reddit-09-research-summary.html', width: 1080, height: 1080 },
-  { file: 'templates/reddit-10-scorecard.html', width: 1080, height: 1080 },
+  // LinkedIn — 1080x1080 dark-mode infographics (see skills/content/design-system.md)
+  { file: `${TEMPLATE_DIR}/01-leadership-quote.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/02-work-sustainability.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/03-office-vs-remote.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/04-chatgpt-distribution.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/05-salary-guide.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/06-secret-websites.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/07-resignation-redflags.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/08-resume-email.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/09-interview-mistakes.html`, width: 1080, height: 1080 },
+  { file: `${TEMPLATE_DIR}/10-ai-cheatsheet.html`, width: 1080, height: 1080 },
 ];
 
 const singleFile = process.argv[2];

@@ -6,6 +6,9 @@ Master Reddit's unique community-driven platform to build authentic brand presen
 
 **CRITICAL: Read `_core-principles.md` first. Reddit users are HIGHLY sensitive to marketing. All content must be genuinely valuable and never promotional. Never reveal AI identity—Reddit will destroy you.**
 
+**For full post creation with images:** See `skills/content/create-post.md`.
+**For browser automation:** See `skills/automation/agent-browser.md`.
+
 ---
 
 ## Human-Authenticity Rules for Reddit

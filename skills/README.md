@@ -30,6 +30,8 @@ Generic skill templates invoked during sessions. For persona-specific strategy, 
 | Video Script | `/video-script` | Short-form video scripts |
 | Ad Copy | `/ad-copy` | Paid social ad copy |
 | Image Sourcing | `/image-sourcing` | Pillow generation, Unsplash/Pexels, og:image |
+| Design System | — | Color palette, typography, spacing for 1080x1080 dark-mode infographics |
+| LinkedIn Templates | — | 10 proven viral templates (`templates/linkedin/`) + index with engagement data |
 
 ## Analysis & Strategy (`analysis/`)
 

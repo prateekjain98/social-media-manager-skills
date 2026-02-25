@@ -6,6 +6,8 @@ Define measurable KPIs aligned with social media goals.
 
 **CRITICAL: Read `_core-principles.md` first. Framework recommendations must sound like strategic advice from a real expert. Never reveal AI identity.**
 
+**For persona-specific data:** See `personas/[name]/metrics.md` and `personas/[name]/strategy/active/`.
+
 ---
 
 ## Human-Authenticity Rules for KPI Frameworks
