@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+.swipe {
+  position: absolute;
+  bottom: 40px;
+  left: 88px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(249,115,22,0.5);
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">1/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div style="font-size: 160px; font-weight: 900; color: #f97316; line-height: 0.85; letter-spacing: -6px;">
+      276K
+    </div>
+    <div style="font-size: 46px; font-weight: 800; color: #f0f6fc; line-height: 1.25; letter-spacing: -1px;">
+      tech workers were<br>
+      replaced by AI<br>
+      in the last 2 years.
+    </div>
+    <div style="width: 64px; height: 3px; background: #334155; margin: 8px 0;"></div>
+    <div style="font-size: 28px; font-weight: 500; color: #94a3b8; line-height: 1.5;">
+      Here's what actually happened next.<br>
+      The data tells a story nobody expected.
+    </div>
+  </div>
+
+  <div class="swipe">SWIPE →</div>
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

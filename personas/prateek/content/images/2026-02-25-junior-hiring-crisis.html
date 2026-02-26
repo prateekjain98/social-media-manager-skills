@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1080px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 88px 72px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle gradient glow */
+body::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(249,115,22,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.block {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Top stat */
+.stat-top {
+  margin-bottom: 24px;
+}
+
+.big-number {
+  font-size: 160px;
+  font-weight: 900;
+  color: #f97316;
+  line-height: 0.9;
+  letter-spacing: -6px;
+}
+
+.big-context {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e2e8f0;
+  line-height: 1.3;
+  margin-top: 12px;
+}
+
+.big-context span {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Divider */
+.divider {
+  width: 80px;
+  height: 2px;
+  background: #334155;
+  margin: 48px auto;
+}
+
+/* Bottom stat */
+.stat-bottom {
+  margin-top: 0;
+}
+
+.medium-number {
+  font-size: 120px;
+  font-weight: 900;
+  color: #f0f6fc;
+  line-height: 0.9;
+  letter-spacing: -4px;
+}
+
+.medium-context {
+  font-size: 30px;
+  font-weight: 700;
+  color: #e2e8f0;
+  line-height: 1.3;
+  margin-top: 12px;
+}
+
+.medium-context span {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Example callout */
+.example {
+  margin-top: 40px;
+  background: rgba(249,115,22,0.06);
+  border: 1px solid rgba(249,115,22,0.12);
+  border-radius: 12px;
+  padding: 20px 32px;
+  font-size: 20px;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.example strong {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+/* Source + handle */
+.source {
+  position: absolute;
+  bottom: 32px;
+  left: 88px;
+  font-size: 13px;
+  color: rgba(148,163,184,0.35);
+}
+
+.handle {
+  position: absolute;
+  bottom: 32px;
+  right: 88px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+
+  <div class="block">
+    <div class="stat-top">
+      <div class="big-number">276K</div>
+      <div class="big-context">tech workers replaced by AI <span>in 2 years</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-bottom">
+      <div class="medium-number">55%</div>
+      <div class="medium-context">of those companies <span>already regret it</span></div>
+    </div>
+
+    <div class="example"><strong>Klarna</strong> replaced 700 employees with AI. Quality crashed. They're rehiring humans.</div>
+  </div>
+
+  <div class="source">Layoffs.fyi · Forrester Predictions 2026</div>
+  <div class="handle">prateekjain98</div>
+
+</body>
+</html>

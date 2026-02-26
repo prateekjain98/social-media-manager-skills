@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">6/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 48px;">
+    <div style="font-size: 40px; font-weight: 800; color: #f0f6fc; line-height: 1.2; letter-spacing: -0.5px;">
+      The salary gap is<br>getting <span style="color: #f97316;">brutal.</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <!-- Without AI -->
+      <div style="background: #1e293b; border-radius: 16px; padding: 40px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: #f85149;"></div>
+        <div style="font-size: 18px; font-weight: 700; color: #f85149; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;">Software Engineer</div>
+        <div style="font-size: 56px; font-weight: 900; color: #e2e8f0; letter-spacing: -2px;">$105K</div>
+        <div style="font-size: 20px; color: #64748b; margin-top: 8px;">Median. Flat growth. Shrinking demand.</div>
+      </div>
+
+      <div style="text-align: center; font-size: 16px; font-weight: 800; color: #334155; letter-spacing: 4px;">SAME PERSON + AI SKILLS</div>
+
+      <!-- With AI -->
+      <div style="background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.12); border-radius: 16px; padding: 40px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: #3fb950;"></div>
+        <div style="font-size: 18px; font-weight: 700; color: #3fb950; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;">AI / ML Engineer</div>
+        <div style="font-size: 56px; font-weight: 900; color: #e2e8f0; letter-spacing: -2px;">$157K</div>
+        <div style="font-size: 20px; color: #64748b; margin-top: 8px;">Median. 41.8% YoY growth. Exploding demand.</div>
+      </div>
+    </div>
+
+    <div style="background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.1); border-radius: 12px; padding: 28px 36px; text-align: center;">
+      <div style="font-size: 48px; font-weight: 900; color: #f97316; letter-spacing: -2px;">+56%</div>
+      <div style="font-size: 22px; color: #94a3b8; margin-top: 8px; font-weight: 500;">salary premium for specialized AI skills (PwC)</div>
+    </div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

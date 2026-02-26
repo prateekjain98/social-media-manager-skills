@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">5/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 48px;">
+    <div style="font-size: 40px; font-weight: 800; color: #f0f6fc; line-height: 1.2; letter-spacing: -0.5px;">
+      But here's the<br><span style="color: #f97316;">real twist.</span>
+    </div>
+
+    <div style="font-size: 26px; color: #94a3b8; font-weight: 500; line-height: 1.5;">
+      While 276K people lost their jobs...
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.15); border-radius: 16px; padding: 36px 40px;">
+        <div style="font-size: 72px; font-weight: 900; color: #3fb950; line-height: 0.9; letter-spacing: -3px;">+143%</div>
+        <div style="font-size: 22px; color: #94a3b8; margin-top: 12px; font-weight: 500;">Growth in AI engineer job postings YoY</div>
+      </div>
+
+      <div style="background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.15); border-radius: 16px; padding: 36px 40px;">
+        <div style="font-size: 72px; font-weight: 900; color: #3fb950; line-height: 0.9; letter-spacing: -3px;">$157K</div>
+        <div style="font-size: 22px; color: #94a3b8; margin-top: 12px; font-weight: 500;">Median salary for AI roles. 25% above market.</div>
+      </div>
+
+      <div style="background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.15); border-radius: 16px; padding: 36px 40px;">
+        <div style="font-size: 72px; font-weight: 900; color: #3fb950; line-height: 0.9; letter-spacing: -3px;">+400%</div>
+        <div style="font-size: 22px; color: #94a3b8; margin-top: 12px; font-weight: 500;">Surge in job postings mentioning "AI" in 2 years</div>
+      </div>
+    </div>
+
+    <div style="font-size: 16px; color: rgba(148,163,184,0.35);">Sources: Veritone · PwC · WEF</div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

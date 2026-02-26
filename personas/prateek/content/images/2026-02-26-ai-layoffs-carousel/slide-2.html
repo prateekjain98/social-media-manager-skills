@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+.title {
+  font-size: 40px;
+  font-weight: 800;
+  color: #f0f6fc;
+  line-height: 1.2;
+  margin-bottom: 56px;
+  letter-spacing: -0.5px;
+}
+.title em {
+  font-style: normal;
+  color: #f97316;
+}
+.company {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 28px 0;
+  border-bottom: 1px solid #1e293b;
+}
+.company:first-child {
+  border-top: 1px solid #1e293b;
+}
+.company-num {
+  font-size: 48px;
+  font-weight: 900;
+  color: #f85149;
+  min-width: 180px;
+  letter-spacing: -2px;
+}
+.company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.company-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+.company-detail {
+  font-size: 20px;
+  color: #64748b;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">2/8</div>
+
+  <div class="title">The companies that made<br>the <em>biggest cuts</em></div>
+
+  <div>
+    <div class="company">
+      <div class="company-num">30,000</div>
+      <div class="company-info">
+        <div class="company-name">Amazon</div>
+        <div class="company-detail">Corporate roles, 2025-2026. Cited "AI-driven efficiency."</div>
+      </div>
+    </div>
+    <div class="company">
+      <div class="company-num">5,000</div>
+      <div class="company-info">
+        <div class="company-name">Salesforce</div>
+        <div class="company-detail">Support roles. AI handles 50% of customer interactions now.</div>
+      </div>
+    </div>
+    <div class="company">
+      <div class="company-num">1,500</div>
+      <div class="company-info">
+        <div class="company-name">Meta</div>
+        <div class="company-detail">Reality Labs. Feb 2026. Pivoting resources to AI.</div>
+      </div>
+    </div>
+    <div class="company">
+      <div class="company-num">700</div>
+      <div class="company-info">
+        <div class="company-name">Klarna</div>
+        <div class="company-detail">Customer service. Replaced entire teams with AI agents.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px; font-size: 22px; color: #64748b; line-height: 1.5;">
+    That's <span style="color: #f85149; font-weight: 800;">427 tech layoffs per day</span> in the first half of 2025.
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

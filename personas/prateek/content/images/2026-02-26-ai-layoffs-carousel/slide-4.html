@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">4/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 48px;">
+    <div style="font-size: 40px; font-weight: 800; color: #f0f6fc; line-height: 1.2; letter-spacing: -0.5px;">
+      Then something<br>unexpected happened.
+    </div>
+
+    <div style="font-size: 140px; font-weight: 900; color: #f97316; line-height: 0.85; letter-spacing: -5px;">
+      55%
+    </div>
+    <div style="font-size: 32px; font-weight: 700; color: #e2e8f0; line-height: 1.3; margin-top: -16px;">
+      of companies that replaced<br>workers with AI <span style="color: #f97316;">regret it.</span>
+    </div>
+
+    <div style="width: 64px; height: 3px; background: #334155;"></div>
+
+    <div style="background: #1e293b; border-radius: 16px; padding: 36px 40px; display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-size: 28px; font-weight: 800; color: #f0f6fc;">Klarna</div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 22px; color: #94a3b8; line-height: 1.5;">
+          <span style="color: #f85149; font-weight: 700;">Fired</span> 700 customer service employees.
+        </div>
+        <div style="font-size: 22px; color: #94a3b8; line-height: 1.5;">
+          <span style="color: #eab308; font-weight: 700;">Deployed</span> AI agents to replace them.
+        </div>
+        <div style="font-size: 22px; color: #94a3b8; line-height: 1.5;">
+          <span style="color: #f85149; font-weight: 700;">Quality crashed.</span> Customers revolted.
+        </div>
+        <div style="font-size: 22px; color: #94a3b8; line-height: 1.5;">
+          <span style="color: #3fb950; font-weight: 700;">Now rehiring</span> humans.
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size: 16px; color: rgba(148,163,184,0.35);">Source: Forrester Predictions 2026</div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

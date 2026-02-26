@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">3/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 48px;">
+    <div style="font-size: 40px; font-weight: 800; color: #f0f6fc; line-height: 1.2; letter-spacing: -0.5px;">
+      It's not just juniors.<br>
+      <span style="color: #f97316;">It's everyone.</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <!-- Bar 1 -->
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="font-size: 22px; font-weight: 600; color: #e2e8f0;">Entry-level tech postings</span>
+          <span style="font-size: 22px; font-weight: 800; color: #f85149;">-67%</span>
+        </div>
+        <div style="width: 100%; height: 48px; background: #1e293b; border-radius: 8px; overflow: hidden;">
+          <div style="width: 33%; height: 100%; background: linear-gradient(90deg, #f85149, #dc2626); border-radius: 8px;"></div>
+        </div>
+      </div>
+      <!-- Bar 2 -->
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="font-size: 22px; font-weight: 600; color: #e2e8f0;">Mid-level roles using AI tools</span>
+          <span style="font-size: 22px; font-weight: 800; color: #f85149;">-36%</span>
+        </div>
+        <div style="width: 100%; height: 48px; background: #1e293b; border-radius: 8px; overflow: hidden;">
+          <div style="width: 64%; height: 100%; background: linear-gradient(90deg, #f97316, #ea580c); border-radius: 8px;"></div>
+        </div>
+      </div>
+      <!-- Bar 3 -->
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="font-size: 22px; font-weight: 600; color: #e2e8f0;">Senior/staff cuts at Big Tech</span>
+          <span style="font-size: 22px; font-weight: 800; color: #eab308;">-18%</span>
+        </div>
+        <div style="width: 100%; height: 48px; background: #1e293b; border-radius: 8px; overflow: hidden;">
+          <div style="width: 82%; height: 100%; background: linear-gradient(90deg, #eab308, #ca8a04); border-radius: 8px;"></div>
+        </div>
+      </div>
+      <!-- Bar 4 -->
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="font-size: 22px; font-weight: 600; color: #e2e8f0;">Customer support (all levels)</span>
+          <span style="font-size: 22px; font-weight: 800; color: #f85149;">-85%</span>
+        </div>
+        <div style="width: 100%; height: 48px; background: #1e293b; border-radius: 8px; overflow: hidden;">
+          <div style="width: 15%; height: 100%; background: linear-gradient(90deg, #f85149, #991b1b); border-radius: 8px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size: 26px; color: #94a3b8; line-height: 1.5; font-weight: 500;">
+      <span style="color: #e2e8f0; font-weight: 700;">49% of US companies</span> using AI<br>have already replaced workers.
+    </div>
+
+    <div style="font-size: 16px; color: rgba(148,163,184,0.35);">Sources: SignalFire · Challenger Gray · WEF Future of Jobs 2025</div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

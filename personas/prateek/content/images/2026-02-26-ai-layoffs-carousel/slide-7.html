@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">7/8</div>
+
+  <div style="display: flex; flex-direction: column; gap: 56px;">
+    <div style="font-size: 40px; font-weight: 800; color: #f0f6fc; line-height: 1.2; letter-spacing: -0.5px;">
+      The cycle nobody<br>is <span style="color: #f97316;">breaking.</span>
+    </div>
+
+    <!-- The cycle -->
+    <div style="display: flex; flex-direction: column; gap: 0;">
+      <div style="display: flex; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid #1e293b;">
+        <div style="width: 56px; height: 56px; background: rgba(248,81,73,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #f85149; flex-shrink: 0;">1</div>
+        <div style="font-size: 26px; font-weight: 600; color: #e2e8f0;">Company fires workers. "AI will handle it."</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid #1e293b;">
+        <div style="width: 56px; height: 56px; background: rgba(234,179,8,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #eab308; flex-shrink: 0;">2</div>
+        <div style="font-size: 26px; font-weight: 600; color: #e2e8f0;">AI can't actually do the full job yet.</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid #1e293b;">
+        <div style="width: 56px; height: 56px; background: rgba(248,81,73,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #f85149; flex-shrink: 0;">3</div>
+        <div style="font-size: 26px; font-weight: 600; color: #e2e8f0;">Quality drops. Revenue suffers.</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid #1e293b;">
+        <div style="width: 56px; height: 56px; background: rgba(63,185,80,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #3fb950; flex-shrink: 0;">4</div>
+        <div style="font-size: 26px; font-weight: 600; color: #e2e8f0;">Quietly rehire. Offshore. Lower pay.</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; padding: 28px 0;">
+        <div style="width: 56px; height: 56px; background: rgba(249,115,22,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #f97316; flex-shrink: 0;">5</div>
+        <div style="font-size: 26px; font-weight: 600; color: #e2e8f0;">Announce more AI layoffs next quarter.</div>
+      </div>
+    </div>
+
+    <div style="font-size: 28px; color: #94a3b8; line-height: 1.5; font-weight: 500;">
+      <span style="color: #f97316; font-weight: 700;">37% of companies</span> still plan to replace<br>more workers with AI by end of 2026.
+    </div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px;
+  height: 1350px;
+  background: #0f172a;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 88px;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+}
+.slide-num {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(148,163,184,0.3);
+}
+.handle {
+  position: absolute;
+  bottom: 40px;
+  right: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(240,246,252,0.2);
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+  <div class="slide-num">8/8</div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 48px;">
+    <div style="font-size: 46px; font-weight: 800; color: #f0f6fc; line-height: 1.25; letter-spacing: -1px;">
+      The people getting fired<br>
+      and the people getting hired<br>
+      have the <span style="color: #f97316;">same job title.</span>
+    </div>
+
+    <div style="width: 80px; height: 3px; background: #334155;"></div>
+
+    <div style="font-size: 32px; color: #94a3b8; line-height: 1.5; font-weight: 500;">
+      The only difference is<br>
+      who learned to work <span style="color: #f97316; font-weight: 700;">with</span> AI<br>
+      and who got replaced <span style="color: #f85149; font-weight: 700;">by</span> it.
+    </div>
+
+    <div style="width: 80px; height: 3px; background: #334155;"></div>
+
+    <div style="font-size: 22px; color: #64748b; line-height: 1.6; font-weight: 500;">
+      Found this useful? Share it with<br>someone who needs to see these numbers.
+    </div>
+
+    <div style="margin-top: 16px; font-size: 28px; font-weight: 800; color: #f97316;">
+      Follow @prateekjain98
+    </div>
+  </div>
+
+  <div class="handle">prateekjain98</div>
+</body>
+</html>
