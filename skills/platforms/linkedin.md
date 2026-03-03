@@ -209,96 +209,65 @@ HASHTAGS: #tag1 #tag2 #tag3
 3. **VERIFY post content before commenting** — extract post text, confirm it matches the topic.
 4. **VERIFY comment landed correctly after submitting.**
 
-For Safari-based automation patterns, see `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor (Safari)" section.
+For automation patterns, see `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor" section.
 
 ### Important: LinkedIn uses contenteditable divs, NOT standard textboxes
 LinkedIn's comment and post editors are rich-text `contenteditable` divs. The standard `fill` and `type` commands will FAIL on them. You MUST use JavaScript injection via `eval` to set content.
 
 ### How to Comment on a LinkedIn Post
 
-**Safari (macOS) — preferred method. See `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor (Safari)" for full patterns.**
+See `agent-browser.md` > "LinkedIn — TipTap/ProseMirror Editor" for full patterns.
 
 ```bash
 # 1. MANDATORY: Navigate to the INDIVIDUAL POST URL (never comment from feed/search)
-osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"'
+agent-browser --cdp PORT open "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"
 
 # 2. Wait 4s, then VERIFY post content matches your intent
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var main = document.querySelector('main');
-    main ? main.innerText.substring(0, 500) : 'PAGE_NOT_LOADED';
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var main = document.querySelector('main');
+  main ? main.innerText.substring(0, 500) : 'PAGE_NOT_LOADED';
+"
 # CHECK: Does the post text match the topic? If NOT, STOP.
 
 # 3. Click the Comment button to open the editor
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50) {
-        btns[i].click(); break;
-      }
+agent-browser --cdp PORT eval "
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50) {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
 
 # 4. Wait 2s, find TipTap/ProseMirror editor, scroll to it, inject text
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    if (editor) {
-      editor.scrollIntoView({behavior: 'instant', block: 'center'});
-      setTimeout(function() {
-        editor.focus();
-        editor.innerHTML = '<p>Your comment text here</p>';
-        editor.dispatchEvent(new Event('input', {bubbles: true}));
-        window._commentLen = editor.innerText.length;
-      }, 500);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  if (editor) {
+    editor.scrollIntoView({behavior: 'instant', block: 'center'});
+    setTimeout(function() {
+      editor.focus();
+      editor.innerHTML = '<p>Your comment text here</p>';
+      editor.dispatchEvent(new Event('input', {bubbles: true}));
+      window._commentLen = editor.innerText.length;
+    }, 500);
+  }
+"
 
 # 5. Wait 1s, click submit button (the "Comment" button BELOW the editor)
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    var editorBottom = editor.getBoundingClientRect().bottom;
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      var r = btns[i].getBoundingClientRect();
-      if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
-        btns[i].click(); break;
-      }
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  var editorBottom = editor.getBoundingClientRect().bottom;
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    var r = btns[i].getBoundingClientRect();
+    if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
 
 # 6. VERIFY comment landed correctly
 # Wait 2s, check your comment appears on the post
-```
-
-**Chrome CDP — requires Chrome running with `--remote-debugging-port=9222`:**
-
-```bash
-# Same mandatory workflow: navigate to post URL → verify content → comment → verify
-agent-browser --cdp 9222 open "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"
-sleep 3 && agent-browser --cdp 9222 snapshot
-# CHECK: Does the post text match? If NOT, STOP.
-agent-browser --cdp 9222 click @[COMMENT_BUTTON]
-sleep 2 && agent-browser --cdp 9222 snapshot
-agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your comment</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
-agent-browser --cdp 9222 click @[SUBMIT_BUTTON]
-sleep 3 && agent-browser --cdp 9222 snapshot
-# VERIFY: Comment appears under the correct post
 ```
 
 ### Key Gotchas
@@ -314,59 +283,37 @@ sleep 3 && agent-browser --cdp 9222 snapshot
 
 ### How to Post on LinkedIn
 
-**Safari (macOS) — preferred method:**
-
 ```bash
 # 1. Navigate to feed
-osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/"'
+agent-browser --cdp PORT open "https://www.linkedin.com/feed/"
 
 # 2. Wait 3s, click "Start a post" button
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btn = document.querySelector('button.share-box-feed-entry__trigger');
-    if (!btn) {
-      var btns = document.querySelectorAll('button');
-      for (var i = 0; i < btns.length; i++) {
-        if (btns[i].textContent.indexOf('Start a post') !== -1) { btn = btns[i]; break; }
-      }
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('button.share-box-feed-entry__trigger');
+  if (!btn) {
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent.indexOf('Start a post') !== -1) { btn = btns[i]; break; }
     }
-    if (btn) btn.click();
-  " in front document
-end tell
-APPLESCRIPT
+  }
+  if (btn) btn.click();
+"
 
 # 3. Wait 2s for compose modal, inject text into .ql-editor
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.ql-editor[contenteditable=true]');
-    if (editor) {
-      editor.focus();
-      editor.innerHTML = '<p>Your post content here</p>';
-      editor.dispatchEvent(new Event('input', {bubbles: true}));
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('.ql-editor[contenteditable=true]');
+  if (editor) {
+    editor.focus();
+    editor.innerHTML = '<p>Your post content here</p>';
+    editor.dispatchEvent(new Event('input', {bubbles: true}));
+  }
+"
 
 # 4. Click the Post button
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btn = document.querySelector('button.share-actions__primary-action');
-    if (btn) btn.click();
-  " in front document
-end tell
-APPLESCRIPT
-```
-
-**Chrome CDP:**
-
-```bash
-agent-browser --cdp 9222 open "https://www.linkedin.com/feed/"
-# Click "Start a post", wait for modal, use eval to fill .ql-editor, click Post
-agent-browser --cdp 9222 eval "const el = document.querySelector('[contenteditable=true]'); el.focus(); el.innerHTML = '<p>Your post</p>'; el.dispatchEvent(new Event('input', {bubbles: true}));"
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('button.share-actions__primary-action');
+  if (btn) btn.click();
+"
 ```
 
 ### Distinguishing Elements on LinkedIn Search Results

@@ -17,7 +17,7 @@ Accept one of:
 - "Create a viral post" (requires trend discovery first)
 
 ### If no topic given — Discover trending content
-1. Browse LinkedIn feed via Safari/Chrome to find posts with high engagement (500+ reactions)
+1. Browse LinkedIn feed via agent-browser to find posts with high engagement (500+ reactions)
 2. Check Hacker News, TechMeme, or X trending for AI/tech news
 3. Look for posts from target accounts: @karpathy, @sama, @lennysan, @levelsio, @GregIsenberg
 4. Pick something Prateek can add a unique angle to from real production experience
@@ -270,7 +270,7 @@ After generating the PNG, READ the image file to verify:
 
 ### LinkedIn Posting
 
-> **On macOS, use Safari/AppleScript.** See `platforms/linkedin.md` > "How to Post on LinkedIn" for both Safari and CDP patterns.
+> See `platforms/linkedin.md` > "How to Post on LinkedIn" for agent-browser automation patterns.
 
 1. Navigate to LinkedIn feed
 2. Click "Start a post"
@@ -278,7 +278,7 @@ After generating the PNG, READ the image file to verify:
 4. Upload image via DataTransfer on `input[type=file]`
 5. Click "Post"
 
-### X Posting (via Safari AppleScript)
+### X Posting (via agent-browser)
 
 1. Navigate to X compose
 2. Use `document.execCommand('insertText')` for Draft.js editor

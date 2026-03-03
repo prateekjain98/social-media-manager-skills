@@ -2,26 +2,26 @@
 
 ## Skill: `/grow-followers`
 
-An executable growth session runbook. When invoked, the agent runs all phases sequentially: research → engage → grow → track. No manual steps — everything is automated via Safari JavaScript injection.
+An executable growth session runbook. When invoked, the agent runs all phases sequentially: research → engage → grow → track. No manual steps — everything is automated via agent-browser + CloakBrowser.
 
 **Prerequisites**: Read these before executing:
 - `strategy/_core-principles.md` — anti-AI detection rules
 - `personas/[name]/strategy/active/_persona.md` — persona identity and voice
 - `strategy/_growth-algorithm.md` — canonical safety limits, content review gate
-- `skills/automation/agent-browser.md` — Critical Safari Rules section
+- `skills/automation/agent-browser.md` — CloakBrowser setup, command reference, platform text input patterns
 
 ---
 
 ## CRITICAL AUTOMATION RULES
 
-- **ONLY** use `osascript -e 'tell application "Safari" to do JavaScript "..." in front document'` for ALL browser interaction
+- **ONLY** use `agent-browser --cdp PORT` commands for ALL browser interaction
+- Launch CloakBrowser instances with `node launch-browser.mjs <persona> <platform> [port]`
 - **NEVER** use System Events, cliclick, AppleScript `activate`, or any focus/keyboard/mouse stealing
-- **NEVER** use `tell application "Safari" to activate` — steals focus
-- Navigation: `tell application "Safari" to set URL of front document to "..."` (doesn't steal focus)
-- All text input via JS: Draft.js `execCommand` for X, `innerHTML` on `.ql-editor` for LinkedIn
-- All clicks via JS: `.click()` on DOM elements
-- All file uploads via `DataTransfer` API on `input[type=file]`
-- **Apostrophe escaping**: When using `osascript -e '...'`, apostrophes/single-quotes in text will break the shell quoting. Either use `heredoc` (`osascript <<'APPLESCRIPT'`) or replace `'` with backtick/remove from text. Write `"does not"` instead of `"doesn't"`.
+- **NEVER** use `osascript` or Safari — CloakBrowser is the only browser
+- Navigation: `agent-browser --cdp PORT open "URL"`
+- JavaScript execution: `agent-browser --cdp PORT eval "JS_CODE"`
+- All text input via JS eval: Draft.js `execCommand` for X, `innerHTML` on `.tiptap.ProseMirror` for LinkedIn
+- All clicks via JS eval: `.click()` on DOM elements, or `agent-browser --cdp PORT click @REF`
 - **X text injection requires click+focus+delay**: `editor.click(); editor.focus(); setTimeout(() => execCommand("insertText", false, text), 300)`. Without this, Draft.js silently ignores the text.
 - **Verify after injection**: Check `editor.innerText.length` — if it's `1`, text didn't inject. Retry or reload page.
 - **LinkedIn: ALWAYS navigate to the individual post URL first** — NEVER comment from the feed. The feed DOM shifts as it loads, and clicking "Comment" on one post can open the editor for a completely different post. Navigate to `https://www.linkedin.com/feed/update/urn:li:activity:XXXXXXX/` first, then comment.
@@ -71,20 +71,20 @@ Execute steps sequentially. Collect all targets before engaging.
 Navigate and extract recent notifications for reciprocal engagement:
 
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/notifications"'
+agent-browser --cdp PORT open "https://x.com/notifications"
 ```
 
 Wait 4 seconds, then extract:
 
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  JSON.stringify(Array.from(document.querySelectorAll(\"article\")).slice(0,10).map(function(el) {
+agent-browser --cdp PORT eval "
+  JSON.stringify(Array.from(document.querySelectorAll('article')).slice(0,10).map(function(el) {
     return {
-      text: (el.textContent || \"\").substring(0, 200).replace(/\\s+/g, \" \"),
-      link: (el.querySelector(\"a[href*=/status/]\") || {}).href || \"\"
+      text: (el.textContent || '').substring(0, 200).replace(/\s+/g, ' '),
+      link: (el.querySelector('a[href*=\"/status/\"]') || {}).href || ''
     };
   }))
-" in front document'
+"
 ```
 
 Flag any notifications that need a reply (someone replied to your post, quote-tweeted you, etc.).
@@ -114,20 +114,20 @@ https://x.com/search?q=min_faves%3A1000%20(AI%20OR%20Claude%20OR%20GPT%20OR%20ag
 
 **Extraction pattern for each search:**
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  JSON.stringify(Array.from(document.querySelectorAll(\"article\")).slice(0,10).map(function(el) {
-    var tweetText = el.querySelector(\"[data-testid=tweetText]\");
-    var userLink = el.querySelector(\"a[href*=/status/]\");
-    var likeBtn = el.querySelector(\"[data-testid=like] span, [data-testid=unlike] span\");
-    var replyBtn = el.querySelector(\"[data-testid=reply] span\");
+agent-browser --cdp PORT eval "
+  JSON.stringify(Array.from(document.querySelectorAll('article')).slice(0,10).map(function(el) {
+    var tweetText = el.querySelector('[data-testid=\"tweetText\"]');
+    var userLink = el.querySelector('a[href*=\"/status/\"]');
+    var likeBtn = el.querySelector('[data-testid=\"like\"] span, [data-testid=\"unlike\"] span');
+    var replyBtn = el.querySelector('[data-testid=\"reply\"] span');
     return {
-      text: tweetText ? tweetText.textContent.substring(0, 200) : \"\",
-      url: userLink ? userLink.href : \"\",
-      likes: likeBtn ? likeBtn.textContent : \"0\",
-      replies: replyBtn ? replyBtn.textContent : \"0\"
+      text: tweetText ? tweetText.textContent.substring(0, 200) : '',
+      url: userLink ? userLink.href : '',
+      likes: likeBtn ? likeBtn.textContent : '0',
+      replies: replyBtn ? replyBtn.textContent : '0'
     };
   }))
-" in front document'
+"
 ```
 
 **Selection criteria — rank posts by:**
@@ -145,22 +145,24 @@ Check Tier 1 accounts for fresh posts (<2 hours old):
 
 For each account:
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/sama"'
+agent-browser --cdp PORT open "https://x.com/sama"
 ```
 Wait 3s, then:
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var article = document.querySelector(\"article\");
-  if (!article) return \"NO_TWEETS\";
-  var time = article.querySelector(\"time\");
-  var text = article.querySelector(\"[data-testid=tweetText]\");
-  var link = article.querySelector(\"a[href*=/status/]\");
-  JSON.stringify({
-    time: time ? time.getAttribute(\"datetime\") : null,
-    text: text ? text.textContent.substring(0, 200) : \"\",
-    url: link ? link.href : \"\"
-  })
-" in front document'
+agent-browser --cdp PORT eval "
+  var article = document.querySelector('article');
+  if (!article) 'NO_TWEETS';
+  else {
+    var time = article.querySelector('time');
+    var text = article.querySelector('[data-testid=\"tweetText\"]');
+    var link = article.querySelector('a[href*=\"/status/\"]');
+    JSON.stringify({
+      time: time ? time.getAttribute('datetime') : null,
+      text: text ? text.textContent.substring(0, 200) : '',
+      url: link ? link.href : ''
+    });
+  }
+"
 ```
 
 If post is <2 hours old, flag as HIGH PRIORITY reply target.
@@ -168,15 +170,15 @@ If post is <2 hours old, flag as HIGH PRIORITY reply target.
 ### Step 1d: Hacker News Check (2 min)
 
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://news.ycombinator.com"'
+agent-browser --cdp PORT open "https://news.ycombinator.com"
 ```
 Wait 3s, extract top 10:
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  JSON.stringify(Array.from(document.querySelectorAll(\".titleline a\")).slice(0,10).map(function(el) {
+agent-browser --cdp PORT eval "
+  JSON.stringify(Array.from(document.querySelectorAll('.titleline a')).slice(0,10).map(function(el) {
     return { title: el.textContent, url: el.href };
   }))
-" in front document'
+"
 ```
 
 Note trending topics that overlap with Prateek's content pillars (AI agents, production engineering, startup, Indian tech).
@@ -193,19 +195,15 @@ Note trending topics that overlap with Prateek's content pillars (AI agents, pro
 
 ```bash
 # Fetch and read source article
-osascript -e 'tell application "Safari" to set URL of front document to "ARTICLE_URL"'
+agent-browser --cdp PORT open "ARTICLE_URL"
 # Wait 4s, extract key content
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var title = document.title;
-    var ogImage = (document.querySelector('meta[property=\"og:image\"]') || {}).content || '';
-    var article = document.querySelector('article') || document.querySelector('main') || document.body;
-    var text = article ? article.innerText.substring(0, 3000) : '';
-    JSON.stringify({title: title, ogImage: ogImage, text: text});
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var title = document.title;
+  var ogImage = (document.querySelector('meta[property=\"og:image\"]') || {}).content || '';
+  var article = document.querySelector('article') || document.querySelector('main') || document.body;
+  var text = article ? article.innerText.substring(0, 3000) : '';
+  JSON.stringify({title: title, ogImage: ogImage, text: text});
+"
 ```
 
 **Content Research Checklist:**
@@ -218,18 +216,18 @@ APPLESCRIPT
 ### Step 1e: LinkedIn Feed Scan (3 min)
 
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/"'
+agent-browser --cdp PORT open "https://www.linkedin.com/feed/"
 ```
 Wait 4s, scroll main to top, extract:
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var main = document.querySelector(\"main\");
+agent-browser --cdp PORT eval "
+  var main = document.querySelector('main');
   if (main) main.scrollTop = 0;
-  JSON.stringify(Array.from(document.querySelectorAll(\"[data-urn]\")).slice(0,8).map(function(el) {
-    var text = el.textContent.substring(0, 200).replace(/\\s+/g, \" \");
-    return { text: text, urn: el.getAttribute(\"data-urn\") };
+  JSON.stringify(Array.from(document.querySelectorAll('[data-urn]')).slice(0,8).map(function(el) {
+    var text = el.textContent.substring(0, 200).replace(/\s+/g, ' ');
+    return { text: text, urn: el.getAttribute('data-urn') };
   }))
-" in front document'
+"
 ```
 
 Flag posts with high reactions from people in AI/tech/startup space.
@@ -265,14 +263,14 @@ After posting the main tweet, immediately reply to it with:
 
 ### X Replies (10-15 replies per session)
 
-<!-- SYNC: X Draft.js text injection pattern mirrors agent-browser.md > "X (Twitter) — Draft.js Editor (Safari)".
+<!-- SYNC: X Draft.js text injection pattern mirrors agent-browser.md > "X (Twitter) — Draft.js Editor".
      If you update the pattern here, also update agent-browser.md, and vice versa. -->
 
 For each selected post:
 
 **1. Navigate to the post:**
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/USER/status/TWEETID"'
+agent-browser --cdp PORT open "https://x.com/USER/status/TWEETID"
 ```
 
 **2. Read the post + existing replies** to understand context. Generate a reply using the Content Review Gate:
@@ -297,9 +295,9 @@ osascript -e 'tell application "Safari" to set URL of front document to "https:/
 
 **3. Click reply button:**
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  document.querySelector(\"[data-testid=reply]\").click();
-" in front document'
+agent-browser --cdp PORT eval "
+  document.querySelector('[data-testid=\"reply\"]').click();
+"
 ```
 
 **4. Wait 2s, then type reply:**
@@ -307,32 +305,32 @@ osascript -e 'tell application "Safari" to do JavaScript "
 **IMPORTANT**: Draft.js requires `click()` + `focus()` + a `setTimeout` delay before `execCommand("insertText")` works. Without the click+delay, the editor silently ignores the text. This is because Draft.js only enters its editing state after a real click activates its internal handlers.
 
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var editor = document.querySelector(\"[data-testid=tweetTextarea_0]\");
-  if (!editor) { var editors = document.querySelectorAll(\"[role=textbox]\"); editor = editors[editors.length - 1]; }
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+  if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"]'); editor = editors[editors.length - 1]; }
   if (editor) {
     editor.click();
     editor.focus();
     setTimeout(function() {
-      document.execCommand(\"insertText\", false, \"REPLY_TEXT_HERE\");
+      document.execCommand('insertText', false, 'REPLY_TEXT_HERE');
       window._replyLen = editor.innerText.length;
     }, 300);
   }
-" in front document'
+"
 ```
 
 Then verify (wait 1s):
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "window._replyLen" in front document'
+agent-browser --cdp PORT eval "window._replyLen"
 ```
 If result is `1` (empty), the text didn't inject — retry or reload the page.
 
 **5. Wait 1s, then click post:**
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var btn = document.querySelector(\"[data-testid=tweetButtonInline]\") || document.querySelector(\"[data-testid=tweetButton]\");
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('[data-testid=\"tweetButtonInline\"]') || document.querySelector('[data-testid=\"tweetButton\"]');
   if (btn) btn.click();
-" in front document'
+"
 ```
 
 **6. Wait 45-120 seconds** (random) before next reply.
@@ -341,7 +339,7 @@ osascript -e 'tell application "Safari" to do JavaScript "
 
 ### LinkedIn Comments (5-8 per session)
 
-<!-- SYNC: LinkedIn TipTap/ProseMirror commenting pattern mirrors agent-browser.md > "LinkedIn — TipTap/ProseMirror Editor (Safari)".
+<!-- SYNC: LinkedIn TipTap/ProseMirror commenting pattern mirrors agent-browser.md > "LinkedIn — TipTap/ProseMirror Editor".
      If you update the pattern here, also update agent-browser.md, and vice versa. -->
 
 **CRITICAL: NEVER comment from the feed.** The feed DOM shifts as it loads, and commenting from the feed has caused comments to land on the WRONG POST. Always navigate to the individual post URL first.
@@ -352,7 +350,7 @@ For each selected LinkedIn post:
 
 Extract the activity URN from the feed scan, then navigate to it directly:
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"'
+agent-browser --cdp PORT open "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"
 ```
 Wait 4s for the page to fully load.
 
@@ -360,15 +358,11 @@ Wait 4s for the page to fully load.
 
 Before doing ANYTHING else, extract the post text and confirm it matches the topic you intend to comment on:
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var main = document.querySelector('main');
-    var postText = main ? main.innerText.substring(0, 500) : '';
-    postText;
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var main = document.querySelector('main');
+  var postText = main ? main.innerText.substring(0, 500) : '';
+  postText;
+"
 ```
 
 **CHECK:** Does the extracted post text match the topic you are commenting on? If NOT, STOP. Do not comment. Move to the next post.
@@ -378,18 +372,14 @@ APPLESCRIPT
 **4. Click Comment button on the post:**
 
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50 && btns[i].getBoundingClientRect().y > 0) {
-        btns[i].click(); break;
-      }
+agent-browser --cdp PORT eval "
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50 && btns[i].getBoundingClientRect().y > 0) {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
 ```
 
 **5. Wait 2s, find ProseMirror/TipTap editor, scroll to it, inject text:**
@@ -397,22 +387,18 @@ APPLESCRIPT
 LinkedIn uses TipTap (ProseMirror) for comment editors. The editor is often off-screen — must `scrollIntoView` first.
 
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    if (editor) {
-      editor.scrollIntoView({behavior: 'instant', block: 'center'});
-      setTimeout(function() {
-        editor.focus();
-        editor.innerHTML = '<p>COMMENT_TEXT_HERE</p>';
-        editor.dispatchEvent(new Event('input', {bubbles: true}));
-        window._commentLen = editor.innerText.length;
-      }, 500);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  if (editor) {
+    editor.scrollIntoView({behavior: 'instant', block: 'center'});
+    setTimeout(function() {
+      editor.focus();
+      editor.innerHTML = '<p>COMMENT_TEXT_HERE</p>';
+      editor.dispatchEvent(new Event('input', {bubbles: true}));
+      window._commentLen = editor.innerText.length;
+    }, 500);
+  }
+"
 ```
 
 Verify: `window._commentLen` should match text length.
@@ -422,40 +408,32 @@ Verify: `window._commentLen` should match text length.
 The submit button is a `<button>` with text "Comment" positioned just below the editor. Find it by proximity to `editor.getBoundingClientRect().bottom`.
 
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    var editorBottom = editor.getBoundingClientRect().bottom;
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      var r = btns[i].getBoundingClientRect();
-      if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
-        btns[i].click(); break;
-      }
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  var editorBottom = editor.getBoundingClientRect().bottom;
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    var r = btns[i].getBoundingClientRect();
+    if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
 ```
 
 **7. VERIFY comment landed correctly:**
 Wait 2s, then check that your comment appears on the post:
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var comments = document.querySelectorAll('.comments-comment-item');
-    var found = false;
-    for (var i = 0; i < comments.length; i++) {
-      if (comments[i].textContent.indexOf('FIRST_FEW_WORDS_OF_COMMENT') !== -1) {
-        found = true; break;
-      }
+agent-browser --cdp PORT eval "
+  var comments = document.querySelectorAll('.comments-comment-item');
+  var found = false;
+  for (var i = 0; i < comments.length; i++) {
+    if (comments[i].textContent.indexOf('FIRST_FEW_WORDS_OF_COMMENT') !== -1) {
+      found = true; break;
     }
-    found ? 'VERIFIED' : 'NOT_FOUND';
-  " in front document
-end tell
-APPLESCRIPT
+  }
+  found ? 'VERIFIED' : 'NOT_FOUND';
+"
 ```
 
 If NOT_FOUND, check if the comment ended up somewhere else and delete it.
@@ -481,20 +459,16 @@ Post 2-3 original posts per session. This is the **#1 lever for follower convers
 
 ```bash
 # Fetch article content for research
-osascript -e 'tell application "Safari" to set URL of front document to "ARTICLE_URL"'
+agent-browser --cdp PORT open "ARTICLE_URL"
 # Wait 3s, then extract key points
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var title = document.title;
-    var meta = document.querySelector('meta[name=\"description\"]');
-    var desc = meta ? meta.content : '';
-    var body = document.querySelector('article') || document.querySelector('main') || document.body;
-    var text = body ? body.innerText.substring(0, 2000) : '';
-    JSON.stringify({title: title, desc: desc, text: text});
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var title = document.title;
+  var meta = document.querySelector('meta[name=\"description\"]');
+  var desc = meta ? meta.content : '';
+  var body = document.querySelector('article') || document.querySelector('main') || document.body;
+  var text = body ? body.innerText.substring(0, 2000) : '';
+  JSON.stringify({title: title, desc: desc, text: text});
+"
 ```
 
 ### Original Post Structure
@@ -532,39 +506,31 @@ All original content should go to Communities, not main feed. Communities bypass
 
 **Navigate to compose with community:**
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/compose/post"'
+agent-browser --cdp PORT open "https://x.com/compose/post"
 ```
 
 Wait 3s, then activate editor and inject text:
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
-    if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"][contenteditable=\"true\"]'); editor = editors[editors.length - 1]; }
-    if (editor) {
-      editor.click();
-      editor.focus();
-      setTimeout(function() {
-        document.execCommand('insertText', false, 'POST_TEXT_HERE');
-        window._postLen = editor.innerText.length;
-      }, 300);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+  if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"][contenteditable=\"true\"]'); editor = editors[editors.length - 1]; }
+  if (editor) {
+    editor.click();
+    editor.focus();
+    setTimeout(function() {
+      document.execCommand('insertText', false, 'POST_TEXT_HERE');
+      window._postLen = editor.innerText.length;
+    }, 300);
+  }
+"
 ```
 
 Verify text injected, then post:
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btn = document.querySelector('[data-testid=\"tweetButton\"]');
-    if (btn) btn.click();
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('[data-testid=\"tweetButton\"]');
+  if (btn) btn.click();
+"
 ```
 
 ### Self-Reply (immediately after posting)
@@ -576,7 +542,7 @@ Navigate to your profile, find the just-posted tweet, click reply, and add:
 
 ```bash
 # Navigate to profile to find the new post
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/Prateek9jain8"'
+agent-browser --cdp PORT open "https://x.com/Prateek9jain8"
 # Wait 3s, then click into the first tweet, click reply, inject self-reply text with link
 ```
 
@@ -589,15 +555,15 @@ osascript -e 'tell application "Safari" to set URL of front document to "https:/
 Follow people who are engaging with target accounts' content — they're in your potential audience.
 
 ```bash
-osascript -e 'tell application "Safari" to set URL of front document to "https://x.com/TARGET_USER"'
+agent-browser --cdp PORT open "https://x.com/TARGET_USER"
 ```
 Wait 3s:
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var btn = document.querySelector(\"[data-testid$=-follow]\");
-  if (btn && btn.textContent.trim() === \"Follow\") { btn.click(); return \"FOLLOWED\"; }
-  return \"ALREADY_FOLLOWING_OR_NOT_FOUND\";
-" in front document'
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('[data-testid$=\"-follow\"]');
+  if (btn && btn.textContent.trim() === 'Follow') { btn.click(); 'FOLLOWED'; }
+  else { 'ALREADY_FOLLOWING_OR_NOT_FOUND'; }
+"
 ```
 
 **Wait 60-180 seconds** between follows.
@@ -607,10 +573,10 @@ osascript -e 'tell application "Safari" to do JavaScript "
 Like posts from growth cohort members, replies on your own posts, and strategic content from target accounts.
 
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "
-  var btn = document.querySelector(\"[data-testid=like]\");
+agent-browser --cdp PORT eval "
+  var btn = document.querySelector('[data-testid=\"like\"]');
   if (btn) btn.click();
-" in front document'
+"
 ```
 
 **Wait 15-45 seconds** between likes.
@@ -692,7 +658,7 @@ NEVER:
   ✗ Follow then unfollow
   ✗ Act at perfectly regular intervals
   ✗ Skip the long breaks
-  ✗ Use System Events, cliclick, or any focus-stealing automation
+  ✗ Use System Events, cliclick, osascript, or any focus-stealing automation
 ```
 
 ---

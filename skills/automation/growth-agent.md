@@ -336,8 +336,8 @@ This means: create content people want to share with their friends.
 
 ## The Agent-Browser Execution
 
-> **Browser mode:** On macOS, use Safari/AppleScript patterns from `agent-browser.md`.
-> CDP commands below require Chrome running with `--remote-debugging-port=9222`.
+> **Browser mode:** Use CloakBrowser + agent-browser. See `agent-browser.md` for setup and commands.
+> CDP commands below require CloakBrowser running — launch with `node launch-browser.mjs <persona> <platform> [port]`.
 > For full executable sessions, use `/grow-followers` — it's the purpose-built runbook.
 
 Now let's talk about automating the non-creative parts. The key: automate research and navigation, but keep engagement authentic.
