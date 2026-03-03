@@ -1,12 +1,40 @@
 # Social Media Manager
 
-A multi-persona social media growth system with 30 reusable Claude skills, research-backed growth algorithms, and browser automation.
+A multi-persona social media growth system with 30 reusable Claude skills, research-backed growth algorithms, and stealth browser automation. Run multiple client accounts in parallel.
+
+---
+
+## Prerequisites
+
+### Required
+- [Claude Code](https://claude.ai/claude-code) (or any AI agent that runs shell commands)
+- Node.js 18+ (`node --version`)
+
+### Browser Automation (CloakBrowser + agent-browser)
+
+```bash
+# One-command setup
+bash setup.sh
+
+# Or manually:
+npm install -g agent-browser cloakbrowser playwright-core
+```
+
+CloakBrowser is a stealth Chromium binary with 25 C++ level anti-detection patches (canvas, WebGL, AudioContext, navigator properties). It's the only browser used for automation in this repo — passes Cloudflare Turnstile, FingerprintJS, BrowserScan 30/30, reCAPTCHA v3 (0.9 score).
+
+See `skills/automation/agent-browser.md` for full setup and multi-client parallel automation.
+
+### Image Generation (optional)
+- Python 3.9+ with Pillow: `pip install Pillow`
 
 ---
 
 ## Quick Start: Create Your Persona
 
 ```bash
+# 0. Install tools (first time only)
+bash setup.sh
+
 # 1. Copy the template
 cp -r personas/_template personas/yourname
 
@@ -19,7 +47,10 @@ cp -r personas/_template personas/yourname
 cp .credentials.example.md .credentials.md
 # Edit .credentials.md with your accounts — NEVER commit this file
 
-# 4. Start engaging using the growth agent
+# 4. Launch browser for your persona
+bash launch-browsers.sh yourname
+
+# 5. Start engaging using the growth agent
 # Reference your persona: personas/yourname/strategy/
 ```
 
@@ -49,6 +80,8 @@ See `personas/_template/README.md` for detailed setup instructions.
 ├── strategy/                  ← Shared strategy (applies to all personas)
 │   └── _core-principles.md   ← Anti-AI detection rules
 ├── .credentials.example.md   ← Credentials template
+├── setup.sh                  ← One-command install (agent-browser + CloakBrowser)
+├── launch-browsers.sh        ← Launch CloakBrowser per persona
 └── .gitignore
 ```
 
@@ -102,4 +135,4 @@ cp .credentials.example.md .credentials.md
 # Edit with your accounts — NEVER commit this file
 ```
 
-See `skills/automation/agent-browser.md` for browser automation setup (Chrome DevTools Protocol).
+See `skills/automation/agent-browser.md` for browser automation setup (CloakBrowser + agent-browser).

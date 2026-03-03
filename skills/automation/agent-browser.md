@@ -1,6 +1,6 @@
 # Agent Browser Connection
 
-Connect to a browser instance for automated social media interactions using Chrome DevTools Protocol (CDP) or Safari via AppleScript while evading bot detection. Supports both Chrome and Safari on macOS.
+Connect to a stealth browser instance for automated social media interactions using CloakBrowser (stealth Chromium) + agent-browser CLI. Supports parallel multi-client automation across X, LinkedIn, Reddit, Instagram.
 
 ## Skill: `/agent-browser`
 
@@ -16,25 +16,178 @@ Manual social media tasks are time-consuming. Agent browser allows you to:
 - **Like and engage** with content
 - **Monitor conversations** in real-time
 - **Execute outreach** at scale
+- **Run multiple client accounts** simultaneously
 
-The key: **Native Chrome with proper anti-detection flags** or **Real Safari via AppleScript** minimizes automation fingerprints.
+---
 
-### Browser Choice: Chrome vs Safari
+## Browser: CloakBrowser (Stealth Chromium)
 
-| Factor | Chrome (CDP) | Safari (AppleScript) |
-|--------|-------------|---------------------|
-| Stealth ecosystem | Mature (many stealth tools) | Not needed (real browser, zero automation markers) |
-| Bot detection focus | Heavily targeted (~95% of bots use Chrome) | Rarely targeted (low bot traffic) |
-| CDP detection risk | High (Runtime.enable leaks) | None (no CDP — uses native macOS AppleScript) |
-| `navigator.webdriver` | `true` (must bypass with flags) | `false` by default (real Safari, no bypass needed) |
-| Headless mode | Yes | No (requires display) |
-| Concurrent sessions | Multiple | Single window (multiple tabs) |
-| Fingerprint authenticity | Spoofed Chrome profile | Genuine WebKit/macOS fingerprint |
-| Session persistence | Via `--user-data-dir` | Real Safari profile (cookies, history — already there) |
-| Platform | macOS, Linux, Windows | macOS only |
-| Best for | High-volume, multi-platform | Maximum stealth on macOS |
+CloakBrowser is an open-source patched Chromium with **25 C++ level anti-detection fixes** — canvas, WebGL, AudioContext, navigator properties all spoofed at the binary level. This is NOT JavaScript injection — the patches are compiled into the Chromium binary itself.
 
-**Recommendation**: Use Chrome for high-volume automation or cross-platform. Use Safari when you need maximum stealth — it uses your real browser with real cookies, `navigator.webdriver=false`, no CDP artifacts, and a genuine WebKit fingerprint that bot detectors rarely target.
+### What It Bypasses
+
+| Anti-Bot System | Result |
+|----------------|--------|
+| Cloudflare Turnstile | Pass |
+| FingerprintJS | Pass |
+| BrowserScan | 30/30 |
+| DataDome | Pass |
+| reCAPTCHA v3 | 0.9 score |
+| `navigator.webdriver` | `false` |
+| CDP Runtime.Enable detection | Patched |
+
+### Why Not Chrome or Safari?
+
+- **Chrome CDP**: Trivially detected by anti-bot systems. `navigator.webdriver=true`, Runtime.Enable leaks, CDP artifacts everywhere. ~95% of bots use Chrome so it's heavily targeted.
+- **Safari AppleScript**: Good stealth but breaks on modern SPAs (shadow DOM, React state). macOS only, single window, no concurrent sessions.
+- **CloakBrowser**: Chromium stealth at binary level + full Playwright/CDP support + concurrent sessions + cross-platform.
+
+### Supported Platforms
+
+- macOS Intel (x64)
+- macOS Apple Silicon (ARM)
+- Linux x64
+
+---
+
+## Setup
+
+### Step 1: Install
+
+```bash
+# One-command setup (recommended)
+bash setup.sh
+
+# Or manually:
+npm install -g agent-browser cloakbrowser playwright-core
+```
+
+CloakBrowser is a Node.js library that downloads a stealth Chromium binary (~200MB) on first run. The binary is cached at `~/.cloakbrowser/`.
+
+### Step 2: Launch CloakBrowser
+
+Each persona and platform needs its own CloakBrowser instance with a separate profile directory and port.
+
+```bash
+# Launch for a specific persona + platform
+node launch-browser.mjs PERSONA x 9222
+
+# Or use the launch script to start all platforms for a persona (recommended)
+bash launch-browsers.sh PERSONA
+bash launch-browsers.sh PERSONA x linkedin  # specific platforms only
+```
+
+**Important:** Each instance gets its own `--user-data-dir` at `~/cloakbrowser-PERSONA-PLATFORM/`. After first launch, log into your social accounts manually — sessions persist across restarts.
+
+### Step 3: Connect Agent Browser
+
+```bash
+# Verify connection
+agent-browser --cdp 9222 snapshot
+
+# If successful, you'll see the page DOM structure with element refs (@e1, @e2, etc.)
+```
+
+### Step 4: Authenticate (First Time Only)
+
+1. Navigate to your target platform in the CloakBrowser window
+2. Log in with real credentials
+3. Complete 2FA if prompted
+4. Your authenticated session persists in the `--user-data-dir`
+
+### Step 5: Verify Stealth
+
+```bash
+# Open fingerprint test
+agent-browser --cdp 9222 open "https://bot.sannysoft.com"
+agent-browser --cdp 9222 snapshot
+
+# Or use BrowserScan
+agent-browser --cdp 9222 open "https://browserscan.net"
+```
+
+Look for:
+- `navigator.webdriver`: `false`
+- No "HeadlessChrome" in User-Agent
+- Plugins list shows PDF viewer, etc.
+- WebGL shows real GPU info
+- Canvas fingerprint is consistent
+
+---
+
+## Parallel Multi-Client Automation
+
+Run multiple client accounts simultaneously. Each persona gets its own set of CloakBrowser instances — fully isolated profiles, cookies, and fingerprints.
+
+### Port Allocation
+
+Each persona gets a block of 10 ports. Platform offsets: X=+0, LinkedIn=+1, Reddit=+2, Instagram=+3.
+
+| Persona | X | LinkedIn | Reddit | Instagram |
+|---------|---|----------|--------|-----------|
+| Persona 1 (e.g. prateek) | 9222 | 9223 | 9224 | 9225 |
+| Persona 2 (e.g. suprdash) | 9232 | 9233 | 9234 | 9235 |
+| Persona 3 (e.g. client-c) | 9242 | 9243 | 9244 | 9245 |
+
+**Formula:** `port = 9222 + (persona_index * 10) + platform_offset`
+
+Persona index is determined by alphabetical order of directories in `personas/` (excluding `_template`).
+
+### Profile Directories
+
+Pattern: `~/cloakbrowser-PERSONA-PLATFORM/`
+
+```
+~/cloakbrowser-prateek-x/
+~/cloakbrowser-prateek-linkedin/
+~/cloakbrowser-suprdash-x/
+~/cloakbrowser-suprdash-linkedin/
+```
+
+Each profile has its own cookies, auth state, and browser fingerprint. No cross-contamination between clients or platforms.
+
+### Quick Launch
+
+```bash
+# Launch all platforms for one persona
+bash launch-browsers.sh prateek
+
+# Launch specific platforms
+bash launch-browsers.sh suprdash x linkedin
+
+# Run two clients simultaneously
+bash launch-browsers.sh prateek &
+bash launch-browsers.sh suprdash
+```
+
+### Running Commands Against Different Clients
+
+```bash
+# Prateek's X (port 9222)
+agent-browser --cdp 9222 open "https://x.com"
+agent-browser --cdp 9222 snapshot
+
+# Suprdash's X at the same time (port 9232)
+agent-browser --cdp 9232 open "https://x.com"
+agent-browser --cdp 9232 snapshot
+
+# Prateek's LinkedIn at the same time (port 9223)
+agent-browser --cdp 9223 open "https://linkedin.com"
+agent-browser --cdp 9223 snapshot
+```
+
+### Sessions Within a Browser
+
+Use `--session` for multiple logical tasks on the same browser instance:
+
+```bash
+# Two tasks on Prateek's X simultaneously
+agent-browser --cdp 9222 --session lead-search open "https://x.com/search?q=need+website"
+agent-browser --cdp 9222 --session engagement open "https://x.com/notifications"
+
+# List all active sessions
+agent-browser session list
+```
 
 ---
 
@@ -56,11 +209,13 @@ Platforms check for automation indicators:
 | Screen resolution | Unusual dimensions | Virtual environment |
 | Timezone | Mismatch with IP location | Proxy/VPN detection |
 
+**CloakBrowser patches all of these at the C++ level** — `navigator.webdriver` is `false`, plugins are populated, WebGL/canvas fingerprints are consistent and realistic.
+
 ### 2. CDP (Chrome DevTools Protocol) Detection
 
 All major automation libraries (Puppeteer, Playwright, Selenium) use CDP's `Runtime.Enable` command. Modern anti-bot systems detect this protocol-level signature.
 
-**Solution**: Use real Chrome with `--user-data-dir` instead of headless browsers. Native Chrome doesn't have CDP detection artifacts.
+**CloakBrowser patches CDP detection artifacts** so anti-bot systems cannot distinguish it from a manually-opened browser.
 
 ### 3. Behavioral Analysis
 
@@ -75,6 +230,8 @@ Platforms analyze interaction patterns:
 | Scrolls before clicking | Instant clicks without context |
 | Typos and corrections | Perfect typing |
 | Session breaks and pauses | Continuous activity |
+
+**CloakBrowser does NOT fix behavioral detection** — you still need human-like timing and patterns. See Behavioral Evasion Rules below.
 
 ### 4. Network Analysis
 
@@ -131,201 +288,6 @@ Instagram uses sophisticated detection:
 - Rapid liking across many posts
 - Generic automated comments
 - Activity from known bot IP ranges
-
----
-
-## Anti-Detection Setup
-
-### Choose Your Browser
-
-- **Chrome** (default): Best for most automation tasks. Full agent-browser CLI support with CDP. Cross-platform.
-- **Safari** (macOS): Maximum stealth. Real Safari.app controlled via AppleScript — your actual browser, real cookies, `navigator.webdriver=false`, zero automation markers.
-
----
-
-### Option A: Chrome Setup
-
-#### Step 1: Launch Chrome with Stealth Flags
-
-**Each persona needs its own Chrome profile** so login sessions stay separate. Replace `PERSONA_NAME` with your persona folder name (e.g., `prateek`, `jane`).
-
-```bash
-# macOS - Full anti-detection launch
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-  --remote-debugging-port=9222 \
-  --user-data-dir=$HOME/chrome-PERSONA_NAME \
-  --disable-blink-features=AutomationControlled \
-  --disable-features=IsolateOrigins,site-per-process \
-  --disable-site-isolation-trials \
-  --disable-web-security \
-  --no-first-run \
-  --no-default-browser-check \
-  --disable-infobars \
-  --window-size=1920,1080 \
-  --start-maximized
-
-# Linux
-google-chrome \
-  --remote-debugging-port=9222 \
-  --user-data-dir=$HOME/chrome-PERSONA_NAME \
-  --disable-blink-features=AutomationControlled \
-  --disable-features=IsolateOrigins,site-per-process \
-  --no-first-run \
-  --window-size=1920,1080
-
-# Windows
-"C:\Program Files\Google\Chrome\Application\chrome.exe" ^
-  --remote-debugging-port=9222 ^
-  --user-data-dir=%USERPROFILE%\chrome-PERSONA_NAME ^
-  --disable-blink-features=AutomationControlled ^
-  --disable-features=IsolateOrigins,site-per-process ^
-  --no-first-run ^
-  --window-size=1920,1080
-```
-
-**Important:** The `--user-data-dir` stores cookies and login sessions. Each persona must use a different directory (e.g., `~/chrome-prateek`, `~/chrome-jane`). After first launch, log into your social accounts manually — sessions persist across restarts.
-
-### Key Anti-Detection Flags Explained
-
-| Flag | Purpose |
-|------|---------|
-| `--disable-blink-features=AutomationControlled` | Hides `navigator.webdriver=true` |
-| `--user-data-dir` | Creates real profile (not headless) |
-| `--no-first-run` | Skips first-run dialogs |
-| `--disable-infobars` | Removes "Chrome is being controlled" bar |
-| `--window-size=1920,1080` | Normal screen resolution |
-
-#### Step 2: Verify Chrome Stealth
-
-After launching, check your fingerprint:
-
-```bash
-# Open fingerprint test
-agent-browser --cdp 9222 open "https://bot.sannysoft.com"
-
-# Or
-agent-browser --cdp 9222 open "https://abrahamjuliot.github.io/creepjs/"
-```
-
-Look for:
-- `navigator.webdriver`: Should be `undefined` or `false`
-- No "HeadlessChrome" in User-Agent
-- Plugins list should show PDF viewer, etc.
-- WebGL should show real GPU info
-
-#### Step 3: Authenticate Manually (Chrome)
-
-1. Navigate to your target platform in the Chrome window
-2. Log in with real credentials
-3. Complete 2FA if prompted
-4. Your authenticated session is now usable
-
-#### Step 4: Connect Agent Browser (Chrome)
-
-```bash
-# Verify connection
-agent-browser --cdp 9222 snapshot
-
-# If successful, you'll see the page DOM structure
-```
-
----
-
-### Option B: Safari Setup (macOS Only)
-
-Safari automation uses **AppleScript + JavaScript injection** to control the real Safari.app. This is the stealthiest approach — it uses your actual browser with real cookies, real profile, and zero automation markers.
-
-**Why AppleScript over safaridriver/Playwright WebKit?**
-- **safaridriver** creates isolated automation windows (orange bar, no cookies, `navigator.webdriver=true`)
-- **Playwright WebKit** runs a sandboxed test browser, not real Safari
-- **AppleScript** controls the actual Safari.app — real profile, real cookies, `navigator.webdriver=false`
-
-#### Step 1: One-Time Setup (GUI)
-
-Enable two settings in Safari (only needed once):
-
-1. **Safari > Settings > Advanced** → check **"Show features for web developers"**
-2. **Safari > Settings > Developer** → check **"Allow JavaScript from Apple Events"**
-
-No CLI flags, no safaridriver, no npm packages needed.
-
-#### Step 2: Open Safari
-
-```bash
-# Open Safari and navigate to a URL
-osascript -e 'tell application "Safari" to activate' \
-  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
-```
-
-Your real Safari opens with your real profile — if you're already logged into X, you're already authenticated.
-
-#### Step 3: Verify Connection
-
-```bash
-# Get current URL
-osascript -e 'tell application "Safari" to get URL of current tab of window 1'
-
-# Get page title
-osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
-
-# Verify no automation markers
-osascript -e 'tell application "Safari" to do JavaScript "navigator.webdriver" in current tab of window 1'
-# → Returns "false" (real Safari, not automated)
-```
-
-#### Step 4: Authenticate (if needed)
-
-If not already logged in, log in manually in the Safari window. Since this is your real Safari profile, cookies persist naturally — no special profile directories needed.
-
-#### Safari AppleScript Command Reference
-
-```bash
-# Navigation
-osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com"'
-osascript -e 'tell application "Safari" to do JavaScript "history.back()" in current tab of window 1'
-
-# Get page info
-osascript -e 'tell application "Safari" to get URL of current tab of window 1'
-osascript -e 'tell application "Safari" to get name of current tab of window 1'
-osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
-
-# Execute JavaScript (click, fill, scroll, extract)
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=loginButton]\").click()" in current tab of window 1'
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"input[name=text]\").value = \"search query\"" in current tab of window 1'
-osascript -e 'tell application "Safari" to do JavaScript "window.scrollBy(0, 500)" in current tab of window 1'
-
-# Extract text content
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"article\").textContent" in current tab of window 1'
-
-# Tab management
-osascript -e 'tell application "Safari" to make new tab in window 1 with properties {URL:"https://x.com"}'
-osascript -e 'tell application "Safari" to get number of tabs of window 1'
-osascript -e 'tell application "Safari" to set current tab of window 1 to tab 2 of window 1'
-osascript -e 'tell application "Safari" to close tab 2 of window 1'
-```
-
-#### Safari Detection Characteristics
-
-| Attribute | Real Safari (AppleScript) | Stealth Impact |
-|-----------|--------------------------|----------------|
-| `navigator.webdriver` | `false` (not automated from browser's perspective) | Best possible — identical to manual browsing |
-| Automation markers | None — AppleScript is external to the browser | Invisible to websites |
-| CDP artifacts | None — no CDP protocol involved | Invisible to CDP detection |
-| Browser fingerprint | Genuine WebKit/macOS canvas, WebGL, fonts | Perfect — real browser on real hardware |
-| Cookies & sessions | Real Safari profile (persistent) | Perfect — uses existing login sessions |
-| Orange address bar | No — only safaridriver shows this | No visual indicators |
-
-#### Safari Anti-Detection Tips
-
-1. **Already logged in?** You're done — AppleScript uses your real Safari with existing cookies. No need to re-authenticate.
-
-2. **No `navigator.webdriver` bypass needed** — real Safari controlled via AppleScript reports `false` by default. Websites cannot detect AppleScript control.
-
-3. **Fingerprint is genuine** — Safari on macOS produces a naturally consistent fingerprint (OS fonts, Metal GPU rendering, screen metrics). No spoofing needed.
-
-4. **Add human delays between actions** — even though Safari can't detect you're automated, the platform's server-side analysis still watches for inhuman speed. Use the same timing guidelines as Chrome.
-
-5. **Multiple tabs instead of multiple windows** — Safari supports multiple tabs in one window. Use tabs for multi-page workflows.
 
 ---
 
@@ -424,36 +386,6 @@ REALISTIC SESSION PATTERN:
 
 ---
 
-## Installation
-
-### Chrome + agent-browser (Default)
-
-```bash
-# NPM (Recommended)
-npm install -g agent-browser
-agent-browser install  # Download Chromium
-
-# Linux dependencies
-agent-browser install --with-deps
-```
-
-### Safari (macOS Only — No Install Needed)
-
-Safari is already installed on macOS. Just enable two settings once:
-
-1. **Safari > Settings > Advanced** → check **"Show features for web developers"**
-2. **Safari > Settings > Developer** → check **"Allow JavaScript from Apple Events"**
-
-```bash
-# Verify it works
-osascript -e 'tell application "Safari" to activate' \
-  -e 'tell application "Safari" to make new document with properties {URL:"https://example.com"}'
-sleep 2
-osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
-```
-
----
-
 ## Complete Command Reference
 
 *Official commands from [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser)*
@@ -461,7 +393,7 @@ osascript -e 'tell application "Safari" to do JavaScript "document.title" in cur
 ### Connection Methods
 
 ```bash
-# Method 1: Pass --cdp on each command
+# Method 1: Pass --cdp on each command (recommended for multi-client)
 agent-browser --cdp 9222 open "https://x.com"
 agent-browser --cdp 9222 snapshot
 
@@ -473,6 +405,8 @@ agent-browser snapshot
 # Method 3: Use persistent profile
 agent-browser --profile ~/.myapp-profile open "https://x.com"
 ```
+
+For multi-client setups, always use Method 1 (`--cdp PORT`) to target the correct browser instance.
 
 ### Navigation Commands
 
@@ -712,12 +646,10 @@ agent-browser -p ios swipe up      # Swipe gesture
 
 ## Core Workflow Pattern
 
-### Chrome Workflow (CDP)
-
-The fundamental workflow for AI agents using Chrome:
+The fundamental workflow for AI agents using CloakBrowser + agent-browser:
 
 ```bash
-# 1. Navigate
+# 1. Navigate (use the port for your persona + platform)
 agent-browser --cdp 9222 open "https://x.com"
 
 # 2. Snapshot (get element refs)
@@ -735,118 +667,54 @@ agent-browser --cdp 9222 snapshot -i
 
 **Important**: Refs (`@e1`, `@e2`) are invalidated when the page changes. Always re-snapshot after navigation or clicks that load new content.
 
-### Safari Workflow (AppleScript)
-
-The workflow for Safari uses AppleScript to control the real Safari.app:
-
-```bash
-# 1. Open Safari to target URL
-osascript -e 'tell application "Safari" to activate' \
-  -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com"'
-
-# 2. Wait for page load (human reading time)
-sleep 4
-
-# 3. Get page title (verify loaded)
-osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
-
-# 4. Interact using JavaScript injection
-# Click search
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=SearchBox_Search_Input]\").focus()" in current tab of window 1'
-
-# Type search query
-osascript -e 'tell application "Safari" to do JavaScript "
-  var input = document.querySelector(\"[data-testid=SearchBox_Search_Input]\");
-  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, \"value\").set;
-  nativeInputValueSetter.call(input, \"search query\");
-  input.dispatchEvent(new Event(\"input\", { bubbles: true }));
-" in current tab of window 1'
-
-# Press Enter
-osascript -e 'tell application "Safari" to do JavaScript "
-  document.querySelector(\"[data-testid=SearchBox_Search_Input]\").dispatchEvent(new KeyboardEvent(\"keydown\", {key: \"Enter\", code: \"Enter\", bubbles: true}))
-" in current tab of window 1'
-
-# 5. Wait for results
-sleep 3
-
-# 6. Extract content
-osascript -e 'tell application "Safari" to do JavaScript "
-  JSON.stringify(Array.from(document.querySelectorAll(\"[data-testid=tweet]\")).slice(0,5).map(el => el.querySelector(\"[data-testid=tweetText]\")?.textContent))
-" in current tab of window 1'
-```
-
-**Key difference from Chrome**: No refs (`@e1`) system — use CSS selectors and `data-testid` attributes via JavaScript injection. Use browser DevTools (Develop > Show Web Inspector) to inspect elements and find selectors.
-
 ---
 
-## Critical Safari Rules
+## Platform-Specific Text Input
 
-1. **NEVER use `System Events` keystroke/key code** — it sends input to whatever app is focused, steals screen focus, and interferes with the user's laptop. This includes Cmd+V paste.
-2. **NEVER use `tell application "Safari" to activate`** — this also steals focus.
-3. **NEVER use `cliclick`** — it moves the physical mouse cursor and interferes with the user's active laptop usage.
-4. **NEVER use any screen automation tool** (cliclick, xdotool, Accessibility APIs, `System Events` click/keystroke) — the user is actively using the laptop.
-5. **ONLY use JavaScript injection** (`do JavaScript` in Safari) for ALL browser interaction. No exceptions.
-6. Use `tell application "Safari" to set URL of ...` for navigation (doesn't steal focus).
-7. Use heredoc `osascript <<'APPLESCRIPT' ... APPLESCRIPT` pattern for multi-line scripts.
-8. For LinkedIn dropdown menus that require trusted events, use the **Voyager API** directly instead of trying to click UI elements.
-
----
-
-## Platform-Specific Text Input (Safari)
-
-Different platforms use different editor implementations. Here's what works for each:
+Different platforms use different editor implementations. Standard `agent-browser fill` works for regular inputs, but custom editors (Draft.js, TipTap, ProseMirror) need JavaScript injection via `agent-browser eval`.
 
 ### X (Twitter) — Draft.js Editor
 
-X uses a Draft.js contentEditable editor. Standard `element.value` or `innerHTML` won't work.
+X uses a Draft.js contentEditable editor. Standard `fill` won't work.
 
-**CRITICAL:** Draft.js requires `click()` + `focus()` + a `setTimeout` delay before `execCommand("insertText")` works. Without the click+delay, Draft.js silently ignores the text because it only enters its editing state after a real click activates its internal handlers.
+**CRITICAL:** Draft.js requires `click()` + `focus()` + a `setTimeout` delay before `execCommand("insertText")` works. Without the click+delay, Draft.js silently ignores the text.
 
 **Working method:**
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
-    if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"]'); editor = editors[editors.length - 1]; }
-    if (editor) {
-      editor.click();
-      editor.focus();
-      setTimeout(function() {
-        document.execCommand('insertText', false, 'Your tweet text here');
-        window._replyLen = editor.innerText.length;
-      }, 300);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp 9222 eval "
+  var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+  if (!editor) { var editors = document.querySelectorAll('[role=\"textbox\"]'); editor = editors[editors.length - 1]; }
+  if (editor) {
+    editor.click();
+    editor.focus();
+    setTimeout(function() {
+      document.execCommand('insertText', false, 'Your tweet text here');
+      window._replyLen = editor.innerText.length;
+    }, 300);
+  }
+"
 ```
 
 **Verify text injected (wait 1s):**
 ```bash
-osascript -e 'tell application "Safari" to do JavaScript "window._replyLen" in front document'
+agent-browser --cdp 9222 eval "window._replyLen"
 ```
 If result is `1` (empty), the text didn't inject — retry or reload the page.
 
 **To clear and replace text:**
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
-    if (editor) {
-      editor.click();
-      editor.focus();
-      setTimeout(function() {
-        document.execCommand('selectAll', false, null);
-        document.execCommand('delete', false, null);
-        document.execCommand('insertText', false, 'New tweet text');
-      }, 300);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp 9222 eval "
+  var editor = document.querySelector('[data-testid=\"tweetTextarea_0\"]');
+  if (editor) {
+    editor.click();
+    editor.focus();
+    setTimeout(function() {
+      document.execCommand('selectAll', false, null);
+      document.execCommand('delete', false, null);
+      document.execCommand('insertText', false, 'New tweet text');
+    }, 300);
+  }
+"
 ```
 
 **Key X selectors:**
@@ -860,7 +728,7 @@ APPLESCRIPT
 | Like button | `[data-testid="like"]` |
 | Follow button | `[data-testid="followButton"]` |
 
-### LinkedIn — TipTap/ProseMirror Editor (Safari)
+### LinkedIn — TipTap/ProseMirror Editor
 
 LinkedIn uses TipTap (ProseMirror) for comment editors: `.tiptap.ProseMirror[contenteditable=true]`.
 
@@ -873,90 +741,107 @@ LinkedIn uses TipTap (ProseMirror) for comment editors: `.tiptap.ProseMirror[con
 **Working method (comment on individual post page):**
 ```bash
 # 1. Navigate to individual post (MANDATORY)
-osascript -e 'tell application "Safari" to set URL of front document to "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"'
-# 2. Wait 4s, verify post content
+agent-browser --cdp 9223 open "https://www.linkedin.com/feed/update/urn:li:activity:ACTIVITY_ID/"
+
+# 2. Wait for page load, verify post content
+agent-browser --cdp 9223 wait --load networkidle
+agent-browser --cdp 9223 snapshot -i
+
 # 3. Click Comment button
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50 && btns[i].getBoundingClientRect().y > 0) {
-        btns[i].click(); break;
-      }
+agent-browser --cdp 9223 eval "
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    if (btns[i].textContent.trim() === 'Comment' && btns[i].getBoundingClientRect().width > 50 && btns[i].getBoundingClientRect().y > 0) {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
+
 # 4. Wait 2s, inject text into TipTap editor
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    if (editor) {
-      editor.scrollIntoView({behavior: 'instant', block: 'center'});
-      setTimeout(function() {
-        editor.focus();
-        editor.innerHTML = '<p>Your comment text here</p>';
-        editor.dispatchEvent(new Event('input', {bubbles: true}));
-      }, 500);
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp 9223 eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  if (editor) {
+    editor.scrollIntoView({behavior: 'instant', block: 'center'});
+    setTimeout(function() {
+      editor.focus();
+      editor.innerHTML = '<p>Your comment text here</p>';
+      editor.dispatchEvent(new Event('input', {bubbles: true}));
+    }, 500);
+  }
+"
+
 # 5. Submit — find the Comment button BELOW the editor by proximity
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
-    var editorBottom = editor.getBoundingClientRect().bottom;
-    var btns = document.querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) {
-      var r = btns[i].getBoundingClientRect();
-      if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
-        btns[i].click(); break;
-      }
+agent-browser --cdp 9223 eval "
+  var editor = document.querySelector('.tiptap.ProseMirror[contenteditable=true]');
+  var editorBottom = editor.getBoundingClientRect().bottom;
+  var btns = document.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    var r = btns[i].getBoundingClientRect();
+    if (r.y > editorBottom - 20 && r.y < editorBottom + 100 && btns[i].textContent.trim() === 'Comment') {
+      btns[i].click(); break;
     }
-  " in front document
-end tell
-APPLESCRIPT
+  }
+"
 ```
 
-**LinkedIn post compose (Safari):**
+**LinkedIn post compose:**
 ```bash
-osascript <<'APPLESCRIPT'
-tell application "Safari"
-  do JavaScript "
-    var editor = document.querySelector('.ql-editor[contenteditable=true]');
-    if (editor) {
-      editor.focus();
-      editor.innerHTML = '<p>Your post text here</p>';
-      editor.dispatchEvent(new Event('input', {bubbles: true}));
-    }
-  " in front document
-end tell
-APPLESCRIPT
+agent-browser --cdp 9223 eval "
+  var editor = document.querySelector('.ql-editor[contenteditable=true]');
+  if (editor) {
+    editor.focus();
+    editor.innerHTML = '<p>Your post text here</p>';
+    editor.dispatchEvent(new Event('input', {bubbles: true}));
+  }
+"
 ```
 
 ### Old Reddit — Simple Textarea
 
-```javascript
-var textarea = document.querySelector('textarea');
-textarea.value = 'Your comment text';
-textarea.dispatchEvent(new Event('change', {bubbles: true}));
-// Click save button
-document.querySelector('button[type="submit"]').click();
+```bash
+# Use agent-browser fill for simple textareas
+agent-browser --cdp 9224 fill "textarea[name='text']" "Your comment text"
+
+# Or use eval with native setter for React-controlled textareas
+agent-browser --cdp 9224 eval "
+  var ta = document.querySelector('textarea');
+  var setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;
+  setter.call(ta, 'Your comment text');
+  ta.dispatchEvent(new Event('input', {bubbles: true}));
+"
+
+# Click save button
+agent-browser --cdp 9224 eval "document.querySelector('button[type=\"submit\"]').click()"
+```
+
+### New Reddit — Shadow DOM
+
+New Reddit uses shadow DOM components (`faceplate-text-input`, `faceplate-textarea-input`). Pierce shadow roots to access inner inputs:
+
+```bash
+agent-browser --cdp 9224 eval "
+  var wrapper = document.querySelector('faceplate-text-input');
+  var input = wrapper.shadowRoot.querySelector('input');
+  input.focus();
+  document.execCommand('insertText', false, 'Your text');
+"
 ```
 
 ### Other Sites — Standard Inputs
 
-```javascript
-var input = document.querySelector('input[name="text"]');
-var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-  window.HTMLInputElement.prototype, 'value'
-).set;
-nativeInputValueSetter.call(input, 'your text');
-input.dispatchEvent(new Event('input', { bubbles: true }));
+```bash
+# Prefer agent-browser fill for standard inputs
+agent-browser --cdp 9222 fill "input[name='text']" "your text"
+
+# For React-controlled inputs that don't respond to fill:
+agent-browser --cdp 9222 eval "
+  var input = document.querySelector('input[name=\"text\"]');
+  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype, 'value'
+  ).set;
+  nativeInputValueSetter.call(input, 'your text');
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+"
 ```
 
 ---
@@ -970,6 +855,8 @@ input.dispatchEvent(new Event('input', { bubbles: true }));
 agent-browser --cdp 9222 open "https://x.com/search?q=%22need%20a%20website%22%20OR%20%22looking%20for%20developer%22&f=live"
 
 # Wait 3-5 seconds (human reading time)
+agent-browser --cdp 9222 wait 4000
+
 # Take snapshot to analyze results
 agent-browser --cdp 9222 snapshot
 
@@ -984,14 +871,13 @@ agent-browser --cdp 9222 open "https://x.com/username"
 agent-browser --cdp 9222 open "https://x.com/targetuser"
 
 # Wait 2-4 seconds (human reading profile)
+agent-browser --cdp 9222 wait 3000
 
 # Snapshot to find follow button reference
-agent-browser --cdp 9222 snapshot
-
-# Wait 1-2 seconds
+agent-browser --cdp 9222 snapshot -i
 
 # Click follow button (use the ref from snapshot)
-agent-browser --cdp 9222 click e42
+agent-browser --cdp 9222 click @e42
 
 # Wait 30-90 seconds before next follow
 ```
@@ -1000,13 +886,13 @@ agent-browser --cdp 9222 click e42
 
 ```bash
 # Scroll to view post (important for detection)
-# Find like button in snapshot
-agent-browser --cdp 9222 snapshot
+agent-browser --cdp 9222 scroll down 300
 
-# Wait 0.5-2 seconds
+# Find like button in snapshot
+agent-browser --cdp 9222 snapshot -i
 
 # Click the like button reference
-agent-browser --cdp 9222 click e28
+agent-browser --cdp 9222 click @e28
 
 # Wait 10-30 seconds before next like
 ```
@@ -1015,12 +901,13 @@ agent-browser --cdp 9222 click e28
 
 ```bash
 # Search for decision makers
-agent-browser --cdp 9222 open "https://linkedin.com/search/results/people/?keywords=marketing%20director"
+agent-browser --cdp 9223 open "https://linkedin.com/search/results/people/?keywords=marketing%20director"
 
 # Wait 4-6 seconds
+agent-browser --cdp 9223 wait 5000
 
 # Snapshot results
-agent-browser --cdp 9222 snapshot
+agent-browser --cdp 9223 snapshot
 ```
 
 ---
@@ -1073,6 +960,7 @@ Example:
 
 ### Fingerprint Detection
 
+CloakBrowser handles all of these, but for reference:
 - `navigator.webdriver = true`
 - "HeadlessChrome" in User-Agent
 - Missing plugins/languages
@@ -1092,10 +980,16 @@ If getting blocked frequently:
 
 ### 2. Session Isolation
 
+Each persona+platform already gets its own CloakBrowser profile via `--user-data-dir`:
+
 ```bash
-# Create separate profiles per account
---user-data-dir=/tmp/chrome-profile-account1
---user-data-dir=/tmp/chrome-profile-account2
+# Persona 1 platforms
+--user-data-dir=$HOME/cloakbrowser-prateek-x
+--user-data-dir=$HOME/cloakbrowser-prateek-linkedin
+
+# Persona 2 platforms
+--user-data-dir=$HOME/cloakbrowser-suprdash-x
+--user-data-dir=$HOME/cloakbrowser-suprdash-linkedin
 ```
 
 ### 3. Fingerprint Consistency
@@ -1128,52 +1022,38 @@ Best practice:
 
 ## Workflow: Full Lead Generation Cycle
 
-### Chrome Workflow
-
-#### Step 1: Setup Stealth Session
+### Step 1: Launch CloakBrowser
 ```bash
-# Launch Chrome with anti-detection flags
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-  --remote-debugging-port=9222 \
-  --user-data-dir=/tmp/chrome-agent-profile \
-  --disable-blink-features=AutomationControlled \
-  --no-first-run \
-  --window-size=1920,1080
+bash launch-browsers.sh PERSONA x
 ```
 
-#### Step 2: Verify Fingerprint
+### Step 2: Verify Stealth
 ```bash
-# Check you're not detected
 agent-browser --cdp 9222 open "https://bot.sannysoft.com"
-```
-
-#### Step 3: Authenticate (Manual)
-- Log into X, LinkedIn, etc. in the Chrome window
-- Complete any verification
-- Browse naturally for 1-2 minutes
-
-#### Step 4: Search for Leads
-```bash
-# Find people requesting services
-agent-browser --cdp 9222 open "https://x.com/search?q=%22need%20a%20website%22&f=live"
-
-# Wait 3-5 seconds
 agent-browser --cdp 9222 snapshot
 ```
 
-#### Step 5: Analyze & Qualify
+### Step 3: Search for Leads
+```bash
+agent-browser --cdp 9222 open "https://x.com/search?q=%22need%20a%20website%22&f=live"
+agent-browser --cdp 9222 wait 4000
+agent-browser --cdp 9222 snapshot
+```
+
+### Step 4: Analyze & Qualify
 Review snapshot output for:
 - Post content (what they need)
 - Engagement (replies, likes, views)
 - Recency (when posted)
 - Profile info (legit potential client?)
 
-#### Step 6: Engage (With Delays)
+### Step 5: Engage (With Delays)
 ```bash
 # Follow promising leads (30-90 sec between follows)
 agent-browser --cdp 9222 open "https://x.com/leadusername"
-# Wait 2-4 seconds
-# Click follow button
+agent-browser --cdp 9222 wait 3000
+agent-browser --cdp 9222 snapshot -i
+# Click follow button ref
 
 # Like their posts (10-30 sec between likes)
 # Scroll first, then click
@@ -1182,77 +1062,12 @@ agent-browser --cdp 9222 open "https://x.com/leadusername"
 # Wait 2-5 minutes between replies
 ```
 
-#### Step 7: Track Results
+### Step 6: Track Results
 Keep a spreadsheet of:
 - Leads found
 - Actions taken
 - Responses received
 - Conversions
-
-### Safari Workflow (AppleScript)
-
-#### Step 1: Open Safari
-```bash
-# Open Safari to X (uses your real profile — already logged in if you've logged in before)
-osascript -e 'tell application "Safari" to activate' \
-  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
-```
-
-#### Step 2: Verify Fingerprint
-```bash
-# Navigate to fingerprint test
-osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://bot.sannysoft.com"'
-
-# Check navigator.webdriver (should be "false")
-sleep 3 && osascript -e 'tell application "Safari" to do JavaScript "navigator.webdriver" in current tab of window 1'
-```
-
-#### Step 3: Search for Leads
-```bash
-# Navigate to X search
-osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com/search?q=%22need%20a%20website%22&f=live"'
-
-# Wait 3-5 seconds (human reading time)
-sleep 4
-
-# Extract top tweet texts
-osascript -e 'tell application "Safari" to do JavaScript "
-  JSON.stringify(Array.from(document.querySelectorAll(\"[data-testid=tweet]\")).slice(0,10).map(el => ({
-    text: el.querySelector(\"[data-testid=tweetText]\")?.textContent,
-    user: el.querySelector(\"a[role=link][href^=/]\")?.getAttribute(\"href\")
-  })))
-" in current tab of window 1'
-```
-
-#### Step 4: Analyze & Qualify
-Review extracted content for:
-- Post content (what they need)
-- User profiles (legit potential client?)
-- Recency (when posted)
-
-#### Step 5: Engage (With Delays)
-```bash
-# Navigate to a lead's profile (30-90 sec between follows)
-osascript -e 'tell application "Safari" to set URL of current tab of window 1 to "https://x.com/leadusername"'
-sleep 3
-
-# Click follow button
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=followButton]\")?.click()" in current tab of window 1'
-
-# Wait 30-90 seconds before next follow
-sleep 45
-
-# Like a post (scroll into view first, then click)
-osascript -e 'tell application "Safari" to do JavaScript "window.scrollBy(0, 300)" in current tab of window 1'
-sleep 2
-osascript -e 'tell application "Safari" to do JavaScript "document.querySelector(\"[data-testid=like]\")?.click()" in current tab of window 1'
-
-# Wait 10-30 seconds before next like
-sleep 15
-```
-
-#### Step 6: Track Results
-Same as Chrome — keep a spreadsheet of leads, actions, responses, conversions.
 
 ---
 
@@ -1264,14 +1079,12 @@ When invoked, provide browser automation guidance:
 AGENT BROWSER SETUP
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
-BROWSER: [Chrome (CDP) | Safari (AppleScript)]
-TASK: [What you want to accomplish]
+PERSONA: [persona name]
+PLATFORM: [X / LinkedIn / Reddit / Instagram]
+PORT: [9222 + persona_index*10 + platform_offset]
 
-SETUP COMMANDS:
-[Chrome launch command OR Safari AppleScript open]
-
-FINGERPRINT CHECK:
-[Verify stealth at bot.sannysoft.com]
+LAUNCH:
+bash launch-browsers.sh [persona] [platform]
 
 WORKFLOW:
 1. [Step with command]
@@ -1294,77 +1107,55 @@ DAILY LIMITS:
 
 ## Troubleshooting
 
-### Chrome Won't Bind to Port
+### CloakBrowser Won't Start
 ```bash
-# Check if port is in use
+# Check if cloakbrowser npm package is installed
+npm list -g cloakbrowser
+
+# Check if the binary was downloaded
+ls ~/.cloakbrowser/
+
+# Reinstall if missing
+npm install -g cloakbrowser playwright-core
+```
+
+### Port Already in Use
+```bash
+# Check what's using the port
 lsof -i :9222
 
-# Kill existing Chrome processes
-pkill -f "Chrome.*remote-debugging"
+# Kill the existing process
+kill $(lsof -t -i :9222)
 
-# Try again with fresh profile
-rm -rf /tmp/chrome-agent-profile
+# Or use a different port
+node launch-browser.mjs PERSONA x 9226
 ```
 
 ### Connection Refused
-- Ensure Chrome launched with `--remote-debugging-port=9222`
-- Verify `--user-data-dir` points to a writable directory
-- Check no firewall blocking localhost:9222
+- Ensure CloakBrowser was launched via `node launch-browser.mjs` or `bash launch-browsers.sh`
+- Verify the profile directory at `~/cloakbrowser-PERSONA-PLATFORM/` is writable
+- Check no firewall blocking localhost:PORT
+- Wait 2-3 seconds after launch before connecting
 
 ### Platform Blocking Actions
-- You're moving too fast—increase delays
+- You're moving too fast — increase delays
 - Take a 24-48 hour break
-- Clear cookies and re-authenticate
-- Use different user-data-dir for fresh fingerprint
+- Clear cookies: `agent-browser --cdp PORT cookies clear`
+- Use a different profile: new `--user-data-dir`
 - Check your IP isn't flagged
 
-### Detected as Bot (Chrome)
-- Verify fingerprint at bot.sannysoft.com
-- Ensure `--disable-blink-features=AutomationControlled` is set
-- Check `navigator.webdriver` returns `undefined`
-- Slow down significantly
-- Add more human-like timing variance
-- **Consider switching to Safari** — different browser fingerprint may bypass Chrome-specific detection
-
-### Safari: "Allow JavaScript from Apple Events" Error
-```bash
-# Error: "You must enable 'Allow JavaScript from Apple Events'"
-# Fix: Enable via Safari GUI (cannot be set via command line on modern macOS)
-#   1. Safari > Settings > Advanced > check "Show features for web developers"
-#   2. Safari > Settings > Developer > check "Allow JavaScript from Apple Events"
-#   3. Restart Safari after enabling
-
-# Verify it works
-osascript -e 'tell application "Safari" to do JavaScript "document.title" in current tab of window 1'
-```
-
-### Safari: JavaScript Returns Empty/Undefined
-- Page may not be fully loaded — add `sleep 3-5` before running JavaScript
-- Element may not exist — check the CSS selector in Safari's Web Inspector (Develop > Show Web Inspector)
-- Special characters in selectors need escaping: use `\"` inside AppleScript strings
-
-### Safari: Navigation Not Working
-```bash
-# Make sure Safari is open with at least one window
-osascript -e 'tell application "Safari" to activate' \
-  -e 'tell application "Safari" to make new document with properties {URL:"https://x.com"}'
-
-# If window exists but tab is wrong, target specific tab
-osascript -e 'tell application "Safari" to set URL of tab 1 of window 1 to "https://x.com"'
-```
-
-### Safari: AppleScript Permission Denied
-- Go to **System Settings > Privacy & Security > Automation**
-- Ensure your terminal app (Terminal.app, iTerm2, etc.) has permission to control Safari
-- You may need to re-grant permission after macOS updates
+### agent-browser Not Finding Elements
+- Page may not be loaded — use `agent-browser wait --load networkidle`
+- Element may be in an iframe — use `agent-browser frame "#iframe-id"` first
+- Refs invalidated — re-run `agent-browser snapshot -i`
+- Element behind overlay — close modals/popups first
 
 ---
 
 ## Security Notes
 
-- **Never share your user-data-dir** (Chrome) — contains session cookies
-- **Safari uses your real profile** — be aware that automation runs in the same context as your personal browsing
-- **Use separate macOS user accounts** if you need isolated Safari profiles for different personas
+- **Never share your `--user-data-dir` profiles** — they contain session cookies and auth state
+- **Use separate profiles per persona+platform** — prevents cross-contamination
 - **Monitor for unusual activity** on your accounts
 - **Have backup accounts** in case of suspension
 - **Don't automate policy-violating actions**
@@ -1380,11 +1171,9 @@ osascript -e 'tell application "Safari" to set URL of tab 1 of window 1 to "http
 - [agent-browser.dev](https://agent-browser.dev/) - Official website
 - [SKILL.md](https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md) - Official skill documentation
 
-### Safari & AppleScript
-- [Safari AppleScript Dictionary](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/) - Apple's AppleScript language guide
-- [Automating Safari with AppleScript](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/) - Mac Automation Scripting Guide
-- [About WebDriver for Safari](https://developer.apple.com/documentation/webkit/about-webdriver-for-safari) - Apple developer docs (safaridriver reference)
-- [Enabling Remote Automation in Safari 14+](https://blog.bytesguy.com/enabling-remote-automation-in-safari-14) - CLI removal workarounds
+### CloakBrowser
+- [CloakBrowser](https://cloakbrowser.dev/) - Official website
+- [CloakBrowser GitHub](https://github.com/nicecurl/cloakbrowser) - Source code
 
 ### Anti-Detection Research
 - [Bot Detection Methods](https://fingerprint.com/blog/bot-detection/)

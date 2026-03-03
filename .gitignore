@@ -22,7 +22,9 @@ sessions/
 .env.*
 !.env.example
 
-# Browser profiles
+# Browser profiles (CloakBrowser)
+cloakbrowser-*/
+.cloakbrowser/
 chrome-*/
 browser-profiles/
 
