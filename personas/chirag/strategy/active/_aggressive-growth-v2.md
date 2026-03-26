@@ -168,11 +168,22 @@ Same diversification matrix but with new targets:
 5. **Check for blocks/restrictions before replying.** If reply dialog shows "blocked" or "restricted", skip immediately.
 6. **Space replies 30+ seconds apart.** Rapid-fire posting looks bot-like to both humans and algorithms.
 
-### Blocked Accounts Registry
+### Blocked/Restricted Accounts Registry
 
-| Account | Blocked Since | Reason |
-|---------|-------------|--------|
-| @GergelyOrosz | Before Mar 24, 2026 | 3 spam BoloSign replies in 3 min (May 29, 2025) |
-| @manol_ai | Before Mar 25, 2026 | Unknown — no reply history found |
+| Account | Status | Since | Reason |
+|---------|--------|-------|--------|
+| @GergelyOrosz | Blocked | Before Mar 24, 2026 | 3 spam BoloSign replies in 3 min (May 29, 2025) |
+| @manol_ai | Blocked | Before Mar 25, 2026 | Unknown — no reply history found |
+| @levelsio | Reply restricted | Mar 26, 2026 | Restricted replies to network only (anti-AI-bot measure) |
 
-**Do not attempt to reply to these accounts.**
+**Do not attempt to reply to blocked accounts. For restricted accounts, check before drafting.**
+
+### Protected Accounts (Never Unfollow)
+
+These are active chain targets. Never unfollow even if they don't follow back:
+- @asmartbear (Jason Cohen) — liked reply, active chain
+- @robwalling — bootstrapped SaaS, aligned audience
+- @lennysan — PM/product, massive reach
+- @nathanbarry — creator economy, Kit founder
+- @agazdecki — Acquire.com, exit audience
+- @staysaasy — SaaS thought leadership, active chain
