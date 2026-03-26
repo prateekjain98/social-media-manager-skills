@@ -154,6 +154,17 @@ FINAL TWEET:
 - Be first on popular accounts' tweets
 - Build relationships through consistent engagement
 
+### Reply Formatting Rules
+- **First 280 chars = everything.** Anything beyond gets collapsed behind "Show more." The core message must land in the visible portion.
+- **Answer questions directly.** If someone asks "what's your strategy?" — give the strategy. Don't use it as a launchpad for your life story.
+- **Use numbered lists for multiple points.** Cleaner and more scannable than run-on paragraphs.
+- **Single line breaks only.** Double line breaks waste timeline space and make replies look bloated.
+- **Capitalize properly.** Product names (BoloSign, DocuSign), sentence starts. Lowercase is fine for casual voice but not for proper nouns.
+- **Explain references inline.** Don't drop unknown product names — describe them briefly so any reader understands.
+- **Cut filler ruthlessly.** Every word must earn its place. "The migration tool is the biggest lever" beats "I think probably the migration tool has been one of the biggest levers for us."
+- **Read it as a stranger before posting.** Does it answer the question? Does it make sense without context? Is it scannable on mobile?
+- **Never use em dashes (—) or double hyphens (--).** This is an AI writing tell. Real people use periods, commas, or just start a new sentence. Scan every draft and remove them before posting.
+
 ### Building Your Network
 - Identify 20-50 accounts in your niche
 - Engage with them daily

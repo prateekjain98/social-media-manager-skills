@@ -11,11 +11,11 @@ Generate appropriate responses to social media comments, DMs, and mentions.
 ## Human-Authenticity Rules for Responses
 
 ### Respond Like a Real Human
-- Vary response style—don't use templates verbatim
-- Add personality and warmth naturally
+- Vary response style, don't use templates verbatim
 - React genuinely to what they said
 - Use casual language appropriate to platform
 - Have a real conversation, not customer service script
+- Match their energy and vibe
 
 ### NEVER Sound Like a Bot
 - "Thank you for reaching out!"
@@ -24,196 +24,84 @@ Generate appropriate responses to social media comments, DMs, and mentions.
 - Overly formal language on casual platforms
 - Identical responses to similar comments
 
-### DO Respond Like This
-- "omg thank you!! this made my day 🥹"
-- "wait this is such a good question—let me DM you"
-- "honestly fair point, we're working on that"
-- "haha okay but you're so right though"
-- Match their energy and vibe
-
-### Platform Matching
-- Instagram: casual, emoji-friendly, warm
-- TikTok: super casual, gen-z energy if appropriate
-- LinkedIn: professional but still human
-- Twitter: witty, conversational, quick
-
 ---
 
-When invoked, create on-brand responses for community management.
+## When Invoked
 
 ### 1. Gather Information
 Ask for (if not provided):
 - The comment/message to respond to
-- Brand voice (professional, casual, playful, etc.)
 - Context (complaint, question, praise, etc.)
 - Platform (affects response length/style)
-- Any specific guidelines or limits
 
-### 2. Response Framework
-
-**The AEA Method:**
+### 2. Response Framework (AEA Method)
 1. **Acknowledge** - Show you've heard them
 2. **Empathize** - Demonstrate understanding
 3. **Act** - Provide solution or next steps
 
-### 3. Response Categories
+---
 
-**Positive Comments/Praise**
-```
-Tone: Warm, appreciative, engaging
-Goals: Show gratitude, build relationship, encourage more
+## Reply Crafting Rules (Persona-Driven Accounts)
 
-Templates:
-• "This made our day, [Name]! Thank you so much for sharing. 💙"
-• "We're so glad you loved it! What was your favorite part?"
-• "YOU are amazing! Thanks for being part of our community."
-• "Comments like this are why we do what we do. Thank you! 🙏"
-```
+When drafting replies for persona accounts (e.g., @chigup36, @prateekjain98), follow these rules strictly:
 
-**Questions (Simple)**
-```
-Tone: Helpful, clear, friendly
-Goals: Answer completely, invite follow-up
+**Answer the question, not your ego:**
+- If someone asks "what's your growth strategy?" give them the strategy, not your life story
+- Be direct: state the strategy/answer first, support with one proof point if needed
 
-Templates:
-• "Great question! [Answer]. Let us know if you have any other questions!"
-• "Thanks for asking! [Answer]. Feel free to DM us for more details."
-• "Happy to help! [Answer]. Anything else you'd like to know?"
-```
+**Don't cross-contaminate personas:**
+- Each persona has its own voice, strategies, and talking points
+- Never borrow phrases or frameworks from one persona for another
+- Always re-read the active `_persona.md` before drafting
 
-**Questions (Complex)**
-```
-Tone: Helpful, professional
-Goals: Move to private, gather info
+**Explain unknown references inline:**
+- Never drop product names the reader won't recognize (e.g., "WAMessages" means nothing to outsiders)
+- If referencing a product, explain what it is: "a WhatsApp CRM chrome extension" not just "WAMessages"
+- Assume the reader has zero context about you
 
-Templates:
-• "Thanks for reaching out! This needs a bit more detail to answer properly. Can you DM us with [specific info needed]?"
-• "Great question! There are a few factors to consider. Mind sending us a DM so we can give you the best answer?"
-```
+**Proper capitalization and formatting:**
+- Product names must be capitalized correctly (BoloSign, not bolosign; DocuSign, not docusign)
+- Always capitalize the first letter of every sentence
+- Use clean, single line breaks between points
 
-**Complaints/Negative Feedback**
-```
-Tone: Empathetic, professional, solution-focused
-Goals: Acknowledge, apologize, resolve
+**Keep it tight for the timeline:**
+- On X, first 280 characters must carry the core message (anything after gets collapsed behind "Show more")
+- Structure with numbered lists when giving multiple points
+- Every word should earn its place. Cut filler ruthlessly.
 
-Templates:
-• "We're sorry to hear this, [Name]. That's not the experience we want for you. Please DM us so we can make this right."
-• "Thank you for letting us know. We take this seriously and want to resolve it. Can you send us a DM with your order details?"
-• "We appreciate you sharing this feedback. We're looking into it and will DM you shortly."
-```
+**Never use em dashes or double hyphens (--):**
+- Em dashes are an AI writing tell. Real people rarely use them in tweets.
+- Use periods, commas, or just start a new sentence instead.
 
-**Constructive Feedback**
-```
-Tone: Receptive, grateful, engaged
-Goals: Show openness, thank them
-
-Templates:
-• "Thanks for this feedback, [Name]! We're always looking to improve and this is really helpful. 🙏"
-• "We love hearing this kind of input. We'll share with our team!"
-• "This is great feedback—thank you for taking the time to share!"
-```
-
-**Trolls/Negative (Non-Constructive)**
-```
-Tone: Professional or no response
-Goals: Don't engage, protect community
-
-Options:
-• No response (often best)
-• "Thanks for your perspective." (neutral acknowledgment)
-• Hide/delete if violates guidelines
-• Block if harassment
-```
-
-**UGC/User Content**
-```
-Tone: Excited, appreciative
-Goals: Celebrate, encourage more, request permission
-
-Templates:
-• "This is incredible, [Name]! 😍 Would you mind if we shared this to our story?"
-• "We LOVE seeing this! Thanks for sharing—you made our day!"
-• "This is everything! 🔥 Mind if we feature you?"
-```
-
-**Purchase/Order Questions**
-```
-Tone: Helpful, efficient
-Goals: Move to appropriate channel
-
-Templates:
-• "Thanks for reaching out! For order questions, our support team can help fastest at [email/link]. They'll take great care of you!"
-• "We want to help! Please DM us your order number and we'll look into it right away."
-```
-
-### 4. Output Format
-
-```
-ORIGINAL MESSAGE:
-"[Copy of the comment/DM]"
-
-CONTEXT: [Praise/Question/Complaint/etc.]
-PLATFORM: [Platform]
-PRIORITY: [High/Medium/Low]
+**Quality check before posting:**
+- Read it as a stranger. Does it answer the question without needing "Show more"?
+- Does it sound like a professional founder, not a chatbot?
+- Scan for em dashes and remove them before posting.
 
 ---
 
-RECOMMENDED RESPONSE:
-"[Full response text]"
+## Reply Diversification Matrix (Viral Thread Replies)
 
----
+Use this matrix to maximize reply visibility and follower conversion. Never use the same strategy twice in a row.
 
-ALTERNATIVE RESPONSES:
+| Strategy | When to Use | What It Does |
+|----------|------------|--------------|
+| **Contrarian reframe** | Thread has obvious consensus | Flip the premise. Algorithm rewards replies that generate sub-threads. |
+| **Data drop** | Posts about trends, market takes | Bring a specific number or stat from real experience. |
+| **Story snippet** | Posts about building, founder life | 2-3 sentence real story. No product name. End with the lesson. |
+| **Escalation humor** | Hot takes or strong opinions | Push the take further with wit. Make people screenshot and share. |
+| **Question that reframes** | Posts asking for opinions | Ask the question nobody in the thread is asking. |
+| **Agreement with new angle** | Posts from Tier 1 accounts | Agree, but add a dimension they missed. |
 
-Option 2 (More Casual):
-"[Response]"
+**Rules:**
+- Max 1 in 5 replies should mention your product
+- Read the full thread before drafting. Identify the gap.
+- First 280 characters must carry the core message
+- Track which strategy each reply uses to avoid repetition
 
-Option 3 (More Formal):
-"[Response]"
-
----
-
-RESPONSE NOTES:
-• Tone: [Description of tone used]
-• Why this works: [Brief explanation]
-• Follow-up needed: [Yes/No - if yes, what]
-• Escalation needed: [Yes/No - if yes, to whom]
-```
-
-### 5. Response Best Practices
-
-**Do:**
-- Respond within 24 hours (faster for complaints)
-- Use their name when possible
-- Match platform tone
-- Be human, not robotic
-- Take negative conversations private
-- Follow up to ensure resolution
-
-**Don't:**
-- Copy-paste identical responses
-- Get defensive or argue
-- Ignore negative feedback
-- Over-apologize
-- Make promises you can't keep
-- Use excessive emojis
-
-### 6. Platform Tone Adjustments
-
-| Platform | Tone | Length | Emoji |
-|----------|------|--------|-------|
-| Instagram | Casual, warm | Short-medium | Yes |
-| TikTok | Playful, casual | Short | Yes |
-| LinkedIn | Professional | Medium | Minimal |
-| Twitter | Conversational | Short | Moderate |
-| Facebook | Friendly | Medium | Moderate |
-
-### 7. Response Time Guidelines
-
-| Type | Target Response Time |
-|------|---------------------|
-| Crisis/Complaint | < 1 hour |
-| Customer Question | < 4 hours |
-| Positive Feedback | < 24 hours |
-| General Comment | < 24 hours |
-| DM | < 12 hours |
+**Thread Analysis Checklist:**
+1. Read the original post. What is the actual claim?
+2. Read 5-10 existing replies. What is everyone saying?
+3. Identify the gap: what angle is nobody covering?
+4. Pick a strategy from the matrix that fills that gap.
+5. Draft the reply. Cut every word that does not earn its place.

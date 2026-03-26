@@ -1164,6 +1164,31 @@ node launch-browser.mjs PERSONA x 9226
 
 ---
 
+## Platform-Specific Gotchas
+
+### X (Twitter) Profile Editing
+
+When using agent-browser to edit X profile fields (bio, name, location, website):
+
+1. **Invalid characters in bio:** X bio field does NOT accept certain special characters like `→`, `>`, `<`, `|`, or other unicode arrows/symbols. These will silently prevent the Save from working. Use plain text only (letters, numbers, periods, commas, dashes, `@`, `#`).
+
+2. **Blue checkmark warning:** If you have a verified account, editing the display name or profile photo triggers a warning: "Your blue checkmark will be hidden for a period of time after you edit your display name or profile photo until it is reviewed." This can block the Save button or require additional confirmation.
+
+3. **`fill` command on bio textarea:** The `fill` command may time out on the bio textarea. If it does, try clicking the field first, then using `fill`. If that still fails, try the `type` command with `--select-all` flag.
+
+4. **Save button not working:** If the Save button clicks but nothing happens (modal stays open, "Discard changes?" appears on close), it usually means:
+   - Invalid characters in one of the fields
+   - The name field was accidentally modified
+   - A validation error is present but not visible (scroll up in the modal)
+
+5. **Best practice for bio editing:** Keep bios plain ASCII. Test the bio text manually first if automation fails.
+
+### X Profile Location Card
+
+X business/professional profiles show a "Location" card with address, hours, and contact info. This card takes up significant screen space on the profile. To remove it, go to "Edit professional profile" inside the Edit Profile modal and disable the business profile features.
+
+---
+
 ## Sources & Further Reading
 
 ### Agent Browser Official

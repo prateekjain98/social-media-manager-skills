@@ -139,6 +139,7 @@ Ask for (if not provided):
 - Add visuals where helpful (1-3 per thread)
 - End tweets mid-thought for continuity
 - Use "👇" sparingly (overused)
+- Always capitalize the first letter of every sentence
 
 **Avoid:**
 - "Thread 🧵" announcements (dated)

@@ -103,6 +103,7 @@ Ask for (if not provided):
 - End with engagement-driving CTA
 - Match tone to brand voice
 - Optimize for platform character limits
+- Always capitalize the first letter of every sentence
 
 ### 5. Output Format
 Provide 3 caption variations:
